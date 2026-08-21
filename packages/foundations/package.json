@@ -1,0 +1,45 @@
+{
+  "name": "@faf/foundations",
+  "version": "0.0.1",
+  "description": "Faf Design System — Foundations (colors, typography, spacing, shadows)",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "style": "dist/tokens.css",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "style": "./dist/tokens.css"
+    },
+    "./styles": {
+      "style": "./dist/tokens.css"
+    }
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "generate:tokens": "tsx ../../scripts/generate-tokens.mjs foundations",
+    "build": "vite build && tsc --emitDeclarationOnly",
+    "dev": "vite",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11",
+    "vitest": "^1.6.0"
+  },
+  "keywords": [
+    "design-system",
+    "faf",
+    "foundations",
+    "tokens",
+    "css-variables"
+  ],
+  "license": "MIT"
+}

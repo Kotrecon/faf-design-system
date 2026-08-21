@@ -1,0 +1,53 @@
+/* packages/foundations/src/examples/typography-components.css */
+
+/* Пример использования fluid typography в заголовках и параграфах */
+
+/* Заголовок H1 — fluid, адаптивный */
+.faf-heading-1 {
+  font-family: var(--faf-font-sans, system-ui, sans-serif);
+  font-size: var(
+    --faf-font-size-fluid-3xl,
+    clamp(1.875rem, 1.5rem + 1.25vw, 3rem)
+  );
+  font-weight: var(--faf-font-weight-bold, 700);
+  line-height: var(--faf-line-height-tight, 1.25);
+  letter-spacing: -0.025em;
+  color: var(--faf-color-text);
+  margin-bottom: var(--faf-spacing-4, 1rem);
+}
+
+/* Заголовок H2 */
+.faf-heading-2 {
+  font-family: var(--faf-font-sans, system-ui, sans-serif);
+  font-size: var(
+    --faf-font-size-fluid-2xl,
+    clamp(1.5rem, 1.3rem + 0.67vw, 2rem)
+  );
+  font-weight: var(--faf-font-weight-semibold, 600);
+  line-height: var(--faf-line-height-tight, 1.25);
+  color: var(--faf-color-text);
+  margin-bottom: var(--faf-spacing-3, 0.75rem);
+}
+
+/* Параграф — fluid */
+.faf-paragraph {
+  font-family: var(--faf-font-sans, system-ui, sans-serif);
+  font-size: var(
+    --faf-font-size-fluid-base,
+    clamp(1rem, 0.9rem + 0.33vw, 1.125rem)
+  );
+  font-weight: var(--faf-font-weight-normal, 400);
+  line-height: var(--faf-line-height-normal, 1.5);
+  color: var(--faf-color-text);
+  margin-bottom: var(--faf-spacing-4, 1rem);
+}
+
+/* Мелкий текст */
+.faf-text-small {
+  font-family: var(--faf-font-sans, system-ui, sans-serif);
+  font-size: var(
+    --faf-font-size-fluid-sm,
+    clamp(0.875rem, 0.8rem + 0.25vw, 1rem)
+  );
+  color: var(--faf-color-text-muted);
+}

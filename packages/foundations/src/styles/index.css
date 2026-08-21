@@ -1,0 +1,34 @@
+/* src/styles/index.css */
+
+/* 1. ЕДИНСТВЕННОЕ место, где мы подключаем сгенерированные токены */
+@import "./tokens.generated.css";
+
+/* 2. Глобальные сбросы (Reset / Normalize) */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 3. Базовые стили приложения, использующие наши семантические токены */
+html {
+  /* Плавное переключение темы, если пользователь меняет её в ОС */
+  color-scheme: light dark;
+}
+
+body {
+  /* Мы используем семантические токены, а не конкретные значения! */
+  font-family: var(--faf-font-sans, system-ui, sans-serif);
+  font-size: var(--faf-font-size-base, 1rem);
+  line-height: var(--faf-line-height-normal, 1.5);
+
+  /* Цвета берутся из сгенерированного файла */
+  color: var(--faf-color-text);
+  background-color: var(--faf-color-background);
+
+  /* Сглаживание шрифтов */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

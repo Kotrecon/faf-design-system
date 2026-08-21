@@ -1,0 +1,143 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--faf-font-sans, system-ui, sans-serif);
+  background-color: var(--faf-color-background);
+  color: var(--faf-color-text);
+  padding: 2rem;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+.viewer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--faf-color-border);
+}
+
+.viewer-header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.theme-switcher,
+.category-switcher {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.theme-switcher button,
+.category-switcher button {
+  background: var(--faf-color-surface);
+  border: 1px solid var(--faf-color-border);
+  color: var(--faf-color-text);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.theme-switcher button:hover,
+.category-switcher button:hover {
+  background: var(--faf-color-primary);
+  color: white;
+  border-color: var(--faf-color-primary);
+}
+
+.theme-switcher button.active,
+.category-switcher button.active {
+  background: var(--faf-color-primary);
+  color: white;
+  border-color: var(--faf-color-primary);
+}
+
+.category-content {
+  margin-top: 2rem;
+}
+
+.color-scale {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.color-swatch {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0.5rem;
+  font-size: 0.75rem;
+  border: 1px solid var(--faf-color-border);
+}
+
+.color-swatch span {
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 2px 4px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.type-sample {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: var(--faf-color-surface);
+  border: 1px solid var(--faf-color-border);
+  border-radius: 8px;
+}
+
+.type-sample code {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--faf-color-text-muted);
+  font-family: var(--faf-font-mono, monospace);
+}
+
+.spacing-sample {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.spacing-bar {
+  background: var(--faf-color-primary);
+  border-radius: 4px;
+}
+
+.spacing-label {
+  font-size: 0.875rem;
+  font-family: var(--faf-font-mono, monospace);
+  min-width: 100px;
+}
+
+.shadow-sample {
+  margin-bottom: 2rem;
+}
+
+.shadow-box {
+  width: 200px;
+  height: 100px;
+  background: var(--faf-color-surface);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-family: var(--faf-font-mono, monospace);
+}

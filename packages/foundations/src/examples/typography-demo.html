@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Faf Typography — Fluid Examples</title>
+
+    <!-- Подключаем сгенерированные токены -->
+    <link rel="stylesheet" href="../styles/tokens.generated.css" />
+
+    <!-- Подключаем примеры типографики -->
+    <link rel="stylesheet" href="typography-components.css" />
+
+    <style>
+      body {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem;
+        background-color: var(--faf-color-background);
+        color: var(--faf-color-text);
+        font-family: var(--faf-font-sans, system-ui, sans-serif);
+      }
+
+      .demo-section {
+        margin-bottom: 3rem;
+        padding: 1.5rem;
+        background: var(--faf-color-surface);
+        border: 1px solid var(--faf-color-border);
+        border-radius: 8px;
+      }
+
+      .demo-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--faf-color-text-muted);
+        margin-bottom: 1rem;
+        font-family: var(--faf-font-mono, monospace);
+      }
+
+      .resize-hint {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        background: var(--faf-color-primary);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        box-shadow: var(--faf-shadow-md);
+      }
+    </style>
+  </head>
+  <body>
+    <h1 style="margin-bottom: 2rem">Fluid Typography Demo</h1>
+
+    <p class="faf-text-small" style="margin-bottom: 2rem">
+      💡 Измени размер окна браузера — шрифты плавно адаптируются благодаря
+      <code>clamp()</code>
+    </p>
+
+    <section class="demo-section">
+      <div class="demo-label">.faf-heading-1 (fluid-3xl)</div>
+      <h1 class="faf-heading-1">Заголовок первого уровня</h1>
+    </section>
+
+    <section class="demo-section">
+      <div class="demo-label">.faf-heading-2 (fluid-2xl)</div>
+      <h2 class="faf-heading-2">Заголовок второго уровня</h2>
+    </section>
+
+    <section class="demo-section">
+      <div class="demo-label">.faf-paragraph (fluid-base)</div>
+      <p class="faf-paragraph">
+        Это базовый параграф с fluid-типографикой. Размер шрифта плавно меняется
+        от 1rem до 1.125rem в зависимости от ширины viewport. Текст легко
+        читается на любом устройстве — от мобильного телефона до большого
+        монитора. Fluid typography заменяет необходимость писать медиа-запросы
+        для каждого размера шрифта отдельно.
+      </p>
+    </section>
+
+    <section class="demo-section">
+      <div class="demo-label">.faf-text-small (fluid-sm)</div>
+      <p class="faf-text-small">
+        Это мелкий текст, который используется для подписей, метаданных и
+        второстепенной информации. Диапазон: от 0.875rem до 1rem.
+      </p>
+    </section>
+
+    <div class="resize-hint">← → Измени размер окна</div>
+  </body>
+</html>
