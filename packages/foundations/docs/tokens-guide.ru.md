@@ -1,6 +1,6 @@
 # Руководство по дизайн-токенам
 
-> [RU](./README.ru.md) | [ENG](./README.md)
+> [RU](./tokens-guide.ru.md) | [ENG](./tokens-guide.md)
 
 Дизайн-токены — это атомарные значения (цвета, отступы, шрифты, тени), которые являются **единственным источником истины (Single Source of Truth)** для всей дизайн-системы Faf.
 
@@ -84,7 +84,7 @@ themes.light.primary; // "oklch(0.55 0.22 250)" (ссылается на blue-60
 
 - **Примитивы:** `--faf-{категория}-{имя}-{шаг}`
 
-  ```bash
+  ```css
   --faf-color-blue-500
   --faf-spacing-4
   --faf-shadow-md
@@ -92,7 +92,7 @@ themes.light.primary; // "oklch(0.55 0.22 250)" (ссылается на blue-60
 
 - **Семантика:** `--faf-{категория}-{роль}`
 
-  ```bash
+  ```css
   --faf-color-primary
   --faf-spacing-card-padding
   --faf-shadow-modal
@@ -100,7 +100,7 @@ themes.light.primary; // "oklch(0.55 0.22 250)" (ссылается на blue-60
 
 - **Компонентные:** `--faf-{компонент}-{свойство}`
 
-  ```bash
+  ```css
   --faf-button-bg
   --faf-input-border
   ```

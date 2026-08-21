@@ -1,6 +1,6 @@
 # Color Usage Guide
 
-> [RU](./README.ru.md) | [ENG](./README.md)
+> [RU](./colors-guide.ru.md) | [ENG](./colors-guide.md)
 
 This is a practical guide to choosing color combinations that ensure accessibility (WCAG 2.1 AA/AAA) and visual consistency across interfaces.
 

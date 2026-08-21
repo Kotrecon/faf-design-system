@@ -1,6 +1,6 @@
 # Design Tokens Guide
 
-> [RU](./README.ru.md) | [ENG](./README.md)
+> [RU](./tokens-guide.ru.md) | [ENG](./tokens-guide.md)
 
 Design tokens are atomic values (colors, spacing, typography, shadows) that serve as the **Single Source of Truth (SSOT)** for the entire Faf design system.
 
@@ -82,18 +82,23 @@ Specific to a particular component. They reference semantic tokens.
 ### Name Format
 
 - **Primitives:** `--faf-{category}-{name}-{step}`
+
   ```css
   --faf-color-blue-500
   --faf-spacing-4
   --faf-shadow-md
   ```
+
 - **Semantics:** `--faf-{category}-{role}`
+
   ```css
   --faf-color-primary
   --faf-spacing-card-padding
   --faf-shadow-modal
   ```
+
 - **Components:** `--faf-{component}-{property}`
+
   ```css
   --faf-button-bg
   --faf-input-border
@@ -166,6 +171,7 @@ const cardStyle2 = {
 ### Scenario A: A new color in the palette
 
 1. Add the value to `src/tokens/colors/primitives.ts`:
+
    ```typescript
    export const primitives = {
      // ... existing colors
@@ -175,10 +181,13 @@ const cardStyle2 = {
      },
    };
    ```
+
 2. Regenerate CSS:
+
    ```bash
    pnpm run generate:tokens
    ```
+
 3. Done. `--faf-color-pink-500` will now appear in the CSS.
 
 ### Scenario B: A new semantic role
@@ -205,24 +214,30 @@ const cardStyle2 = {
 
 2. TypeScript will automatically check that you didn't forget to add the token to one of the themes.
 3. Regenerate CSS:
+
    ```bash
    pnpm run generate:tokens
    ```
+
 4. `--faf-color-highlight` will now appear in the CSS.
 
 ### Scenario C: A new semantic spacing
 
 1. Add the role to `src/tokens/spacing/semantic.ts`:
+
    ```typescript
    export const semanticSpacing = {
      // ... existing
      sidebarWidth: spacing[64],
    };
    ```
+
 2. Regenerate CSS:
+
    ```bash
    pnpm run generate:tokens
    ```
+
 3. `--faf-spacing-sidebar-width` will now appear in the CSS.
 
 ---

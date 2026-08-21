@@ -1,6 +1,6 @@
 # Почему мы используем OKLCH?
 
-> [RU](./README.ru.md) | [ENG](./README.md)
+> [RU](./oklch-guide.ru.md) | [ENG](./oklch-guide.md)
 
 OKLCH (Lightness, Chroma, Hue) — это современное цветовое пространство, которое стало индустриальным стандартом для профессиональных дизайн-систем (Tailwind CSS, GitHub Primer, Shopify Polaris).
 
