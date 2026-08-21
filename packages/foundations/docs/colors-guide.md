@@ -1,126 +1,128 @@
-# Руководство по использованию цветов
+# Color Usage Guide
 
-Это практическое руководство по выбору цветовых комбинаций, обеспечивающих доступность (WCAG 2.1 AA/AAA) и визуальную согласованность интерфейсов.
+> [RU](./README.ru.md) | [ENG](./README.md)
 
----
-
-## 1. Контрастность текста (WCAG)
-
-Для обеспечения читаемости текста необходимо соблюдать минимальные требования контрастности согласно **WCAG 2.1**.
-
-### Требования по уровням
-
-| Уровень                 | Обычный текст (< 18px) | Крупный текст (≥ 18px / ≥ 14px bold) |
-| :---------------------- | :--------------------- | :----------------------------------- |
-| **AAA** (рекомендуется) | 7:1                    | 4.5:1                                |
-| **AA** (обязательно)    | 4.5:1                  | 3:1                                  |
-
-### Практические правила
-
-#### На светлом фоне (`background: gray-50` до `gray-200`)
-
-| Использование        | Рекомендуемые оттенки              | Контраст                    |
-| :------------------- | :--------------------------------- | :-------------------------- |
-| **Основной текст**   | `gray-900`, `gray-800`, `gray-700` | > 7:1 (AAA)                 |
-| **Вторичный текст**  | `gray-600`, `gray-500`             | 4.5:1 - 7:1 (AA-AAA)        |
-| **Неактивный текст** | `gray-400`                         | ~ 3:1 (только для disabled) |
-| **Акцентный текст**  | `blue-600`, `blue-700`             | > 4.5:1 (AA)                |
-
-#### На тёмном фоне (`background: gray-800` до `gray-900`)
-
-| Использование        | Рекомендуемые оттенки          | Контраст         |
-| :------------------- | :----------------------------- | :--------------- |
-| **Основной текст**   | `gray-50`, `gray-100`, `white` | > 12:1 (AAA)     |
-| **Вторичный текст**  | `gray-200`, `gray-300`         | 7:1 - 10:1 (AAA) |
-| **Неактивный текст** | `gray-400`                     | ~ 4.5:1 (AA)     |
-| **Акцентный текст**  | `blue-300`, `blue-400`         | > 4.5:1 (AA)     |
+This is a practical guide to choosing color combinations that ensure accessibility (WCAG 2.1 AA/AAA) and visual consistency across interfaces.
 
 ---
 
-## 2. Семантические цвета
+## 1. Text Contrast (WCAG)
 
-Семантические цвета (success, error, warning, info) должны использоваться строго по назначению и обеспечивать достаточный контраст.
+To ensure text readability, minimum contrast requirements according to **WCAG 2.1** must be met.
 
-### Error (ошибки, опасные действия)
+### Requirements by Level
+
+| Level                 | Normal text (< 18px) | Large text (≥ 18px / ≥ 14px bold) |
+| :-------------------- | :------------------- | :-------------------------------- |
+| **AAA** (recommended) | 7:1                  | 4.5:1                             |
+| **AA** (required)     | 4.5:1                | 3:1                               |
+
+### Practical Rules
+
+#### On light backgrounds (`background: gray-50` to `gray-200`)
+
+| Usage              | Recommended shades                 | Contrast              |
+| :----------------- | :--------------------------------- | :-------------------- |
+| **Primary text**   | `gray-900`, `gray-800`, `gray-700` | > 7:1 (AAA)           |
+| **Secondary text** | `gray-600`, `gray-500`             | 4.5:1 - 7:1 (AA-AAA)  |
+| **Disabled text**  | `gray-400`                         | ~ 3:1 (disabled only) |
+| **Accent text**    | `blue-600`, `blue-700`             | > 4.5:1 (AA)          |
+
+#### On dark backgrounds (`background: gray-800` to `gray-900`)
+
+| Usage              | Recommended shades             | Contrast         |
+| :----------------- | :----------------------------- | :--------------- |
+| **Primary text**   | `gray-50`, `gray-100`, `white` | > 12:1 (AAA)     |
+| **Secondary text** | `gray-200`, `gray-300`         | 7:1 - 10:1 (AAA) |
+| **Disabled text**  | `gray-400`                     | ~ 4.5:1 (AA)     |
+| **Accent text**    | `blue-300`, `blue-400`         | > 4.5:1 (AA)     |
+
+---
+
+## 2. Semantic Colors
+
+Semantic colors (success, error, warning, info) must be used strictly for their intended purposes and provide sufficient contrast.
+
+### Error (errors, destructive actions)
 
 ```css
-/* Фон алерта */
-background-color: var(--faf-color-red-50); /* Светлый */
-color: var(--faf-color-red-900); /* Тёмный текст */
+/* Alert background */
+background-color: var(--faf-color-red-50); /* Light */
+color: var(--faf-color-red-900); /* Dark text */
 
-/* Текст ошибки */
+/* Error text */
 color: var(--faf-color-red-600);
 
-/* Иконка */
+/* Icon */
 fill: var(--faf-color-red-500);
 ```
 
-### Success (успешные действия)
+### Success (successful actions)
 
 ```css
-/* Фон алерта */
+/* Alert background */
 background-color: var(--faf-color-green-50);
 color: var(--faf-color-green-900);
 
-/* Текст успеха */
+/* Success text */
 color: var(--faf-color-green-700);
 ```
 
-### Warning (предупреждения)
+### Warning (warnings)
 
-⚠️ **Важно**: Жёлтый цвет (`yellow`) имеет низкий контраст на белом фоне.
+⚠️ **Important**: Yellow (`yellow`) has low contrast on white backgrounds.
 
-**Правильно:**
+**Correct:**
 
 ```css
-/* Фон */
+/* Background */
 background-color: var(--faf-color-yellow-100);
-/* Текст — тёмный, НЕ жёлтый */
+/* Text — dark, NOT yellow */
 color: var(--faf-color-gray-900);
-/* Или тёмно-оранжевый/коричневый */
+/* Or dark orange/brown */
 color: var(--faf-color-yellow-900);
 ```
 
-**Неправильно:**
+**Incorrect:**
 
 ```css
-/* Жёлтый текст на белом фоне — НЕЧИТАЕМ */
+/* Yellow text on a white background is UNREADABLE */
 color: var(--faf-color-yellow-500); /* ❌ */
 ```
 
 ---
 
-## 3. Интерактивные элементы
+## 3. Interactive Elements
 
-### Ссылки
+### Links
 
-Ссылки должны быть отличимы от обычного текста и иметь достаточный контраст.
+Links must be distinguishable from regular text and have sufficient contrast.
 
 ```css
-/* Светлая тема */
+/* Light theme */
 .faf-link {
-  color: var(--faf-color-blue-600); /* Контраст > 4.5:1 на белом */
-  text-decoration: underline; /* Дополнительно для отличия */
+  color: var(--faf-color-blue-600); /* Contrast > 4.5:1 on white */
+  text-decoration: underline; /* Additional distinction */
 }
 
 .faf-link:hover {
-  color: var(--faf-color-blue-700); /* Темнее на hover */
+  color: var(--faf-color-blue-700); /* Darker on hover */
 }
 
-/* Тёмная тема */
+/* Dark theme */
 .faf-link {
-  color: var(--faf-color-blue-400); /* Контраст > 4.5:1 на тёмном */
+  color: var(--faf-color-blue-400); /* Contrast > 4.5:1 on dark */
 }
 ```
 
-### Кнопки
+### Buttons
 
-#### Primary (основное действие)
+#### Primary (main action)
 
 ```css
 .faf-button-primary {
   background-color: var(--faf-color-primary); /* Blue 600 */
-  color: white; /* Белый текст всегда читается на насыщенном цвете */
+  color: white; /* White text is always readable on saturated colors */
 }
 
 .faf-button-primary:hover {
@@ -133,7 +135,7 @@ color: var(--faf-color-yellow-500); /* ❌ */
 }
 ```
 
-#### Secondary (вторичное действие)
+#### Secondary (secondary action)
 
 ```css
 .faf-button-secondary {
@@ -150,44 +152,48 @@ color: var(--faf-color-yellow-500); /* ❌ */
 
 ---
 
-## 4. Фоны и поверхности
+## 4. Backgrounds and Surfaces
 
-### Иерархия поверхностей
+### Surface Hierarchy
 
-| Элемент                    | Светлая тема             | Тёмная тема              |
-| :------------------------- | :----------------------- | :----------------------- |
-| **Основной фон**           | `gray-50`                | `gray-900`               |
-| **Поверхность (карточка)** | `white`                  | `gray-800`               |
-| **Raised (приподнятый)**   | `white` + `shadow-md`    | `gray-750` + `shadow-md` |
-| **Overlay (затемнение)**   | `gray-900` @ 50% opacity | `gray-900` @ 70% opacity |
+| Element                | Light theme              | Dark theme               |
+| :--------------------- | :----------------------- | :----------------------- |
+| **Base background**    | `gray-50`                | `gray-900`               |
+| **Surface (card)**     | `white`                  | `gray-800`               |
+| **Raised**             | `white` + `shadow-md`    | `gray-750` + `shadow-md` |
+| **Overlay (backdrop)** | `gray-900` @ 50% opacity | `gray-900` @ 70% opacity |
 
-### Границы (Borders)
+### Borders
 
-Границы должны быть заметны, но не отвлекать внимание.
+Borders should be noticeable but not distracting.
 
 ```css
-/* Светлая тема */
-border-color: var(--faf-color-gray-200); /* Контраст 1.5:1 с фоном gray-50 */
+/* Light theme */
+border-color: var(
+  --faf-color-gray-200
+); /* 1.5:1 contrast with gray-50 background */
 
-/* Тёмная тема */
-border-color: var(--faf-color-gray-700); /* Контраст 1.5:1 с фоном gray-800 */
+/* Dark theme */
+border-color: var(
+  --faf-color-gray-700
+); /* 1.5:1 contrast with gray-800 background */
 ```
 
 ---
 
-## 5. Брендовые цвета
+## 5. Brand Colors
 
-Брендовые цвета (`brandFirefly`, `brandAi`, `brandFlow`) **не инвертируются** при смене темы.
+Brand colors (`brandFirefly`, `brandAi`, `brandFlow`) **do not invert** when switching themes.
 
-### Использование
+### Usage
 
 ```css
-/* Логотипы, ключевые акценты */
+/* Logos, key accents */
 .faf-brand-firefly {
   color: var(--faf-color-brand-firefly);
 }
 
-/* Иллюстрации, декоративные элементы */
+/* Illustrations, decorative elements */
 .faf-brand-gradient {
   background: linear-gradient(
     135deg,
@@ -197,76 +203,76 @@ border-color: var(--faf-color-gray-700); /* Контраст 1.5:1 с фоном
 }
 ```
 
-⚠️ **Не используйте брендовые цвета для текста** на обычных поверхностях — они могут не соответствовать WCAG. Используйте их только для:
+⚠️ **Do not use brand colors for text** on standard surfaces, as they may not meet WCAG requirements. Use them only for:
 
-- Логотипов
-- Декоративных элементов
-- Иллюстраций
-- Акцентных фонов (с тёмным текстом поверх)
+- Logos
+- Decorative elements
+- Illustrations
+- Accent backgrounds (with dark text on top)
 
 ---
 
-## 6. Проверка контрастности
+## 6. Checking Contrast
 
-### Инструменты
+### Tools
 
-Перед релизом проверяйте контрастность критических элементов:
+Before release, check the contrast of critical elements:
 
-1. **Figma Plugin**: "Stark" или "Contrast"
+1. **Figma Plugin**: "Stark" or "Contrast"
 2. **Chrome DevTools**:
-   - Откройте Elements → Styles → цветной квадрат рядом с `color`
-   - В появившемся окне будет указан контраст
-3. **WebAIM Contrast Checker**: `https://webaim.org/resources/contrastchecker/`
+   - Open Elements → Styles → click the color square next to `color`
+   - The contrast ratio will be displayed in the popup
+3. **WebAIM Contrast Checker**: [https://webaim.org/resources/contrastchecker/](https://webaim.org/resources/contrastchecker/)
 
-### Автоматические тесты
+### Automated Tests
 
-В будущем планируется добавить Token Contract Tests, которые будут проверять:
+In the future, Token Contract Tests will be added to verify that:
 
-- Все семантические цвета имеют минимальный контраст 4.5:1 с фоном
-- Состояния `hover` отличаются от базового состояния минимум на 0.05 по Lightness
-
----
-
-## 7. Чек-лист перед использованием цвета
-
-- [ ] Цвет обеспечивает контраст ≥ 4.5:1 для текста (≥ 3:1 для крупного)
-- [ ] Цвет не используется как единственный способ передачи информации (добавьте иконку или текст)
-- [ ] Для интерактивных элементов есть видимое состояние `:hover` и `:focus`
-- [ ] Цвет работает в обеих темах (light/dark) или имеет альтернативу для тёмной темы
+- All semantic colors have a minimum 4.5:1 contrast with the background.
+- `hover` states differ from the base state by at least 0.05 in Lightness.
 
 ---
 
-## Примеры
+## 7. Pre-Usage Color Checklist
 
-### ✅ Правильно
+- [ ] The color provides ≥ 4.5:1 contrast for text (≥ 3:1 for large text).
+- [ ] Color is not the only way to convey information (add an icon or text).
+- [ ] Interactive elements have visible `:hover` and `:focus` states.
+- [ ] The color works in both themes (light/dark) or has a dedicated dark theme alternative.
+
+---
+
+## Examples
+
+### ✅ Correct
 
 ```html
-<!-- Карточка с достаточным контрастом -->
+<!-- Card with sufficient contrast -->
 <div style="background: white; border: 1px solid gray-200;">
-  <h2 style="color: gray-900;">Заголовок</h2>
-  <p style="color: gray-600;">Вторичный текст</p>
-  <a href="#" style="color: blue-600;">Ссылка</a>
-  <button style="background: blue-600; color: white;">Кнопка</button>
+  <h2 style="color: gray-900;">Heading</h2>
+  <p style="color: gray-600;">Secondary text</p>
+  <a href="#" style="color: blue-600;">Link</a>
+  <button style="background: blue-600; color: white;">Button</button>
 </div>
 ```
 
-### ❌ Неправильно
+### ❌ Incorrect
 
 ```html
-<!-- Карточка с плохим контрастом -->
+<!-- Card with poor contrast -->
 <div style="background: gray-50; border: 1px solid gray-100;">
-  <h2 style="color: gray-400;">Заголовок (не читается!)</h2>
-  <p style="color: yellow-500;">Текст (не читается на белом!)</p>
-  <a href="#" style="color: blue-300;">Ссылка (слабый контраст)</a>
+  <h2 style="color: gray-400;">Heading (unreadable!)</h2>
+  <p style="color: yellow-500;">Text (unreadable on white!)</p>
+  <a href="#" style="color: blue-300;">Link (weak contrast)</a>
   <button style="background: gray-200; color: gray-400;">
-    Кнопка (не видно)
+    Button (invisible)
   </button>
 </div>
 ```
 
 ---
 
-## Ссылки
+## References
 
 - [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
 - [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)

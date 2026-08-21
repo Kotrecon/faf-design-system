@@ -1,96 +1,98 @@
-# Почему мы используем OKLCH?
+# Why We Use OKLCH
 
-OKLCH (Lightness, Chroma, Hue) — это современное цветовое пространство, которое стало индустриальным стандартом для профессиональных дизайн-систем (Tailwind CSS, GitHub Primer, Shopify Polaris).
+> [RU](./README.ru.md) | [ENG](./README.md)
 
-Оно решает фундаментальные проблемы старых форматов (HEX, RGB, HSL) при программной генерации и масштабировании интерфейсов.
+OKLCH (Lightness, Chroma, Hue) is a modern color space that has become the industry standard for professional design systems (Tailwind CSS, GitHub Primer, Shopify Polaris).
 
----
-
-## 1. Перцепционная равномерность (Perceptual Uniformity)
-
-Это главное преимущество OKLCH. Изменение параметра `Lightness` (яркость) на фиксированный процент **всегда воспринимается глазом как одинаковое изменение**, независимо от оттенка (`Hue`).
-
-| Пространство | Проблема                                                                                                                                                     | Пример                                                                                  |
-| :----------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------- |
-| **HSL**      | Жёлтый (`hsl(60, 100%, 50%)`) и Синий (`hsl(240, 100%, 50%)`) имеют одинаковую заявленную яркость (50%), но жёлтый визуально воспринимается намного светлее. | Невозможно создать гармоничную палитру из 10 шагов для разных цветов.                   |
-| **OKLCH**    | `oklch(0.50 0.20 60)` (жёлтый) и `oklch(0.50 0.20 250)` (синий) визуально имеют **абсолютно одинаковую яркость**.                                            | Можно взять любой `Hue` и сгенерировать идеальную шкалу от 50 до 900, просто меняя `L`. |
+It solves fundamental problems of older formats (HEX, RGB, HSL) when programmatically generating and scaling interfaces.
 
 ---
 
-## 2. Предсказуемые состояния (Hover, Active, Disabled)
+## 1. Perceptual Uniformity
 
-В OKLCH не нужно подбирать HEX-коды «на глаз» для состояний кнопок. Состояния генерируются математически и всегда остаются гармоничными.
+This is the main advantage of OKLCH. Changing the `Lightness` parameter by a fixed percentage is **always perceived by the human eye as an identical change**, regardless of the `Hue`.
 
-**Правило Faf:**
+| Space     | Problem                                                                                                                                          | Example                                                                             |
+| :-------- | :----------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------- |
+| **HSL**   | Yellow (`hsl(60, 100%, 50%)`) and Blue (`hsl(240, 100%, 50%)`) have the same declared lightness (50%), but yellow visually appears much lighter. | Impossible to create a harmonious 10-step palette across different colors.          |
+| **OKLCH** | `oklch(0.50 0.20 60)` (yellow) and `oklch(0.50 0.20 250)` (blue) visually have **absolutely the same lightness**.                                | You can take any `Hue` and generate a perfect 50 to 900 scale just by changing `L`. |
 
-- **Hover**: Уменьшить `Lightness` на `0.08` (или увеличить для тёмной темы).
-- **Disabled**: Установить `Chroma` в `0` (полная десатурация в серый) и `Lightness` в `0.70`.
+---
+
+## 2. Predictable States (Hover, Active, Disabled)
+
+In OKLCH, you don't need to guess HEX codes "by eye" for button states. States are generated mathematically and always remain harmonious.
+
+**Faf Rule:**
+
+- **Hover**: Decrease `Lightness` by `0.08` (or increase for the dark theme).
+- **Disabled**: Set `Chroma` to `0` (full desaturation to gray) and `Lightness` to `0.70`.
 
 ```css
-/* Пример: Primary кнопка */
+/* Example: Primary button */
 .button {
-  /* Базовый цвет: oklch(0.55 0.22 250) */
+  /* Base color: oklch(0.55 0.22 250) */
   background-color: var(--faf-color-primary);
 }
 
 .button:hover {
-  /* Hover: просто уменьшаем яркость на 0.08. Оттенок и насыщенность те же. */
-  /* Результат: oklch(0.47 0.20 250) */
+  /* Hover: simply decrease lightness by 0.08. Hue and Chroma remain the same. */
+  /* Result: oklch(0.47 0.20 250) */
   background-color: var(--faf-color-primary-hover);
 }
 ```
 
-В HEX или RGB такое изменение часто приводит к «грязным» или непредсказуемым оттенкам.
+In HEX or RGB, such changes often lead to "muddy" or unpredictable shades.
 
 ---
 
-## 3. Широкий цветовой охват (Wide Gamut)
+## 3. Wide Gamut
 
-OKLCH поддерживает цветовые пространства **Display P3** и **Rec.2020**.
+OKLCH supports **Display P3** and **Rec.2020** color spaces.
 
-- **HEX/RGB** ограничены устаревшим пространством **sRGB**.
-- На современных OLED-экранах (iPhone, MacBook, топовые мониторы) цвета в формате OKLCH отображаются более сочными и точными, так как браузер может использовать весь доступный аппаратный потенциал дисплея, не обрезая цвета до sRGB.
-
----
-
-## 4. Структура значения OKLCH
-
-Синтаксис: `oklch(L C H)`
-
-| Параметр | Название              | Диапазон       | Описание                                                                                              |
-| :------- | :-------------------- | :------------- | :---------------------------------------------------------------------------------------------------- |
-| **L**    | Lightness (Яркость)   | `0.0` – `1.0`  | `0` = абсолютный чёрный, `1` = абсолютный белый.                                                      |
-| **C**    | Chroma (Насыщенность) | `0.0` – `~0.4` | `0` = оттенок серого. Максимальное значение зависит от оттенка (для синего ~0.35, для жёлтого ~0.25). |
-| **H**    | Hue (Оттенок)         | `0` – `360`    | Угол на цветовом круге (0 = красный, 120 = зелёный, 250 = синий).                                     |
+- **HEX/RGB** are limited to the outdated **sRGB** space.
+- On modern OLED screens (iPhone, MacBook, high-end monitors), colors in OKLCH format appear more vibrant and accurate, as the browser can utilize the full hardware potential of the display without clipping colors to sRGB.
 
 ---
 
-## 5. Обратная совместимость (Fallback)
+## 4. OKLCH Value Structure
 
-Поддержка OKLCH в браузерах сейчас составляет **~90%** (Safari 15.4+, Chrome 111+, Firefox 113+).
+Syntax: `oklch(L C H)`
 
-Для критически важных проектов, требующих поддержки очень старых браузеров, мы используем стратегию прогрессивного улучшения через `@supports`:
+| Parameter | Name      | Range          | Description                                                                               |
+| :-------- | :-------- | :------------- | :---------------------------------------------------------------------------------------- |
+| **L**     | Lightness | `0.0` – `1.0`  | `0` = absolute black, `1` = absolute white.                                               |
+| **C**     | Chroma    | `0.0` – `~0.4` | `0` = shade of gray. Maximum value depends on the hue (~0.35 for blue, ~0.25 for yellow). |
+| **H**     | Hue       | `0` – `360`    | Angle on the color wheel (0 = red, 120 = green, 250 = blue).                              |
+
+---
+
+## 5. Backward Compatibility (Fallback)
+
+Browser support for OKLCH is currently **~90%** (Safari 15.4+, Chrome 111+, Firefox 113+).
+
+For critically important projects requiring support for very old browsers, we use a progressive enhancement strategy via CSS cascade (or `@supports`):
 
 ```css
 .faf-element {
-  /* Fallback для старых браузеров (конвертируется из OKLCH в HEX) */
+  /* Fallback for older browsers (converted from OKLCH to HEX) */
   background-color: #3b82f6;
 
-  /* Основной цвет для современных браузеров */
+  /* Primary color for modern browsers */
   background-color: oklch(0.55 0.22 250);
 }
 ```
 
-_Примечание: В архитектуре Faf-Foundations HEX-фоллбэки могут быть добавлены на этапе генерации CSS, если это потребуется для конкретного проекта._
+_Note: In the Faf-Foundations architecture, HEX fallbacks can be added during the CSS generation stage if required for a specific project._
 
 ---
 
-## Итог
+## Conclusion
 
-Использование OKLCH в Faf Design System — это не дань моде, а инженерное решение, которое:
+Using OKLCH in the Faf Design System is not a trend, but an engineering solution that:
 
-1. Гарантирует визуальную согласованность палитры.
-2. Позволяет алгоритмически генерировать темы (Light/Dark) и состояния (Hover/Disabled).
-3. Готово к будущему (Wide Gamut дисплеи).
+1. Guarantees visual consistency of the palette.
+2. Allows algorithmic generation of themes (Light/Dark) and states (Hover/Disabled).
+3. Is future-proof (Wide Gamut displays).
 
 ---

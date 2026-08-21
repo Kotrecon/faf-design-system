@@ -1,36 +1,37 @@
-# Руководство по дизайн-токенам
+# Design Tokens Guide
 
-Дизайн-токены — это атомарные значения (цвета, отступы, шрифты, тени), которые являются **единственным источником истины (Single Source of Truth)** для всей дизайн-системы Faf.
+> [RU](./README.ru.md) | [ENG](./README.md)
 
-Вместо того чтобы писать `padding: 16px` или `color: #3b82f6` в каждом компоненте, вы используете токены: `padding: var(--faf-spacing-4)` и `color: var(--faf-color-primary)`.
+Design tokens are atomic values (colors, spacing, typography, shadows) that serve as the **Single Source of Truth (SSOT)** for the entire Faf design system.
+
+Instead of writing `padding: 16px` or `color: #3b82f6` in every component, you use tokens: `padding: var(--faf-spacing-4)` and `color: var(--faf-color-primary)`.
 
 ---
 
-## 1. Иерархия токенов
+## 1. Token Hierarchy
 
-Токены организованы в три уровня. Каждый следующий уровень ссылается на предыдущий.
+Tokens are organized into three levels. Each subsequent level references the previous one.
 
-```bash
-
+```text
 ┌─────────────────────────────────────────────────────────────┐
-│ Component Tokens (Компонентные) │
-│ --faf-button-bg, --faf-input-border │
+│ Component Tokens                                            │
+│ --faf-button-bg, --faf-input-border                         │
 └─────────────────────────────────────────────────────────────┘
-↑
+                              ↑
 ┌─────────────────────────────────────────────────────────────┐
-│ Semantic Tokens (Семантические) │
-│ --faf-color-primary, --faf-spacing-card-padding │
+│ Semantic Tokens                                             │
+│ --faf-color-primary, --faf-spacing-card-padding             │
 └─────────────────────────────────────────────────────────────┘
-↑
+                              ↑
 ┌─────────────────────────────────────────────────────────────┐
-│ Global Tokens (Глобальные / Примитивы) │
-│ --faf-color-blue-500, --faf-spacing-4 │
+│ Global Tokens (Primitives)                                  │
+│ --faf-color-blue-500, --faf-spacing-4                       │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Global Tokens (Примитивы)
+### Global Tokens (Primitives)
 
-Сырые значения без привязки к контексту. Это "склад ингредиентов".
+Raw values without context. This is the "ingredient pantry".
 
 ```typescript
 // TypeScript
@@ -42,27 +43,27 @@ primitives.blue[500]; // "oklch(0.55 0.22 250)"
 --faf - color - blue - 500; /* oklch(0.55 0.22 250) */
 ```
 
-**Когда использовать:** Только когда семантический токен не покрывает ваш случай.
+**When to use:** Only when a semantic token doesn't cover your specific use case.
 
-### Semantic Tokens (Семантические)
+### Semantic Tokens
 
-Примитивы с ролями. Это "меню ресторана".
+Primitives with assigned roles. This is the "restaurant menu".
 
 ```typescript
 // TypeScript
-semanticSpacing.cardPadding; // "1.5rem" (ссылается на spacing[6])
-themes.light.primary; // "oklch(0.55 0.22 250)" (ссылается на blue-600)
+semanticSpacing.cardPadding; // "1.5rem" (references spacing[6])
+themes.light.primary; // "oklch(0.55 0.22 250)" (references blue-600)
 
 // CSS
 --faf - spacing - card - padding; /* 1.5rem */
 --faf - color - primary; /* oklch(0.55 0.22 250) */
 ```
 
-**Когда использовать:** Всегда при разработке компонентов. Это 95% случаев.
+**When to use:** Always when developing components. This covers 95% of use cases.
 
-### Component Tokens (Компонентные)
+### Component Tokens
 
-Специфичные для конкретного компонента. Ссылаются на семантику.
+Specific to a particular component. They reference semantic tokens.
 
 ```css
 .faf-button {
@@ -72,48 +73,43 @@ themes.light.primary; // "oklch(0.55 0.22 250)" (ссылается на blue-60
 }
 ```
 
-**Когда использовать:** Только внутри реализации компонента.
+**When to use:** Only within the implementation of a specific component.
 
 ---
 
 ## 2. Naming Conventions
 
-### Формат имён
+### Name Format
 
-- **Примитивы:** `--faf-{категория}-{имя}-{шаг}`
-
-  ```bash
+- **Primitives:** `--faf-{category}-{name}-{step}`
+  ```css
   --faf-color-blue-500
   --faf-spacing-4
   --faf-shadow-md
   ```
-
-- **Семантика:** `--faf-{категория}-{роль}`
-
-  ```bash
+- **Semantics:** `--faf-{category}-{role}`
+  ```css
   --faf-color-primary
   --faf-spacing-card-padding
   --faf-shadow-modal
   ```
-
-- **Компонентные:** `--faf-{компонент}-{свойство}`
-
-  ```bash
+- **Components:** `--faf-{component}-{property}`
+  ```css
   --faf-button-bg
   --faf-input-border
   ```
 
-### Префикс `--faf-`
+### The `--faf-` Prefix
 
-Все токены имеют префикс `--faf-`, чтобы:
+All tokens have the `--faf-` prefix to:
 
-1. Избежать конфликтов с другими библиотеками
-2. Быстро находить токены в DevTools
-3. Понимать, что значение управляется дизайн-системой
+1. Prevent conflicts with other libraries.
+2. Make tokens easy to find in DevTools.
+3. Clearly indicate that the value is managed by the design system.
 
-### camelCase в TypeScript ↔ kebab-case в CSS
+### camelCase in TypeScript ↔ kebab-case in CSS
 
-Трансформация происходит автоматически при генерации:
+Transformation happens automatically during generation:
 
 | TypeScript       | CSS                              |
 | :--------------- | :------------------------------- |
@@ -123,12 +119,12 @@ themes.light.primary; // "oklch(0.55 0.22 250)" (ссылается на blue-60
 
 ---
 
-## 3. Использование в коде
+## 3. Usage in Code
 
-### В CSS
+### In CSS
 
 ```css
-/* ✅ Правильно: через семантические токены */
+/* ✅ Correct: via semantic tokens */
 .card {
   background: var(--faf-color-surface);
   padding: var(--faf-spacing-card-padding);
@@ -136,7 +132,7 @@ themes.light.primary; // "oklch(0.55 0.22 250)" (ссылается на blue-60
   border: 1px solid var(--faf-color-border);
 }
 
-/* ❌ Неправильно: магические числа */
+/* ❌ Incorrect: magic numbers */
 .card {
   background: white;
   padding: 24px;
@@ -145,18 +141,18 @@ themes.light.primary; // "oklch(0.55 0.22 250)" (ссылается на blue-60
 }
 ```
 
-### В TypeScript / React
+### In TypeScript / React
 
 ```tsx
 import { themes, semanticSpacing } from "@faf/foundations";
 
-// ✅ Правильно: через токены
+// ✅ Correct: via tokens
 const cardStyle = {
   background: themes.light.surface,
   padding: semanticSpacing.cardPadding,
 };
 
-// ✅ Правильно: через CSS-переменные в style
+// ✅ Correct: via CSS variables in style
 const cardStyle2 = {
   background: "var(--faf-color-surface)",
   padding: "var(--faf-spacing-card-padding)",
@@ -165,38 +161,34 @@ const cardStyle2 = {
 
 ---
 
-## 4. Как добавить новый токен
+## 4. How to Add a New Token
 
-### Сценарий А: Новый цвет в палитру
+### Scenario A: A new color in the palette
 
-1. Добавьте значение в `src/tokens/colors/primitives.ts`:
-
+1. Add the value to `src/tokens/colors/primitives.ts`:
    ```typescript
    export const primitives = {
-     // ... существующие цвета
+     // ... existing colors
      pink: {
        500: "oklch(0.65 0.25 350)",
        // ...
      },
    };
    ```
-
-2. Перегенерируйте CSS:
-
+2. Regenerate CSS:
    ```bash
    pnpm run generate:tokens
    ```
+3. Done. `--faf-color-pink-500` will now appear in the CSS.
 
-3. Готово. В CSS появится `--faf-color-pink-500`.
+### Scenario B: A new semantic role
 
-### Сценарий Б: Новая семантическая роль
-
-1. Добавьте роль в `src/semantic/themes.ts` (в интерфейс `SemanticTheme` и в обе темы):
+1. Add the role to `src/semantic/themes.ts` (in the `SemanticTheme` interface and in both themes):
 
    ```typescript
    export interface SemanticTheme {
-     // ... существующие
-     highlight: string; // <-- новая роль
+     // ... existing
+     highlight: string; // <-- new role
    }
 
    export const themes = {
@@ -211,125 +203,118 @@ const cardStyle2 = {
    };
    ```
 
-2. TypeScript автоматически проверит, что вы не забыли добавить токен в одну из тем.
-
-3. Перегенерируйте CSS:
-
+2. TypeScript will automatically check that you didn't forget to add the token to one of the themes.
+3. Regenerate CSS:
    ```bash
    pnpm run generate:tokens
    ```
+4. `--faf-color-highlight` will now appear in the CSS.
 
-4. В CSS появится `--faf-color-highlight`.
+### Scenario C: A new semantic spacing
 
-### Сценарий В: Новый семантический отступ
-
-1. Добавьте роль в `src/tokens/spacing/semantic.ts`:
-
+1. Add the role to `src/tokens/spacing/semantic.ts`:
    ```typescript
    export const semanticSpacing = {
-     // ... существующие
+     // ... existing
      sidebarWidth: spacing[64],
    };
    ```
-
-2. Перегенерируйте CSS:
-
+2. Regenerate CSS:
    ```bash
    pnpm run generate:tokens
    ```
-
-3. В CSS появится `--faf-spacing-sidebar-width`.
+3. `--faf-spacing-sidebar-width` will now appear in the CSS.
 
 ---
 
 ## 5. Best Practices
 
-### ✅ Делайте
+### ✅ Do
 
-- **Всегда используйте семантические токены** в компонентах. Примитивы — только для edge-cases.
-- **Добавляйте новую роль в семантику**, если отступ/цвет используется в 2+ местах.
-- **Проверяйте контрастность** перед использованием цвета для текста (см. `colors-guide.md`).
-- **Используйте viewer** для визуальной проверки токенов: `viewer/index.html`.
+- **Always use semantic tokens** in components. Primitives are only for edge cases.
+- **Add a new role to semantics** if a spacing/color is used in 2+ places.
+- **Check contrast** before using a color for text (see `colors-guide.md`).
+- **Use the viewer** for visual verification of tokens: `viewer/index.html`.
 
-### ❌ Не делайте
+### ❌ Don't
 
-- **Не используйте магические числа** (`16px`, `#3b82f6`) в компонентах.
-- **Не дублируйте токены** в CSS. Если значение уже есть в семантике — используйте его.
-- **Не модифицируйте `tokens.generated.css` вручную**. Этот файл генерируется автоматически.
-- **Не создавайте компонентные токены без необходимости**. Начинайте с семантики.
+- **Don't use magic numbers** (`16px`, `#3b82f6`) in components.
+- **Don't duplicate tokens** in CSS. If a value already exists in semantics, use it.
+- **Don't manually modify `tokens.generated.css`**. This file is generated automatically.
+- **Don't create component tokens unnecessarily**. Start with semantics.
 
 ---
 
-## 6. Антипаттерны
+## 6. Anti-patterns
 
-### ❌ Антипаттерн 1: Прямое использование примитивов в компонентах
+### ❌ Anti-pattern 1: Direct use of primitives in components
 
 ```css
-/* Плохо: жёсткая привязка к примитиву */
+/* Bad: hard coupling to a primitive */
 .button {
   background: var(--faf-color-blue-600);
 }
 
-/* Хорошо: используем семантику */
+/* Good: using semantics */
 .button {
   background: var(--faf-color-primary);
 }
 ```
 
-**Почему плохо:** Если бренд изменит primary цвет с синего на фиолетовый, придётся искать все места с `blue-600`.
+**Why it's bad:** If the brand changes the primary color from blue to purple, you would have to hunt down every instance of `blue-600`.
 
-### ❌ Антипаттерн 2: Магические числа
+### ❌ Anti-pattern 2: Magic numbers
 
 ```css
-/* Плохо */
+/* Bad */
 .card {
   padding: 24px;
   border-radius: 8px;
 }
 
-/* Хорошо */
+/* Good */
 .card {
   padding: var(--faf-spacing-card-padding);
   border-radius: var(--faf-radius-md);
 }
 ```
 
-**Почему плохо:** Невозможно централизованно изменить дизайн.
+**Why it's bad:** Makes it impossible to centrally update the design.
 
-### ❌ Антипаттерн 3: Создание дублирующих токенов
+### ❌ Anti-pattern 3: Creating duplicate tokens
 
 ```css
-/* Плохо: дублирование */
+/* Bad: duplication */
 --faf-color-button-bg: var(--faf-color-primary);
 .button {
   background: var(--faf-color-button-bg);
 }
 
-/* Хорошо: используем существующую семантику */
+/* Good: using existing semantics */
 .button {
   background: var(--faf-color-primary);
 }
 ```
 
-**Почему плохо:** Создаёт лишнюю абстракцию без пользы.
+**Why it's bad:** Creates unnecessary abstraction without adding value.
 
 ---
 
-## 7. Инструменты
+## 7. Tools
 
 ### Viewer
 
-Интерактивный просмотр всех токенов:
+Interactive viewing of all tokens:
 
 ```bash
-# Откройте viewer/index.html в браузере
+# Open viewer/index.html in your browser
 ```
 
-Позволяет переключать темы (Light/Dark/System) и просматривать токены по категориям.
+Allows switching themes (Light/Dark/System) and browsing tokens by category.
 
-### Генератор CSS
+### CSS Generator
 
-Автоматически создаёт `tokens.generated.css` из TypeScript-токенов:
+Automatically creates `tokens.generated.css` from TypeScript tokens:
 
 ```bash
 pnpm run generate:tokens
@@ -337,28 +322,28 @@ pnpm run generate:tokens
 
 ### TypeScript
 
-Все токены имеют строгую типизацию. Автодополнение работает из коробки:
+All tokens are strictly typed. Autocompletion works out of the box:
 
 ```typescript
 import { semanticSpacing } from '@faf/foundations';
-semanticSpacing. // <-- IDE покажет все доступные роли
+semanticSpacing. // <-- IDE will show all available roles
 ```
 
 ---
 
-## 8. Связанные документы
+## 8. Related Documents
 
-- [`oklch-guide.md`](./oklch-guide.md) — почему мы используем OKLCH
-- [`colors-guide.md`](./colors-guide.md) — правила контрастности и использования цветов
+- [`oklch-guide.md`](./oklch-guide.md) — Why we use OKLCH
+- [`colors-guide.md`](./colors-guide.md) — Contrast rules and color usage
 
 ---
 
-## 9. Чек-лист перед использованием токена
+## 9. Pre-Usage Checklist
 
-- [ ] Я использую семантический токен, а не примитив (где это возможно)
-- [ ] Токен существует в дизайн-системе (проверил через viewer)
-- [ ] Если токена нет — я добавил его в семантику, а не использовал примитив
-- [ ] Цвет обеспечивает достаточный контраст (см. `colors-guide.md`)
-- [ ] Я не редактирую `tokens.generated.css` вручную
+- [ ] I am using a semantic token, not a primitive (where possible).
+- [ ] The token exists in the design system (verified via the viewer).
+- [ ] If the token doesn't exist, I added it to semantics rather than using a primitive.
+- [ ] The color provides sufficient contrast (see `colors-guide.md`).
+- [ ] I am not editing `tokens.generated.css` manually.
 
 ---
