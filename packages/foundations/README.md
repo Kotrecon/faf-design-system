@@ -1,74 +1,76 @@
 # @faf/foundations
 
-**Фундамент дизайн-системы Faf** — атомарные значения (токены), которые заменяют магические числа и создают единый язык для всех компонентов.
+> [RU](./README.ru.md) | [ENG](./README.md)
+
+**The Foundation of the Faf Design System** — atomic values (tokens) that replace magic numbers and create a unified language for all components.
 
 ---
 
-## 📁 Структура пакета
+## 📁 Package Structure
 
 ```bash
 packages/foundations/
 ├── src/
-│   ├── examples/                         # 🔥 Примеры использования
-│   │   ├── typography-components.css     # Примеры fluid typography в CSS
-│   │   └── typography-demo.html          # Интерактивное демо типографики
+│   ├── examples/                         # 🔥 Usage examples
+│   │   ├── typography-components.css     # Fluid typography CSS examples
+│   │   └── typography-demo.html          # Interactive typography demo
 │   ├── tokens/
 │   │   ├── colors/
-│   │   │   ├── index.ts                  # Экспорт всех цветовых токенов
-│   │   │   ├── primitives.ts             # Базовые цвета (oklch)
-│   │   │   ├── brand.ts                  # Брендовые цвета (firefly, ai, flow)
-│   │   │   ├── light.ts                  # Светлая тема (семантика)
-│   │   │   └── dark.ts                   # Тёмная тема (семантика)
+│   │   │   ├── index.ts                  # Export of all color tokens
+│   │   │   ├── primitives.ts             # Base colors (oklch)
+│   │   │   ├── brand.ts                  # Brand colors (firefly, ai, flow)
+│   │   │   ├── light.ts                  # Light theme (semantics)
+│   │   │   └── dark.ts                   # Dark theme (semantics)
 │   │   ├── typography/
-│   │   │   ├── index.ts                  # Экспорт типографики
-│   │   │   ├── scales.ts                 # Модульные шкалы (ratio 1.25)
+│   │   │   ├── index.ts                  # Export of typography tokens
+│   │   │   ├── scales.ts                 # Modular scales (ratio 1.25)
 │   │   │   ├── fluid.ts                  # Fluid typography (clamp)
-│   │   │   ├── font-families.ts          # Семейства шрифтов
-│   │   │   ├── font-weights.ts           # Начертания
-│   │   │   ├── line-heights.ts           # Межстрочные интервалы
-│   │   │   └── semantic.ts               # Семантическая типографика
+│   │   │   ├── font-families.ts          # Font families
+│   │   │   ├── font-weights.ts           # Font weights
+│   │   │   ├── line-heights.ts           # Line heights
+│   │   │   └── semantic.ts               # Semantic typography
 │   │   ├── spacing/
-│   │   │   ├── index.ts                  # Примитивные отступы (4px base)
-│   │   │   └── semantic.ts               # Семантические отступы
+│   │   │   ├── index.ts                  # Primitive spacing (4px base)
+│   │   │   └── semantic.ts               # Semantic spacing
 │   │   └── shadows/
-│   │       ├── index.ts                  # Примитивные тени
-│   │       └── semantic.ts               # Семантические тени
+│   │       ├── index.ts                  # Primitive shadows
+│   │       └── semantic.ts               # Semantic shadows
 │   ├── semantic/
-│   │   ├── index.ts                      # Главная точка входа семантики
-│   │   └── themes.ts                     # Контракт тем (light/dark)
+│   │   ├── index.ts                      # Main semantic entry point
+│   │   └── themes.ts                     # Theme contract (light/dark)
 │   ├── styles/
-│   │   ├── index.css                     # Точка входа CSS
-│   │   └── tokens.generated.css          # ⚠️ Автогенерируемый файл
+│   │   ├── index.css                     # CSS entry point
+│   │   └── tokens.generated.css          # ⚠️ Auto-generated file
 │   ├── types/
-│   │   └── tokens.d.ts                   # TypeScript-типы для CSS-переменных
-│   └── index.ts                          # Главная точка входа пакета (импортирует CSS)
-├── tests/                                # 🔥 Тесты (Vitest)
-│   ├── tokens.test.ts                    # Unit-тесты конкретных значений
-│   └── token-contract.test.ts            # Контрактные тесты целостности системы
-├── viewer/                               # 🔥 Интерактивный viewer
-│   ├── index.html                        # Точка входа viewer
-│   ├── styles.css                        # Стили viewer
-│   └── tokens-viewer.js                  # Логика переключения категорий и тем
-├── docs/                                 # 🔥 Документация
-│   ├── oklch-guide.md                    # Почему мы используем oklch
-│   ├── colors-guide.md                   # Рекомендации по контрастности (WCAG)
-│   └── tokens-guide.md                   # Руководство по использованию токенов
-├── dist/                                 # Сборка (генерируется командой build)
+│   │   └── tokens.d.ts                   # TypeScript types for CSS variables
+│   └── index.ts                          # Main package entry point (imports CSS)
+├── tests/                                # 🔥 Tests (Vitest)
+│   ├── tokens.test.ts                    # Unit tests for specific values
+│   └── token-contract.test.ts            # Contract tests for system integrity
+├── viewer/                               # 🔥 Interactive viewer
+│   ├── index.html                        # Viewer entry point
+│   ├── styles.css                        # Viewer styles
+│   └── tokens-viewer.js                  # Logic for category and theme switching
+├── docs/                                 # 🔥 Documentation
+│   ├── oklch-guide.md                    # Why we use oklch
+│   ├── colors-guide.md                   # Contrast recommendations (WCAG)
+│   └── tokens-guide.md                   # Guide to using tokens
+├── dist/                                 # Build output (generated by `build` command)
 │   ├── index.cjs
 │   ├── index.d.ts
 │   ├── index.js
 │   └── tokens.css
 ├── package.json
-├── tsconfig.json                         # TypeScript-конфигурация
-├── vite.config.ts                        # Vite-конфигурация
+├── tsconfig.json                         # TypeScript configuration
+├── vite.config.ts                        # Vite configuration
 └── README.md
 ```
 
 ---
 
-## 🏗️ Архитектурные диаграммы
+## 🏗️ Architectural Diagrams
 
-### 1. Иерархия дизайн-токенов
+### 1. Design Token Hierarchy
 
 ```mermaid
 flowchart TD
@@ -97,7 +99,7 @@ flowchart TD
     TEXT --> INPUT
 ```
 
-### 2. Структура Faf-Foundations
+### 2. Faf-Foundations Structure
 
 ```mermaid
 flowchart LR
@@ -106,11 +108,11 @@ flowchart LR
         TYPO[faf.typography.css<br/>fluid typography]
         SPACE[faf.spacing.css<br/>4px base]
         SHADOWS[faf.shadows.css<br/>elevation]
-        SEMANTIC[faf.semantic.css<br/>связи]
+        SEMANTIC[faf.semantic.css<br/>mappings]
     end
 
     subgraph "Index 🔥"
-        INDEX[index.css<br/>фиксированный порядок]
+        INDEX[index.css<br/>fixed order]
     end
 
     COLORS --> SEMANTIC
@@ -121,7 +123,7 @@ flowchart LR
     SEMANTIC --> INDEX
 ```
 
-### 3. Цветовая система Faf.Colors
+### 3. Faf.Colors System
 
 ```mermaid
 flowchart TD
@@ -158,41 +160,41 @@ flowchart TD
 
 ---
 
-## 📦 Установка
+## 📦 Installation
 
 ```bash
-# Из корня монорепозитория (для локальной разработки)
+# From the monorepo root (for local development)
 pnpm install
 
-# Или при использовании как внешней зависимости
+# Or when used as an external dependency
 pnpm add @faf/foundations
 ```
 
 ---
 
-## 🚀 Быстрый старт
+## 🚀 Quick Start
 
-### Использование в TypeScript/JavaScript
+### Usage in TypeScript/JavaScript
 
 ```typescript
 import { themes, semanticSpacing, semanticShadows } from "@faf/foundations";
 
-// Цвета из светлой темы
+// Colors from the light theme
 const primaryColor = themes.light.primary; // oklch(0.55 0.22 250)
 const textColor = themes.light.text; // oklch(0.20 0.03 250)
 
-// Семантические отступы
+// Semantic spacing
 const buttonPadding = semanticSpacing.buttonPaddingX; // 1rem (16px)
 const cardPadding = semanticSpacing.cardPadding; // 1.5rem (24px)
 
-// Семантические тени
+// Semantic shadows
 const cardShadow = semanticShadows.card; // 0 4px 6px rgba(0,0,0,0.1)
 ```
 
-### Использование в CSS
+### Usage in CSS
 
 ```css
-/* Подключаем токены через экспорт пакета */
+/* Import tokens via package export */
 @import "@faf/foundations/styles";
 
 .my-button {
@@ -213,77 +215,77 @@ const cardShadow = semanticShadows.card; // 0 4px 6px rgba(0,0,0,0.1)
 
 ---
 
-## 🏗️ Архитектура: Примитивы vs Семантика
+## 🏗️ Architecture: Primitives vs Semantics
 
-### Примитивы (Primitives)
+### Primitives
 
-**Полный набор "сырых" значений.** Это склад ингредиентов.
+**The complete set of "raw" values.** This is the ingredient pantry.
 
 ```typescript
-// Пример: все шаги шкалы отступов
+// Example: all steps of the spacing scale
 spacing[0]; // 0px
 spacing[1]; // 0.25rem (4px)
 spacing[2]; // 0.5rem (8px)
-// ... до spacing[16]
+// ... up to spacing[16]
 ```
 
-**Кто использует:** Любой разработчик, которому нужен специфичный, нестандартный отступ.
+**Who uses it:** Any developer who needs a specific, non-standard spacing value.
 
-### Семантика (Semantic Tokens)
+### Semantic Tokens
 
-**Подмножество примитивов с ролями.** Это меню ресторана.
+**A subset of primitives with assigned roles.** This is the restaurant menu.
 
 ```typescript
-// Пример: только осмысленные роли
+// Example: only meaningful roles
 semanticSpacing.buttonPaddingX; // 1rem
 semanticSpacing.cardPadding; // 1.5rem
 semanticSpacing.modalPadding; // 2rem
 ```
 
-**Кто использует:** Компоненты дизайн-системы (кнопки, карточки, модалки).
+**Who uses it:** Design system components (buttons, cards, modals).
 
-### Почему семантика НЕ содержит всё?
+### Why doesn't semantics contain everything?
 
-1. **Защита от раздувания:** Семантика содержит только осмысленные комбинации.
-2. **Гибкость для edge-cases:** Если нужен нестандартный отступ, берите напрямую из примитивов.
-3. **Управление изменениями:** Изменили `cardPadding` в одном месте → все карточки обновились.
+1. **Protection against bloat:** Semantics only contains meaningful combinations.
+2. **Flexibility for edge cases:** If a non-standard spacing is needed, grab it directly from primitives.
+3. **Change management:** Change `cardPadding` in one place → all cards update automatically.
 
 ---
 
-## 🎨 Цветовая система
+## 🎨 Color System
 
-### Темы (Light/Dark)
+### Themes (Light/Dark)
 
 ```typescript
 import { themes } from "@faf/foundations";
 
-// Светлая тема (по умолчанию)
+// Light theme (default)
 themes.light.primary; // oklch(0.55 0.22 250)
 themes.light.background; // oklch(0.98 0.005 250)
 themes.light.text; // oklch(0.20 0.03 250)
 
-// Тёмная тема
+// Dark theme
 themes.dark.primary; // oklch(0.70 0.15 250)
 themes.dark.background; // oklch(0.20 0.03 250)
 themes.dark.text; // oklch(0.98 0.005 250)
 ```
 
-### Переключение темы
+### Theme Switching
 
 ```html
-<!-- Светлая тема (по умолчанию) -->
+<!-- Light theme (default) -->
 <html data-theme="light">
-  <!-- Тёмная тема -->
+  <!-- Dark theme -->
   <html data-theme="dark">
-    <!-- Системная тема (автоматически из ОС) -->
+    <!-- System theme (automatically from OS) -->
     <html>
-      <!-- без атрибута data-theme -->
+      <!-- without data-theme attribute -->
     </html>
   </html>
 </html>
 ```
 
-### Брендовые цвета
+### Brand Colors
 
 ```typescript
 import { themes } from "@faf/foundations";
@@ -295,7 +297,7 @@ themes.light.brandFlow; // oklch(0.60 0.20 200)
 
 ---
 
-## 🔤 Типографика
+## 🔤 Typography
 
 ### Modular Scale (ratio: 1.25 — major third)
 
@@ -311,17 +313,17 @@ typographyScale[3]; // 1.953rem (31.25px) — 2xl
 typographyScale[4]; // 2.441rem (39.06px) — 3xl
 ```
 
-### Что такое modular scale?
+### What is a modular scale?
 
-Это последовательность чисел, где каждое следующее получается умножением предыдущего на постоянный коэффициент (ratio). В нашем случае ratio = 1.25 (major third — классическая музыкальная терция).
+It is a sequence of numbers where each subsequent number is obtained by multiplying the previous one by a constant coefficient (ratio). In our case, ratio = 1.25 (major third — a classic musical interval).
 
-**Зачем это нужно:**
+**Why is this needed:**
 
-- Размеры шрифтов становятся гармоничными и согласованными.
-- Легко масштабировать (умножаешь базу на ratio).
-- Используется в Material Design, Tailwind, Bootstrap.
+- Font sizes become harmonious and consistent.
+- Easy to scale (multiply the base by the ratio).
+- Used in Material Design, Tailwind, and Bootstrap.
 
-### Fluid Typography (адаптивные размеры)
+### Fluid Typography (adaptive sizing)
 
 ```typescript
 import { fluidSizes } from "@faf/foundations";
@@ -333,9 +335,9 @@ fluidSizes.lg; // clamp(1.125rem, 1rem + 0.42vw, 1.25rem)
 
 ---
 
-## 📏 Отступы
+## 📏 Spacing
 
-### Базовая шкала (4px base)
+### Base Scale (4px base)
 
 ```typescript
 import { spacing } from "@faf/foundations";
@@ -353,7 +355,7 @@ spacing[12]; // 3rem (48px)
 spacing[16]; // 4rem (64px)
 ```
 
-### Семантические отступы
+### Semantic Spacing
 
 ```typescript
 import { semanticSpacing } from "@faf/foundations";
@@ -367,9 +369,9 @@ semanticSpacing.sectionGap; // 3rem (48px)
 
 ---
 
-## 🌑 Тени (Elevation System)
+## 🌑 Shadows (Elevation System)
 
-### Базовые уровни
+### Base Levels
 
 ```typescript
 import { shadows } from "@faf/foundations";
@@ -381,7 +383,7 @@ shadows.lg; // 0 10px 15px rgba(0,0,0,0.1)
 shadows.xl; // 0 20px 25px rgba(0,0,0,0.1)
 ```
 
-### Семантические тени
+### Semantic Shadows
 
 ```typescript
 import { semanticShadows } from "@faf/foundations";
@@ -393,63 +395,68 @@ semanticShadows.modal; // shadows.xl
 semanticShadows.tooltip; // shadows.md
 ```
 
-### 🌳 Алгоритм выбора уровня тени (Elevation Decision Tree)
+### 🌳 Elevation Decision Tree
 
 ```mermaid
 flowchart TD
-    Start([🎯 Начинаем выбор]) --> Q1{Элемент статичен<br/>и всегда виден?}
+    Start([🎯 Start selection]) --> Q1{Is the element static<br/>and always visible?}
 
-    Q1 -->|Да| Q2{Это просто фон<br/>или базовый контент?}
-    Q2 -->|Да| L0[✅ Уровень 0<br/>shadow-none<br/>Пример: страница, текст, поля ввода]
-    Q2 -->|Нет| Q3{Это карточка, панель<br/>или группировка контента?}
-    Q3 -->|Да| L1[✅ Уровень 1<br/>shadow-sm<br/>Пример: карточки, сайдбары, списки]
+    Q1 -->|Yes| Q2{Is it just a background<br/>or base content?}
+    Q2 -->|Yes| L0[✅ Level 0<br/>shadow-none<br/>Example: page, text, inputs]
+    Q2 -->|No| Q3{Is it a card, panel,<br/>or content grouping?}
+    Q3 -->|Yes| L1[✅ Level 1<br/>shadow-sm<br/>Example: cards, sidebars, lists]
 
-    Q1 -->|Нет, элемент всплывает| Q4{Появляется над контентом<br/>при взаимодействии?}
+    Q1 -->|No, element floats| Q4{Does it appear over content<br/>during interaction?}
 
-    Q4 -->|Да| Q5{Блокирует ли<br/>взаимодействие с фоном?}
+    Q4 -->|Yes| Q5{Does it block<br/>interaction with the background?}
 
-    Q5 -->|Нет| L2[✅ Уровень 2<br/>shadow-md<br/>Пример: дропдауны, меню, поповеры]
+    Q5 -->|No| L2[✅ Level 2<br/>shadow-md<br/>Example: dropdowns, menus, popovers]
 
-    Q5 -->|Да| Q6{Является ли<br/>временным уведомлением?}
+    Q5 -->|Yes| Q6{Is it a<br/>temporary notification?}
 
-    Q6 -->|Нет| L3[✅ Уровень 3<br/>shadow-lg<br/>Пример: модалки, диалоги, шторки]
+    Q6 -->|No| L3[✅ Level 3<br/>shadow-lg<br/>Example: modals, dialogs, drawers]
 
-    Q6 -->|Да| L4[✅ Уровень 4<br/>shadow-xl<br/>Пример: тосты, уведомления, спиннеры]
+    Q6 -->|Yes| L4[✅ Level 4<br/>shadow-xl<br/>Example: toasts, notifications, spinners]
 
-
+    %% Styling
+    style L0 fill:#e2e8f0,stroke:#475569,stroke-width:2px
+    style L1 fill:#bfdbfe,stroke:#2563eb,stroke-width:2px
+    style L2 fill:#a7f3d0,stroke:#059669,stroke-width:2px
+    style L3 fill:#fde68a,stroke:#d97706,stroke-width:2px
+    style L4 fill:#fca5a5,stroke:#dc2626,stroke-width:2px
 ```
 
-### 📋 Дополнительные правила
+### 📋 Additional Rules
 
-| Уровень | Токен  | Когда использовать                       | Чего избегать                                         |
-| ------- | ------ | ---------------------------------------- | ----------------------------------------------------- |
-| **0**   | `none` | Фон, поверхности, текст, инпуты, таблицы | Не используйте для интерактивных элементов            |
-| **1**   | `sm`   | Карточки, панели, сайдбары, списки       | Не используйте для всплывающих элементов              |
-| **2**   | `md`   | Дропдауны, меню, поповеры, селекты       | Не используйте для элементов, которые блокируют экран |
-| **3**   | `lg`   | Модалки, диалоги, шторки (drawer)        | Не используйте для временных уведомлений              |
-| **4**   | `xl`   | Тосты, нотификации, глобальные спиннеры  | Не используйте для статичных элементов                |
+| Level | Token  | When to use                                 | What to avoid                                 |
+| ----- | ------ | ------------------------------------------- | --------------------------------------------- |
+| **0** | `none` | Backgrounds, surfaces, text, inputs, tables | Do not use for interactive elements           |
+| **1** | `sm`   | Cards, panels, sidebars, lists              | Do not use for floating elements              |
+| **2** | `md`   | Dropdowns, menus, popovers, selects         | Do not use for elements that block the screen |
+| **3** | `lg`   | Modals, dialogs, drawers                    | Do not use for temporary notifications        |
+| **4** | `xl`   | Toasts, notifications, global spinners      | Do not use for static elements                |
 
 ---
 
-## ⚙️ Генерация CSS
+## ⚙️ CSS Generation
 
-### Автоматическая генерация
+### Automatic Generation
 
 ```bash
-# Из корня монорепозитория
+# From the monorepo root
 pnpm run generate:tokens
 
-# Или из конкретного пакета
+# Or from a specific package
 cd packages/foundations
 pnpm run generate:tokens
 ```
 
-_Это создаст/обновит файл `src/styles/tokens.generated.css` на основе TypeScript-токенов._
+_This will create/update the `src/styles/tokens.generated.css` file based on TypeScript tokens._
 
-### Генерация для всех пакетов
+### Generation for All Packages
 
 ```bash
-# Из корня монорепозитория
+# From the monorepo root
 pnpm run generate:all
 ```
 
@@ -457,21 +464,21 @@ pnpm run generate:all
 
 ## ❓ FAQ
 
-### 1. Почему мы используем rem, а не px?
+### 1. Why do we use `rem` instead of `px`?
 
-`rem` зависит от размера шрифта корневого элемента (`html`). Это делает отступы масштабируемыми, если пользователь меняет размер шрифта в настройках браузера. В дизайн-системах это стандарт доступности (a11y).
+`rem` depends on the root element's (`html`) font size. This makes spacing scalable if the user changes their browser's default font size. In design systems, this is an accessibility (a11y) standard.
 
-### 2. Почему ключи отступов — числа, а не строки типа 'sm'?
+### 2. Why are spacing keys numbers, not strings like 'sm'?
 
-Числовая шкала более гибкая и соответствует концепции «база × множитель» (4px, 8px, 12px...). Это общепринятый паттерн в современных дизайн-системах (Material Design, Tailwind).
+A numeric scale is more flexible and aligns with the "base × multiplier" concept (4px, 8px, 12px...). This is a widely accepted pattern in modern design systems (Material Design, Tailwind).
 
-### 3. Что значит `as const` в коде токенов?
+### 3. What does `as const` mean in token code?
 
-Это TypeScript-конструкция, которая говорит компилятору: «этот объект никогда не изменится, и все его значения — строгие литералы». Это даёт нам идеальное автодополнение и защиту от опечаток в названиях токенов.
+It is a TypeScript construct that tells the compiler: "this object will never change, and all its values are strict literals." This gives us perfect autocompletion and protects against typos in token names.
 
 ---
 
-## 📝 Лицензия
+## 📝 License
 
 MIT © Faf Design System
 
