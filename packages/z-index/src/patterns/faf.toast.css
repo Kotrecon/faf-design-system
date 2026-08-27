@@ -1,0 +1,110 @@
+/* packages/z-index/src/patterns/faf.toast.css */
+
+/* Контейнер для всех тостов (fixed в правом верхнем углу) */
+.faf-toast-container {
+  position: fixed;
+  top: var(--faf-spacing-4, 1rem);
+  right: var(--faf-spacing-4, 1rem);
+  z-index: var(--faf-z-toast); /* 🔥 Самый высокий слой — 1080 */
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--faf-spacing-2, 0.5rem);
+
+  max-width: 400px;
+  pointer-events: none; /* Контейнер не перехватывает клики */
+}
+
+/* Отдельный тост */
+.faf-toast {
+  display: flex;
+  align-items: center;
+  gap: var(--faf-spacing-3, 0.75rem);
+
+  padding: var(--faf-spacing-3, 0.75rem) var(--faf-spacing-4, 1rem);
+
+  border-radius: var(--faf-radius-md, 6px);
+  box-shadow: var(--faf-shadow-lg, 0 10px 15px rgba(0, 0, 0, 0.1));
+
+  font-size: var(--faf-font-size-fluid-sm, 0.875rem);
+  font-weight: var(--faf-font-weight-medium, 500);
+  line-height: var(--faf-line-height-normal, 1.5);
+
+  pointer-events: auto; /* Сам тост кликабельный */
+
+  /* Анимация появления */
+  animation: faf-toast-slide-in 0.3s ease-out;
+
+  /* Анимация исчезновения */
+  opacity: 1;
+  transition:
+    opacity 0.3s ease-out,
+    transform 0.3s ease-out;
+}
+
+.faf-toast.hiding {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+/* Типы тостов */
+.faf-toast--success {
+  background-color: var(--faf-color-green-600, #16a34a);
+  color: var(--faf-color-white, #ffffff);
+}
+
+.faf-toast--error {
+  background-color: var(--faf-color-red-600, #dc2626);
+  color: var(--faf-color-white, #ffffff);
+}
+
+.faf-toast--warning {
+  background-color: var(--faf-color-yellow-500, #eab308);
+  color: var(--faf-color-gray-900, #111827); /* Тёмный текст на жёлтом */
+}
+
+.faf-toast--info {
+  background-color: var(--faf-color-blue-600, #2563eb);
+  color: var(--faf-color-white, #ffffff);
+}
+
+/* Иконка тоста */
+.faf-toast-icon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Текст тоста */
+.faf-toast-message {
+  flex: 1;
+}
+
+/* Кнопка закрытия */
+.faf-toast-close {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  color: inherit;
+  opacity: 0.7;
+  cursor: pointer;
+  padding: var(--faf-spacing-1, 0.25rem);
+  border-radius: var(--faf-radius-sm, 4px);
+  transition: opacity 0.2s;
+}
+
+.faf-toast-close:hover {
+  opacity: 1;
+}
+
+/* Анимация появления */
+@keyframes faf-toast-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

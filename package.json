@@ -6,11 +6,17 @@
     "generate:tokens": "tsx scripts/generate-tokens.mjs",
     "generate:all": "pnpm -r generate:tokens",
     "build": "pnpm -r build",
-    "test": "pnpm -r test",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:ui": "playwright test --ui",
+    "test:all": "pnpm run test && pnpm run test:e2e",
     "lint": "pnpm -r lint",
     "clean": "pnpm -r exec rm -rf node_modules dist && rm -rf node_modules"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "jsdom": "^30.0.1",
     "tsx": "^4.23.12",
     "typescript": "^7.0.2"
   }

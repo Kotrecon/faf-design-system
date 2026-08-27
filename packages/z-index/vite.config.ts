@@ -1,18 +1,22 @@
-// packages/foundations/vite.config.ts
 import { defineConfig } from "vite";
 import { resolve } from "path";
-import { copyFileSync, existsSync } from "fs";
+import { copyFileSync, mkdirSync, existsSync } from "fs";
 
 export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
-      name: "FafFoundations",
+      name: "FafZIndex",
       formats: ["es", "cjs"],
       fileName: (format) => `index.${format === "es" ? "js" : "cjs"}`,
     },
     rollupOptions: {
-      // У foundations нет внешних зависимостей, он самодостаточен
+      external: ["@faf/foundations"],
+      output: {
+        globals: {
+          "@faf/foundations": "FafFoundations",
+        },
+      },
     },
   },
   plugins: [
@@ -24,7 +28,7 @@ export default defineConfig({
 
         if (existsSync(src)) {
           copyFileSync(src, dest);
-          console.log("✅ Foundations CSS скопирован в dist/tokens.css");
+          console.log("✅ CSS скопирован в dist/tokens.css");
         } else {
           console.warn(
             "⚠️ src/styles/tokens.generated.css не найден. Запустите generate:tokens",

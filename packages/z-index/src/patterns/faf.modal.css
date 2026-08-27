@@ -1,0 +1,98 @@
+/* packages/z-index/src/patterns/faf.modal.css */
+
+/* Backdrop (затемнение) */
+.faf-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Fallback */
+  background-color: oklch(0.2 0.03 250 / 0.5); /* OKLCH с прозрачностью */
+
+  /* 🔥 Токен z-index из Faf-ZIndex */
+  z-index: var(--faf-z-modal-backdrop);
+
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease;
+}
+
+/* Само модальное окно */
+.faf-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+
+  /* 🔥 Токен z-index из Faf-ZIndex (выше, чем backdrop) */
+  z-index: var(--faf-z-modal);
+
+  /* 🔥 Токены из Faf-Foundations */
+  background-color: var(--faf-color-surface, white);
+  color: var(--faf-color-text, #111);
+  border-radius: var(--faf-radius-lg, 8px);
+  box-shadow: var(--faf-shadow-modal, 0 20px 25px rgba(0, 0, 0, 0.1));
+  padding: var(--faf-spacing-modal-padding, 2rem);
+
+  max-width: 500px;
+  width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s ease;
+}
+
+/* Состояние: открыто */
+.faf-modal-container[open] .faf-modal-backdrop,
+.faf-modal-container[open] .faf-modal {
+  opacity: 1;
+  visibility: visible;
+}
+
+.faf-modal-container[open] .faf-modal {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Внутренняя структура модалки */
+.faf-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--faf-spacing-4, 1rem);
+}
+
+.faf-modal-title {
+  font-size: var(--faf-font-size-fluid-xl, 1.25rem);
+  font-weight: var(--faf-font-weight-semibold, 600);
+  margin: 0;
+}
+
+.faf-modal-close {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--faf-color-text-muted, #666);
+  padding: var(--faf-spacing-1, 0.25rem);
+  border-radius: var(--faf-radius-sm, 4px);
+  transition: background-color 0.2s;
+}
+
+.faf-modal-close:hover {
+  background-color: var(--faf-color-gray-100, #f3f4f6);
+  color: var(--faf-color-text, #111);
+}
+
+.faf-modal-body {
+  font-size: var(--faf-font-size-fluid-base, 1rem);
+  line-height: var(--faf-line-height-normal, 1.5);
+}

@@ -1,7 +1,7 @@
 {
-  "name": "@faf/foundations",
+  "name": "@faf/z-index",
   "version": "0.0.1",
-  "description": "Faf Design System — Foundations (colors, typography, spacing, shadows)",
+  "description": "Faf Design System — Z-index tokens, stacking context patterns, and accessibility integration",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,24 +14,31 @@
       "style": "./dist/tokens.css"
     },
     "./styles": {
-      "style": "./dist/tokens.css",
-      "import": "./dist/tokens.css",
-      "default": "./dist/tokens.css"
+      "style": "./dist/tokens.css"
     }
   },
   "files": [
     "dist/**/*"
   ],
   "scripts": {
-    "generate:tokens": "tsx ../../scripts/generate-tokens.mjs foundations",
+    "generate:tokens": "tsx ../../scripts/generate-zindex-tokens.mjs",
     "build": "vite build && tsc --emitDeclarationOnly",
     "dev": "vite",
+    "dev:viewer": "vite --config vite.viewer.config.ts",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:e2e": "playwright test",
+    "test:all": "pnpm run test && pnpm run test:e2e",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:ui": "playwright test --ui"
+  },
+  "dependencies": {
+    "@faf/foundations": "workspace:*"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@types/node": "^26.2.0",
+    "tsx": "^4.7.0",
     "typescript": "^5.4.5",
     "vite": "^5.2.11",
     "vitest": "^1.6.0"
@@ -39,9 +46,9 @@
   "keywords": [
     "design-system",
     "faf",
-    "foundations",
-    "tokens",
-    "css-variables"
+    "z-index",
+    "stacking-context",
+    "web-components"
   ],
   "license": "MIT"
 }
