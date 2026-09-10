@@ -1,57 +1,56 @@
-// packages/z-index/src/tokens/zindex.ts
-
 /**
- * Z-Index Tokens — именованные значения z-index для дизайн-системы Faf.
+ * @module Z-Index Tokens
+ * @description Named z-index values for the Faf Design System.
+ *              These tokens replace magic numbers and create a unified Layer Contract.
+ *              Именованные значения z-index для дизайн-системы Faf.
+ *              Эти токены заменяют магические числа и создают единый контракт слоёв.
  *
- * Эти токены заменяют магические числа и создают единый контракт слоёв (Layer Contract)
- * между всеми компонентами дизайн-системы.
- *
- * Почему такие значения?
- * - Базовый слой (0) — контент страницы.
- * - Диапазон 1000-1030 — элементы, встроенные в поток (dropdown, sticky, fixed).
- * - Диапазон 1040-1080 — всплывающие элементы (модалки, поповеры, тултипы, тосты).
- * - Шаг 10 между группами оставляет пространство для будущих подуровней.
- *
- * Порядок наложения (от низкого к высокому):
- * base < dropdown < sticky < fixed < modal-backdrop < modal < popover < tooltip < toast
+ * @architecture Layer Hierarchy (low to high):
+ *               base (0) < dropdown (1000) < sticky (1020) < fixed (1030)
+ *               < modal-backdrop (1040) < modal (1050) < popover (1060)
+ *               < tooltip (1070) < toast (1080).
+ *               Шаг 10-20 между группами оставляет пространство для будущих подуровней.
  */
 
 export const zIndexTokens = {
-  /** Базовый слой — контент страницы */
+  /** Base layer — page content / Базовый слой — контент страницы */
   base: 0,
 
-  /** Дропдауны: меню, селекторы, autocomplete */
+  /** Dropdowns: menus, selects, autocomplete / Дропдауны: меню, селекторы, autocomplete */
   dropdown: 1000,
 
-  /** Sticky-элементы: закреплённые заголовки таблиц, сайдбары */
+  /** Sticky elements: fixed table headers, sidebars / Sticky-элементы: закреплённые заголовки таблиц, сайдбары */
   sticky: 1020,
 
-  /** Fixed-элементы: навбары, нижние панели */
+  /** Fixed elements: navbars, bottom panels / Fixed-элементы: навбары, нижние панели */
   fixed: 1030,
 
-  /** Backdrop (затемнение) модального окна */
+  /** Modal backdrop (dimming) / Backdrop (затемнение) модального окна */
   modalBackdrop: 1040,
 
-  /** Модальное окно (поверх backdrop) */
+  /** Modal window (above backdrop) / Модальное окно (поверх backdrop) */
   modal: 1050,
 
-  /** Popover: всплывающие панели, поповеры */
+  /** Popovers: floating action panels / Popover: всплывающие панели, поповеры */
   popover: 1060,
 
-  /** Tooltip: всплывающие подсказки (должны быть выше модалок) */
+  /** Tooltips: hover/focus hints (must be above modals) / Tooltip: всплывающие подсказки (должны быть выше модалок) */
   tooltip: 1070,
 
-  /** Toast: уведомления (поверх всех элементов интерфейса) */
+  /** Toasts: notifications (above all UI elements) / Toast: уведомления (поверх всех элементов интерфейса) */
   toast: 1080,
 } as const;
 
 /**
+ * Type of all available z-index tokens.
+ * Used for strict typing in components.
  * Тип всех доступных z-index токенов.
  * Используется для строгой типизации в компонентах.
  */
 export type ZIndexToken = keyof typeof zIndexTokens;
 
 /**
+ * Type of a z-index token value.
  * Тип значения z-index токена.
  */
 export type ZIndexValue = (typeof zIndexTokens)[ZIndexToken];

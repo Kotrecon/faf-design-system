@@ -53,35 +53,23 @@ flowchart TD
     subgraph "Global Notifications (Topmost)"
         TOAST["Toast: 1080"]
     end
-
     subgraph "Contextual Overlays"
         TOOLTIP["Tooltip: 1070"]
         POPOVER["Popover: 1060"]
     end
-
     subgraph "Blocking Interfaces"
         MODAL["Modal: 1050"]
         BACKDROP["Modal Backdrop: 1040"]
     end
-
     subgraph "Embedded Flow Elements"
         FIXED["Fixed (Navbar): 1030"]
         STICKY["Sticky (Header): 1020"]
         DROPDOWN["Dropdown: 1000"]
     end
-
     subgraph "Base Content"
         BASE["Base: 0"]
     end
-
-    BASE --> DROPDOWN
-    DROPDOWN --> STICKY
-    STICKY --> FIXED
-    FIXED --> BACKDROP
-    BACKDROP --> MODAL
-    MODAL --> POPOVER
-    POPOVER --> TOOLTIP
-    TOOLTIP --> TOAST
+    BASE --> DROPDOWN --> STICKY --> FIXED --> BACKDROP --> MODAL --> POPOVER --> TOOLTIP --> TOAST
 ```
 
 ### 2. Ecosystem Integration
@@ -93,93 +81,60 @@ flowchart TD
         MODAL[Modal]
         TOAST[Toast]
     end
-
     subgraph "Faf-Focus 🔥"
-        FOCUS[Focus Management]
         TRAP[Focus Trap]
         RESTORE[Focus Restore]
     end
-
     subgraph "Faf-Contrast 🔥"
         CONTRAST[Contrast Check]
         WCAG[WCAG AA]
     end
-
     MODAL -->|uses| TRAP
     MODAL -->|uses| RESTORE
     TOAST -->|validates| CONTRAST
     CONTRAST -->|requires| WCAG
-
     ZINDEX --> MODAL
     ZINDEX --> TOAST
 ```
 
-### 3. Layer System: Interaction Scenario (Sequence)
+---
 
-```mermaid
-sequenceDiagram
-    participant User as User
-    participant Page as Page (z: 0)
-    participant Dropdown as Dropdown (z: 1000)
-    participant Modal as Modal (z: 1050)
-    participant Tooltip as Tooltip (z: 1070)
-    participant Toast as Toast (z: 1080)
+## 📖 Pattern Implementation Guide
 
-    User->>Page: Interacts with content
-    User->>Dropdown: Opens menu
-    Dropdown-->>User: Shows options
-    User->>Modal: Clicks "Confirm"
-    Modal-->>Page: Dims background (Backdrop z: 1040)
-    Modal-->>User: Shows dialog (z: 1050)
-    User->>Tooltip: Hovers over icon in modal
-    Tooltip-->>User: Shows hint ABOVE modal (z: 1070)
-    User->>Modal: Clicks "Save"
-    Modal-->>User: Closes
-    Toast-->>User: Shows notification ABOVE everything (z: 1080)
-```
+**Why are patterns in the z-index package?**
+Patterns (`FafModal`, `FafToast`, `FafDropdown`, `FafTooltip`) are here not as a replacement for a UI library, but as **reference implementations**. They prove that the token system works in the real DOM and demonstrate the correct way to apply the Layer Contract.
 
-### 4. Layer System: Visual Stack (Flowchart)
+**Styling Contract:**
 
-```mermaid
-flowchart TD
-    subgraph "🌍 Global Page (z: 0)"
-        Content[Main page content]
-    end
-
-    subgraph "📌 Embedded Layer (z: 1000)"
-        Dropdown[FafDropdown<br/>--faf-z-dropdown: 1000]
-    end
-
-    subgraph "🚪 Blocking Layer (z: 1040-1050)"
-        Backdrop[FafModal Backdrop<br/>--faf-z-modal-backdrop: 1040]
-        Modal[FafModal<br/>--faf-z-modal: 1050]
-    end
-
-    subgraph "💬 Contextual Layer (z: 1070)"
-        Tooltip[FafTooltip<br/>--faf-z-tooltip: 1070]
-    end
-
-    subgraph "🔔 Global Notification Layer (z: 1080)"
-        Toast[FafToast<br/>--faf-z-toast: 1080]
-    end
-
-    Content -->|Opens| Dropdown
-    Dropdown -->|Triggers| Modal
-    Modal -->|Contains| Tooltip
-    Modal -->|Completes action| Toast
-```
+1. **Encapsulation:** Structure, local states, and a11y are managed inside Shadow DOM.
+2. **Theming:** The primary mechanism is `--faf-*` CSS custom properties, acting as the public API.
+3. **Context:** `:host-context([data-theme="dark"])` is allowed ONLY for context-aware variable overrides, never for duplicating state logic.
+4. **No `::slotted` for interactivity:** Complex hover/focus scenarios for projected content are handled by the child component's own Shadow DOM (e.g., `FafDropdownItem`).
 
 ---
 
-## 📦 Installation
+## 📚 Stacking Context Guide
 
-```bash
-# From monorepo root (local development)
-pnpm install
+**What is it?**
+A stacking context is an independent 3D rendering order on the Z-axis. Elements inside one context are ordered relative to each other but cannot "break out" to overlay elements from another context using only `z-index`.
 
-# Or as an external dependency
-pnpm add @faf/z-index
-```
+**What creates a new context?**
+
+- `position: absolute | relative | fixed | sticky` with `z-index` other than `auto`.
+- `opacity < 1`, `transform`, `filter`, `backdrop-filter`, `clip-path`, `mask`.
+- `isolation: isolate`, `mix-blend-mode` other than `normal`.
+- Flex/Grid children with `z-index` other than `auto`.
+- `popover` and `<dialog>` elements.
+
+**Faf Design System Rules:**
+
+1. Use `z-index` only with intentional positioning and `--faf-z-*` tokens.
+2. If an element disappears, check parent stacking contexts first, not just `z-index`.
+3. Never use magic numbers like `9999`.
+4. Avoid accidental stacking contexts via hacks like `opacity: 0.99`.
+
+**Practical Rule:**
+If something doesn't overlay as expected, find the **stacking context boundary** first, then adjust `z-index`.
 
 ---
 
@@ -192,100 +147,58 @@ pnpm add @faf/z-index
 
 .my-custom-modal {
   position: fixed;
-  /* 🔥 Use token instead of magic number */
   z-index: var(--faf-z-modal);
-  background: var(--faf-color-surface); /* From @faf/foundations */
+  background: var(--faf-color-surface);
 }
 ```
 
-### Using Patterns in TypeScript / HTML
+### Using Patterns in TypeScript
 
 ```typescript
 import { zIndexTokens, FafModal } from "@faf/z-index";
 
-// 1. Check token value
 console.log(zIndexTokens.toast); // 1080
 
-// 2. Use Web Component pattern
 const modal = document.createElement("faf-modal");
-modal.innerHTML = `
-  <span slot="title">Confirmation</span>
-  <p>Are you sure?</p>
-`;
+modal.innerHTML = `<span slot="title">Confirmation</span><p>Are you sure?</p>`;
 document.body.appendChild(modal);
-
-// Open modal (automatically activates Focus Trap)
-modal.open();
+modal.open(); // Automatically activates Focus Trap
 ```
-
----
-
-## 🏗️ Architecture: Tokens & Patterns (FAF Styling Contract)
-
-### Z-index Tokens (Layer Contract)
-
-This is the **Single Source of Truth (SSOT)** for `z-index` values. It prevents magic numbers (like `9999`) and guarantees a mathematically correct stacking hierarchy.
-
-### Reference Patterns
-
-Patterns are included here to serve three engineering purposes:
-
-1. **Validation:** Proves tokens work correctly in the real DOM stacking context.
-2. **Living Documentation:** Shows developers exactly how to apply tokens with a11y rules.
-3. **Ready-to-use Components:** Can be used as-is, guaranteeing Layer Contract compliance.
-
-**Strict adherence to FAF Web Components Styling Contract:**
-
-- **Encapsulation:** Each component manages structure and local states (`:hover`, `:focus`) inside Shadow DOM.
-- **Theming:** Built on CSS custom properties `--faf-*`, which inherit through the shadow boundary.
-- **Context:** `:host-context()` is allowed **ONLY** for context-aware token mapping (e.g., dark mode), never for duplicating state logic.
-- **Slots:** `::slotted()` is used ONLY for simple styling of projected content, without complex hover/focus scenarios (child components handle this via their own Shadow DOM).
-- **Local Variables:** Local variables like `--item-hover-bg` are permitted if they map directly to global tokens.
 
 ---
 
 ## 📐 Layer Contract
 
-| Token                    | Value  | Purpose              | Example                      |
-| :----------------------- | :----- | :------------------- | :--------------------------- |
-| `--faf-z-base`           | `0`    | Base layer           | Main page content            |
-| `--faf-z-dropdown`       | `1000` | Embedded overlays    | Menus, selects, autocomplete |
-| `--faf-z-sticky`         | `1020` | Sticky elements      | Table headers, sidebars      |
-| `--faf-z-fixed`          | `1030` | Fixed elements       | Global navbar                |
-| `--faf-z-modal-backdrop` | `1040` | Modal dimming        | Modal backdrop               |
-| `--faf-z-modal`          | `1050` | Modal windows        | Dialogs, confirmation forms  |
-| `--faf-z-popover`        | `1060` | Popovers             | Floating action panels       |
-| `--faf-z-tooltip`        | `1070` | Tooltips             | Hover/focus hints            |
-| `--faf-z-toast`          | `1080` | Global notifications | Toasts, system alerts        |
+| Token                    | Value  | Purpose              | Example           |
+| :----------------------- | :----- | :------------------- | :---------------- |
+| `--faf-z-base`           | `0`    | Base layer           | Main page content |
+| `--faf-z-dropdown`       | `1000` | Embedded overlays    | Menus, selects    |
+| `--faf-z-sticky`         | `1020` | Sticky elements      | Table headers     |
+| `--faf-z-fixed`          | `1030` | Fixed elements       | Global navbar     |
+| `--faf-z-modal-backdrop` | `1040` | Modal dimming        | Modal backdrop    |
+| `--faf-z-modal`          | `1050` | Modal windows        | Dialogs           |
+| `--faf-z-popover`        | `1060` | Popovers             | Floating panels   |
+| `--faf-z-tooltip`        | `1070` | Tooltips             | Hover/focus hints |
+| `--faf-z-toast`          | `1080` | Global notifications | Toasts, alerts    |
 
 ---
 
 ## 🧩 Pattern Features
 
-1. **FafModal (1040/1050):** Implements Focus Trap, closes on `Escape` / backdrop click, restores focus to trigger.
-2. **FafToast (1080):** Appears above all elements. Actively validates text contrast via the `@faf/contrast` utility. _(Note: The "success" toast intentionally triggers a console warning about insufficient contrast to demonstrate the real-time accessibility checking capabilities of the system)._
-3. **FafDropdown (1000):** Supports arrow key navigation, closes on outside click / `Escape`. Child `FafDropdownItem` has its own Shadow DOM for correct `:hover` styling.
-4. **FafTooltip (1070):** Works on `:hover` and `:focus` (WCAG requirement), uses `aria-describedby`, prevents sticking after mouse click.
+1. **FafModal (1040/1050):** Implements Focus Trap, closes on `Escape` / backdrop click, restores focus.
+2. **FafToast (1080):** Appears above all elements. Actively validates text contrast via `@faf/contrast`. _(Note: The "success" toast intentionally triggers a console warning about insufficient contrast to demonstrate real-time a11y checking)._
+3. **FafDropdown (1000):** Supports arrow key navigation, closes on outside click / `Escape`.
+4. **FafTooltip (1070):** Works on `:hover` and `:focus`, uses `aria-describedby`, prevents sticking after mouse click.
 
 ---
 
 ## ⚙️ Generation & Testing
 
 ```bash
-# Generate tokens
 cd packages/z-index
 pnpm run generate:tokens
-
-# Run Unit tests (Vitest)
 pnpm run test
-
-# Run E2E tests (Playwright, auto-starts viewer)
 pnpm run test:e2e
-
-# Run E2E tests in interactive UI mode
-pnpm run test:e2e:ui
-
-# Start interactive Viewer
 pnpm run dev:viewer
 ```
 
@@ -293,17 +206,14 @@ pnpm run dev:viewer
 
 ## ❓ FAQ
 
-**1. Why no `z-index: 9999`?**  
-Magic numbers break system predictability. A modal with `9999` would overlay a toast (`1080`), hiding system notifications. Tokens enforce correct values.
+**1. Why no `z-index: 9999`?**
+Magic numbers break system predictability. A modal with `9999` would overlay a toast (`1080`), hiding system notifications.
 
-**2. Why are patterns here and not in `@faf/components`?**  
-They are the **specification of the layer system**. Their primary goal is to validate that tokens work correctly in the real DOM regarding stacking context and accessibility.
+**2. Why are patterns here and not in `@faf/components`?**
+They are the **specification of the layer system**, validating that tokens work correctly in the real DOM regarding stacking context and accessibility.
 
-**3. How do patterns handle Light/Dark themes?**  
-Patterns **do not define** their own colors. They read semantic tokens (`--faf-color-surface`, `--faf-color-text`) directly from `@faf/foundations`. Toggling `<html data-theme="dark">` automatically updates their appearance via CSS variable inheritance.
-
-**4. Why does the "success" toast show a contrast warning in the console?**  
-This is an intentional feature, not a bug. It demonstrates that the `@faf/contrast` integration is actively working. White text on a standard green background (`#16a34a`) fails WCAG AA (ratio ~3.1:1). In a real project, you would either darken the green or use black text, as recommended by the warning.
+**3. How do patterns handle Light/Dark themes?**
+Patterns **do not define** their own colors. They read semantic tokens (`--faf-color-surface`, `--faf-color-text`) directly from `@faf/foundations`.
 
 ---
 

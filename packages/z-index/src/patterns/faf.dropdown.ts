@@ -1,4 +1,8 @@
-// packages/z-index/src/patterns/faf.dropdown.ts
+/**
+ * @module FafDropdown
+ * @description Reference implementation of a dropdown component with keyboard navigation.
+ *              Эталонная реализация компонента выпадающего списка с навигацией с клавиатуры.
+ */
 
 export class FafDropdown extends HTMLElement {
   private _trigger: HTMLElement | null = null;
@@ -23,11 +27,13 @@ export class FafDropdown extends HTMLElement {
   private render(): void {
     this._shadow.innerHTML = `
     <style>
+      /* Container / Контейнер */
       :host {
         position: relative;
         display: inline-block;
       }
 
+      /* Trigger button / Кнопка-триггер */
       .faf-dropdown-trigger {
         display: inline-flex;
         align-items: center;
@@ -43,26 +49,29 @@ export class FafDropdown extends HTMLElement {
         transition: background-color 0.15s, border-color 0.15s;
       }
 
-      /* Светлая тема (по умолчанию) */
+      /* Light theme hover (default) / Hover для светлой темы (по умолчанию) */
       .faf-dropdown-trigger:hover {
         background-color: var(--faf-color-gray-200, #f3f4f6);
         border-color: var(--faf-color-gray-400, #d1d5db);
       }
 
-      /* Тёмная тема - переопределяем hover */
+      /* Dark theme hover override / Переопределение hover для тёмной темы */
       :host-context([data-theme="dark"]) .faf-dropdown-trigger:hover {
         background-color: var(--faf-color-gray-700, #374151);
         border-color: var(--faf-color-gray-600, #4b5563);
       }
 
+      /* Arrow icon / Иконка стрелки */
       .faf-dropdown-arrow {
         transition: transform 0.2s;
       }
 
+      /* Arrow rotation when open / Поворот стрелки при открытии */
       :host([open]) .faf-dropdown-arrow {
         transform: rotate(180deg);
       }
 
+      /* Dropdown menu / Меню дропдауна */
       .faf-dropdown-menu {
         position: absolute;
         top: 100%;
@@ -82,12 +91,14 @@ export class FafDropdown extends HTMLElement {
         padding: var(--faf-spacing-1, 0.25rem) 0;
       }
 
+      /* Menu visible state / Состояние видимости меню */
       :host([open]) .faf-dropdown-menu {
         opacity: 1;
         visibility: visible;
         transform: translateY(0);
       }
 
+      /* Slotted divider / Разделитель через слот */
       ::slotted(faf-dropdown-divider) {
         display: block;
         height: 1px;
@@ -129,12 +140,14 @@ export class FafDropdown extends HTMLElement {
     document.removeEventListener("keydown", this._handleEscape);
   }
 
+  // Handle clicks outside dropdown / Обработка кликов вне дропдауна
   private _handleOutsideClick = (e: MouseEvent): void => {
     if (!this.contains(e.target as Node) && this.hasAttribute("open")) {
       this.close();
     }
   };
 
+  // Handle Escape key / Обработка клавиши Escape
   private _handleEscape = (e: KeyboardEvent): void => {
     if (e.key === "Escape" && this.hasAttribute("open")) {
       e.preventDefault();
@@ -143,6 +156,7 @@ export class FafDropdown extends HTMLElement {
     }
   };
 
+  // Handle keyboard navigation / Обработка навигации с клавиатуры
   private _handleTriggerKeyDown(e: KeyboardEvent): void {
     if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
       e.preventDefault();
@@ -178,6 +192,7 @@ export class FafDropdown extends HTMLElement {
   }
 }
 
+// Dropdown menu item / Пункт меню дропдауна
 export class FafDropdownItem extends HTMLElement {
   private _shadow: ShadowRoot;
 
@@ -192,6 +207,7 @@ export class FafDropdownItem extends HTMLElement {
 
     this._shadow.innerHTML = `
       <style>
+        /* Base styles / Базовые стили */
         :host {
           display: block;
           width: 100%;
@@ -203,21 +219,21 @@ export class FafDropdownItem extends HTMLElement {
           border-radius: var(--faf-radius-sm, 4px);
           cursor: pointer;
           transition: background-color 0.15s, color 0.15s;
-
           color: var(--faf-color-text, #111827);
 
-          /* 🔥 ИСПРАВЛЕНИЕ 2: Используем gray-200 для светлой темы, чтобы ховер был ЗАМЕТЕН */
+          /* FIX 2: Using gray-200 for light theme to make hover VISIBLE / ИСПРАВЛЕНИЕ 2: Используем gray-200 для светлой темы, чтобы ховер был ЗАМЕТЕН */
           --item-hover-bg: var(--faf-color-gray-200, #e5e7eb);
           --item-hover-text: var(--faf-color-gray-900, #111827);
         }
 
+        /* Dark theme override / Переопределение для тёмной темы */
         :host-context([data-theme="dark"]) {
-          /* В темной теме gray-700 отлично работает, как мы уже проверили */
+          /* In dark theme gray-700 works well, as we already checked / В темной теме gray-700 отлично работает, как мы уже проверили */
           --item-hover-bg: var(--faf-color-gray-700, #374151);
           --item-hover-text: var(--faf-color-gray-100, #f3f4f6);
         }
 
-        /* 🔥 ИСПРАВЛЕНИЕ 3: Дублируем fallback прямо здесь, на случай если переменная резолвится в transparent */
+        /* FIX 3: Duplicating fallback here in case variable resolves to transparent / ИСПРАВЛЕНИЕ 3: Дублируем fallback прямо здесь, на случай если переменная резолвится в transparent */
         :host(:hover), :host(:focus) {
           background-color: var(--item-hover-bg, #e5e7eb);
           color: var(--item-hover-text, #111827);
@@ -229,6 +245,7 @@ export class FafDropdownItem extends HTMLElement {
   }
 }
 
+// Dropdown divider / Разделитель дропдауна
 export class FafDropdownDivider extends HTMLElement {
   connectedCallback(): void {
     this.setAttribute("role", "separator");

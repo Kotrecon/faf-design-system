@@ -1,25 +1,31 @@
+/**
+ * @module FafTooltip Styles
+ * @description Reference CSS for tooltip components.
+ *              Эталонные стили для тултипов.
+ */
+
 /* packages/z-index/src/patterns/faf.tooltip.css */
 
-/* Контейнер тултипа (устанавливает контекст позиционирования) */
+/* Tooltip container (sets positioning context) / Контейнер тултипа (устанавливает контекст позиционирования) */
 .faf-tooltip {
   position: relative;
   display: inline-block;
 }
 
-/* Само всплывающее окно */
+/* Tooltip popup itself / Само всплывающее окно */
 .faf-tooltip-content {
   position: absolute;
 
-  /* 🔥 Токен z-index из Faf-ZIndex (выше модалки, ниже тоста) */
+  /* 🔥 z-index token from Faf-ZIndex (above modal, below toast) / Токен z-index из Faf-ZIndex (выше модалки, ниже тоста) */
   z-index: var(--faf-z-tooltip);
 
-  /* Позиционирование по умолчанию (сверху) */
+  /* Default positioning (top) / Позиционирование по умолчанию (сверху) */
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%) translateY(4px);
   margin-bottom: var(--faf-spacing-2, 0.5rem);
 
-  /* Стилизация из Faf-Foundations */
+  /* Styling from Faf-Foundations / Стилизация из Faf-Foundations */
   background-color: var(--faf-color-gray-900, #111827);
   color: var(--faf-color-gray-50, #f9fafb);
   padding: var(--faf-spacing-1, 0.25rem) var(--faf-spacing-2, 0.5rem);
@@ -31,10 +37,10 @@
   line-height: var(--faf-line-height-normal, 1.5);
   white-space: nowrap;
 
-  /* Скрытое состояние */
+  /* Hidden state / Скрытое состояние */
   opacity: 0;
   visibility: hidden;
-  pointer-events: none; /* Не мешает кликам, когда скрыт */
+  pointer-events: none; /* Doesn't interfere with clicks when hidden / Не мешает кликам, когда скрыт */
 
   transition:
     opacity 0.15s ease,
@@ -42,7 +48,7 @@
     visibility 0.15s ease;
 }
 
-/* Стрелочка тултипа (опционально, для красоты) */
+/* Tooltip arrow (optional, for aesthetics) / Стрелочка тултипа (опционально, для красоты) */
 .faf-tooltip-content::after {
   content: "";
   position: absolute;
@@ -55,7 +61,7 @@
     transparent;
 }
 
-/* Состояние: видимо при наведении на контейнер ИЛИ при фокусе внутри контейнера */
+/* Visible state on hover over container OR focus within container / Состояние: видимо при наведении на контейнер ИЛИ при фокусе внутри контейнера */
 .faf-tooltip:hover .faf-tooltip-content,
 .faf-tooltip:focus-within .faf-tooltip-content {
   opacity: 1;
@@ -64,7 +70,7 @@
   pointer-events: auto;
 }
 
-/* Варианты позиционирования */
+/* Positioning variants / Варианты позиционирования */
 .faf-tooltip-content[data-position="bottom"] {
   bottom: auto;
   top: 100%;

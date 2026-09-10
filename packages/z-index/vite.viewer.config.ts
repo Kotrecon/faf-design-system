@@ -5,7 +5,8 @@ import { resolve } from "path";
 export default defineConfig({
   root: resolve(__dirname, "viewer"),
   server: {
-    port: 3001,
+    port: 4000,
+    host: "localhost",
     open: true,
   },
   build: {

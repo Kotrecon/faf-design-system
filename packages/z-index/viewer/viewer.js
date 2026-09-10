@@ -1,6 +1,18 @@
-// packages/z-index/viewer/viewer.js
+/**
+ * @module ZIndexViewer
+ * @description Interactive viewer for Z-Index tokens, stacking context, and pattern demos.
+ *              Интерактивный viewer для токенов Z-Index, контекста наложения и демо паттернов.
+ *
+ * @contract FAF Styling Contract
+ *           - Imports real tokens and pattern styles from the design system.
+ *             Импортирует реальные токены и стили паттернов из дизайн-системы.
+ */
+
+// 🔥 Import real tokens from Foundations (SSOT for colors)
 // 🔥 Импортируем реальные токены из Foundations (SSOT для цветов)
 import "@faf/foundations/styles";
+
+// 🔥 Import pattern CSS via Vite (they will be inlined automatically)
 // 🔥 Импортируем CSS паттернов через Vite (они будут инлайнены автоматически)
 import "../src/patterns/faf.modal.css";
 import "../src/patterns/faf.toast.css";
@@ -8,6 +20,7 @@ import "../src/patterns/faf.dropdown.css";
 import "../src/patterns/faf.tooltip.css";
 import "../src/styles/tokens.generated.css";
 
+// 🔥 Import TypeScript pattern files (they will register Web Components)
 // 🔥 Импортируем TypeScript файлы паттернов (они зарегистрируют Web Components)
 import "../src/patterns/faf.modal.ts";
 import "../src/patterns/faf.toast.ts";
@@ -37,7 +50,7 @@ class ZIndexViewer {
   }
 
   // ==========================================
-  // Управление темой
+  // Theme Management / Управление темой
   // ==========================================
 
   _applyTheme() {
@@ -61,7 +74,7 @@ class ZIndexViewer {
   }
 
   // ==========================================
-  // Переключение категорий
+  // Category Switching / Переключение категорий
   // ==========================================
 
   _bindEvents() {
@@ -99,14 +112,14 @@ class ZIndexViewer {
         break;
       case "demo":
         content.innerHTML = this._renderDemo();
-        // Небольшая задержка, чтобы DOM успел отрендериться
+        // Small delay to allow DOM to render / Небольшая задержка, чтобы DOM успел отрендериться
         setTimeout(() => this._bindDemoEvents(), 50);
         break;
     }
   }
 
   // ==========================================
-  // Секция: Tokens
+  // Section: Tokens / Секция: Токены
   // ==========================================
 
   _renderTokens() {
@@ -153,7 +166,7 @@ class ZIndexViewer {
     return `
       <section class="tokens-section">
         <h2>Z-Index Tokens</h2>
-        <p style="color: var(--faf-text-muted, #6b7280); margin-bottom: 1.5rem;">
+        <p style="color: var(--faf-color-text-muted, #6b7280); margin-bottom: 1.5rem;">
           Именованные значения z-index вместо магических чисел. 
           Используй токены в своих компонентах для соблюдения Layer Contract.
         </p>
@@ -177,14 +190,14 @@ class ZIndexViewer {
   }
 
   // ==========================================
-  // Секция: Stacking Context
+  // Section: Stacking Context / Секция: Контекст наложения
   // ==========================================
 
   _renderStacking() {
     return `
       <section class="stacking-section">
         <h2>Stacking Context — Интерактивные примеры</h2>
-        <p style="color: var(--faf-text-muted, #6b7280); margin-bottom: 1.5rem;">
+        <p style="color: var(--faf-color-text-muted, #6b7280); margin-bottom: 1.5rem;">
           Stacking context — это группа элементов, которые накладываются друг на друга в определённом порядке.
           z-index работает только внутри своего stacking context.
         </p>
@@ -227,14 +240,14 @@ class ZIndexViewer {
   }
 
   // ==========================================
-  // Секция: Patterns
+  // Section: Patterns / Секция: Паттерны
   // ==========================================
 
   _renderPatterns() {
     return `
       <section class="patterns-section">
         <h2>Patterns — Эталонные реализации</h2>
-        <p style="color: var(--faf-text-muted, #6b7280); margin-bottom: 1.5rem;">
+        <p style="color: var(--faf-color-text-muted, #6b7280); margin-bottom: 1.5rem;">
           Эти паттерны демонстрируют правильное использование z-index токенов. 
           Используйте их как готовые компоненты или как референс для своих.
         </p>
@@ -285,14 +298,14 @@ class ZIndexViewer {
   }
 
   // ==========================================
-  // Секция: Live Demo
+  // Section: Live Demo / Секция: Живое демо
   // ==========================================
 
   _renderDemo() {
     return `
       <section class="demo-section">
         <h2>🔥 Live Demo — Попробуй паттерны в действии</h2>
-        <p style="color: var(--faf-text-muted, #6b7280); margin-bottom: 1.5rem;">
+        <p style="color: var(--faf-color-text-muted, #6b7280); margin-bottom: 1.5rem;">
           Нажимай кнопки, чтобы увидеть, как работают паттерны и как они накладываются друг на друга.
         </p>
         <div class="demo-buttons">
@@ -304,7 +317,7 @@ class ZIndexViewer {
         <div class="demo-area">
           <p>Область для демонстрации паттернов:</p>
           
-          <!-- Демо дропдауна -->
+          <!-- Demo dropdown / Демо дропдауна -->
           <div style="margin-top: 2rem;">
             <faf-dropdown>
               <span slot="trigger">Выберите действие</span>
@@ -315,7 +328,7 @@ class ZIndexViewer {
             </faf-dropdown>
           </div>
           
-          <!-- Демо тултипа -->
+          <!-- Demo tooltip / Демо тултипа -->
           <div style="margin-top: 2rem; display: inline-block;">
             <faf-tooltip content="Это всплывающая подсказка!" position="top">
               <button slot="trigger" class="demo-button">💬 Наведи на меня</button>
@@ -323,7 +336,7 @@ class ZIndexViewer {
           </div>
         </div>
         
-        <!-- Модалка (скрыта по умолчанию) -->
+        <!-- Modal (hidden by default) / Модалка (скрыта по умолчанию) -->
         <faf-modal id="demo-modal">
           <span slot="title">Демо модалка</span>
           <p>Это содержимое модалки. Она использует токены:</p>
@@ -341,6 +354,7 @@ class ZIndexViewer {
   _bindDemoEvents() {
     document.querySelectorAll(".demo-button[data-action]").forEach((btn) => {
       btn.addEventListener("click", (e) => {
+        // 🔥 Stop propagation to prevent global listeners from closing patterns
         // 🔥 Останавливаем всплытие, чтобы глобальные listeners не закрывали паттерны
         e.stopPropagation();
 
@@ -389,7 +403,7 @@ class ZIndexViewer {
   }
 
   // ==========================================
-  // URL management
+  // URL Management / Управление URL
   // ==========================================
 
   _getCategoryFromUrl() {
@@ -407,7 +421,7 @@ class ZIndexViewer {
   }
 }
 
-// Инициализация
+// Initialization / Инициализация
 document.addEventListener("DOMContentLoaded", () => {
   new ZIndexViewer();
 });

@@ -1,12 +1,9 @@
-// packages/z-index/src/patterns/faf.tooltip.ts
-
 /**
- * FafTooltip — production-grade реализация тултипа.
- * Строго следует FAF Styling Contract:
- * - Инкапсуляция состояний через атрибут data-visible (управляется JS).
- * - Темизация через маппинг локальных переменных на глобальные --faf-* токены.
- * - Поддержка и hover (мышь), и focus (клавиатура), с предотвращением залипания при клике.
+ * @module FafTooltip
+ * @description Production-grade reference implementation of a tooltip component.
+ *              Production-реализация эталонного компонента тултипа.
  */
+
 export class FafTooltip extends HTMLElement {
   private _shadow: ShadowRoot;
 
@@ -21,7 +18,7 @@ export class FafTooltip extends HTMLElement {
 
     this._shadow.innerHTML = `
       <style>
-        /* 1. Базовый маппинг токенов (Светлая тема) */
+        /* 1. Base token mapping (Light theme) / Базовый маппинг токенов (Светлая тема) */
         :host {
           position: relative;
           display: inline-block;
@@ -29,13 +26,13 @@ export class FafTooltip extends HTMLElement {
           --tooltip-text: var(--faf-color-gray-50, #f9fafb);
         }
 
-        /* 2. Context-aware override ТОЛЬКО для значений переменных */
+        /* 2. Context-aware override ONLY for variable values / Context-aware override ТОЛЬКО для значений переменных */
         :host-context([data-theme="dark"]) {
           --tooltip-bg: var(--faf-color-gray-100, #f3f4f6);
           --tooltip-text: var(--faf-color-gray-900, #111827);
         }
 
-        /* 3. State logic просто читает готовый атрибут состояния */
+        /* 3. State logic simply reads ready attribute / State logic просто читает готовый атрибут состояния */
         .faf-tooltip-content {
           position: absolute;
           ${position === "bottom" ? "top: 100%; margin-top: 0.5rem;" : "bottom: 100%; margin-bottom: 0.5rem;"}
@@ -71,19 +68,20 @@ export class FafTooltip extends HTMLElement {
       </div>
     `;
 
-    // 4. Явное управление состоянием (State Management)
+    // 4. Explicit state management / Явное управление состоянием (State Management)
     this._onMouseEnter = () => this.setAttribute("data-visible", "true");
     this._onMouseLeave = () => this.removeAttribute("data-visible");
     this._onFocusIn = () => this.setAttribute("data-visible", "true");
     this._onFocusOut = (e: FocusEvent) => {
-      // Скрываем, только если фокус ушел за пределы компонента
+      // Hide only if focus left the component / Скрываем, только если фокус ушел за пределы компонента
       if (!this.contains(e.relatedTarget as Node)) {
         this.removeAttribute("data-visible");
       }
     };
     this._onClick = (e: MouseEvent) => {
+      // e.detail > 0 means mouse click (not keyboard Enter/Space).
       // e.detail > 0 означает, что это клик мышью (а не клавиатурный Enter/Space).
-      // Принудительно снимаем видимость, чтобы предотвратить "залипание" в состоянии focus.
+      // Force hide to prevent "sticking" in focus state. / Принудительно снимаем видимость, чтобы предотвратить "залипание" в состоянии focus.
       if (e.detail > 0) {
         this.removeAttribute("data-visible");
       }
@@ -95,7 +93,7 @@ export class FafTooltip extends HTMLElement {
     this.addEventListener("focusout", this._onFocusOut);
     this.addEventListener("click", this._onClick);
 
-    // Гарантируем keyboard accessibility для неинтерактивных триггеров
+    // Ensure keyboard accessibility for non-interactive triggers / Гарантируем keyboard accessibility для неинтерактивных триггеров
     setTimeout(() => {
       const trigger =
         this.querySelector("[slot='trigger']") || this.firstElementChild;

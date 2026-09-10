@@ -1,67 +1,70 @@
+/**
+ * @module FafDropdown Styles
+ * @description Reference CSS for dropdown components.
+ *              Эталонные стили для компонентов выпадающего списка.
+ */
+
 /* packages/z-index/src/patterns/faf.dropdown.css */
 
-/* Контейнер дропдауна (обёртка для триггера и меню) */
+/* Dropdown container (wrapper for trigger and menu) / Контейнер дропдауна (обёртка для триггера и меню) */
 .faf-dropdown {
   position: relative;
   display: inline-block;
 }
 
-/* Кнопка-триггер */
+/* Trigger button / Кнопка-триггер */
 .faf-dropdown-trigger {
   display: inline-flex;
   align-items: center;
   gap: var(--faf-spacing-2, 0.5rem);
-
   padding: var(--faf-spacing-2, 0.5rem) var(--faf-spacing-3, 0.75rem);
-
   background-color: var(--faf-color-surface, white);
   color: var(--faf-color-text, #111);
   border: 1px solid var(--faf-color-border, #e5e7eb);
   border-radius: var(--faf-radius-md, 6px);
-
   font-size: var(--faf-font-size-fluid-sm, 0.875rem);
   font-weight: var(--faf-font-weight-medium, 500);
-
   cursor: pointer;
   transition:
     background-color 0.2s,
     border-color 0.2s;
 }
 
+/* Hover state / Состояние при наведении */
 .faf-dropdown-trigger:hover {
   background-color: var(--faf-color-gray-50, #f9fafb);
   border-color: var(--faf-color-gray-300, #d1d5db);
 }
 
+/* Focus state / Состояние при фокусе */
 .faf-dropdown-trigger:focus {
   outline: 2px solid var(--faf-color-primary, #2563eb);
   outline-offset: 2px;
 }
 
-/* Иконка стрелки */
+/* Arrow icon / Иконка стрелки */
 .faf-dropdown-arrow {
   transition: transform 0.2s;
 }
 
+/* Arrow rotation when open / Поворот стрелки при открытии */
 .faf-dropdown[open] .faf-dropdown-arrow {
   transform: rotate(180deg);
 }
 
-/* Меню дропдауна */
+/* Dropdown menu / Меню дропдауна */
 .faf-dropdown-menu {
   position: absolute;
   top: 100%;
   left: 0;
   margin-top: var(--faf-spacing-1, 0.25rem);
-
   min-width: 200px;
-
   background-color: var(--faf-color-surface, white);
   border: 1px solid var(--faf-color-border, #e5e7eb);
   border-radius: var(--faf-radius-md, 6px);
   box-shadow: var(--faf-shadow-dropdown, 0 10px 15px rgba(0, 0, 0, 0.1));
 
-  /* 🔥 Токен z-index из Faf-ZIndex */
+  /* 🔥 z-index token from Faf-ZIndex / Токен z-index из Faf-ZIndex */
   z-index: var(--faf-z-dropdown);
 
   opacity: 0;
@@ -71,44 +74,43 @@
     opacity 0.2s,
     transform 0.2s,
     visibility 0.2s;
-
   overflow: hidden;
 }
 
+/* Menu visible state / Состояние видимости меню */
 .faf-dropdown[open] .faf-dropdown-menu {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
 }
 
-/* Пункт меню */
+/* Menu item / Пункт меню */
 .faf-dropdown-item {
   display: block;
   width: 100%;
   padding: var(--faf-spacing-2, 0.5rem) var(--faf-spacing-3, 0.75rem);
-
   background: transparent;
   border: none;
   text-align: left;
-
   font-size: var(--faf-font-size-fluid-sm, 0.875rem);
   color: var(--faf-color-text, #111);
-
   cursor: pointer;
   transition: background-color 0.15s;
 }
 
+/* Item hover and focus states / Состояния hover и focus для пункта */
 .faf-dropdown-item:hover,
 .faf-dropdown-item:focus {
   background-color: var(--faf-color-gray-100, #f3f4f6);
   outline: none;
 }
 
+/* Active focus state / Состояние активного фокуса */
 .faf-dropdown-item:focus {
   background-color: var(--faf-color-gray-200, #e5e7eb);
 }
 
-/* Разделитель */
+/* Divider / Разделитель */
 .faf-dropdown-divider {
   height: 1px;
   margin: var(--faf-spacing-1, 0.25rem) 0;

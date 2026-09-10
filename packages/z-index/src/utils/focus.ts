@@ -1,11 +1,26 @@
-// packages/z-index/src/utils/focus.ts
+/**
+ * @module Focus Management Utilities
+ * @description Utilities for saving, restoring, and trapping focus within components (e.g., modals).
+ *              Утилиты для сохранения, восстановления и ограничения фокуса внутри компонентов (например, модалок).
+ *
+ * @contract Ensures keyboard accessibility and prevents focus loss when overlay components are active.
+ *           Обеспечивает доступность с клавиатуры и предотвращает потерю фокуса при активных оверлей-компонентах.
+ */
 
 let previouslyFocusedElement: HTMLElement | null = null;
 
+/**
+ * Saves the currently focused element before opening an overlay.
+ * Сохраняет текущий сфокусированный элемент перед открытием оверлея.
+ */
 export function saveFocus(): void {
   previouslyFocusedElement = document.activeElement as HTMLElement;
 }
 
+/**
+ * Restores focus to the previously saved element.
+ * Восстанавливает фокус на ранее сохранённом элементе.
+ */
 export function restoreFocus(): void {
   if (
     previouslyFocusedElement &&
@@ -17,7 +32,11 @@ export function restoreFocus(): void {
 }
 
 /**
- * Получает активный элемент с учётом Shadow DOM.
+ * Gets the active element, recursively traversing Shadow DOM boundaries.
+ * Получает активный элемент, рекурсивно обходя границы Shadow DOM.
+ *
+ * @param root - The root document or shadow root to search within.
+ * @returns The currently active element, or null.
  */
 function getActiveElement(
   root: Document | ShadowRoot = document,
@@ -25,6 +44,7 @@ function getActiveElement(
   const activeEl = root.activeElement;
   if (!activeEl) return null;
 
+  // If the active element has a shadow root, recursively go inside
   // Если активный элемент имеет shadow root, рекурсивно идём внутрь
   if (activeEl.shadowRoot) {
     return getActiveElement(activeEl.shadowRoot);
@@ -33,28 +53,39 @@ function getActiveElement(
   return activeEl;
 }
 
+/**
+ * Traps keyboard focus within a specific HTMLElement.
+ * Ограничивает клавиатурный фокус внутри указанного HTMLElement.
+ *
+ * @param element - The container element to trap focus within.
+ * @returns A cleanup function to remove the event listener.
+ */
 export function trapFocus(element: HTMLElement): () => void {
   const focusableElements = element.querySelectorAll<HTMLElement>(
     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
   );
+
   const firstElement = focusableElements[0];
   const lastElement = focusableElements[focusableElements.length - 1];
 
   function handleKeyDown(e: KeyboardEvent): void {
     if (e.key !== "Tab") return;
 
-    // 🔥 Используем getActiveElement вместо document.activeElement
+    // Use getActiveElement to correctly handle focus inside Shadow DOM
+    // Используем getActiveElement для корректной обработки фокуса внутри Shadow DOM
     const activeElement = getActiveElement();
 
     if (e.shiftKey) {
+      // Shift + Tab
       if (activeElement === firstElement) {
         e.preventDefault();
-        lastElement.focus();
+        lastElement?.focus();
       }
     } else {
+      // Tab
       if (activeElement === lastElement) {
         e.preventDefault();
-        firstElement.focus();
+        firstElement?.focus();
       }
     }
   }
@@ -62,6 +93,7 @@ export function trapFocus(element: HTMLElement): () => void {
   element.addEventListener("keydown", handleKeyDown);
   firstElement?.focus();
 
+  // Return cleanup function / Возвращаем функцию очистки
   return () => {
     element.removeEventListener("keydown", handleKeyDown);
   };

@@ -1,4 +1,4 @@
-// packages/z-index/src/index.ts
+// packages/z-index/src/tokens/index.ts
 
 /**
  * @faf/z-index

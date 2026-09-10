@@ -1,23 +1,23 @@
-# Руководство по паттернам (Patterns)
+# Patterns Guide
 
-## Зачем паттерны в пакете z-index?
+## Why are patterns in the z-index package?
 
-Паттерны (`FafModal`, `FafToast`, `FafDropdown`, `FafTooltip`) находятся здесь не как замена UI-библиотеке, а как **reference implementations**. Они показывают, что система токенов работает в реальном DOM, и демонстрируют правильный способ применения Layer Contract.
+Patterns (`FafModal`, `FafToast`, `FafDropdown`, `FafTooltip`) are included here not as a replacement for a full UI library, but as **reference implementations**. They prove that the token system works correctly in the real DOM and demonstrate the proper way to apply the Layer Contract.
 
-## Контракт стилизации
+## Styling Contract
 
-Все паттерны следуют общим правилам:
+All patterns adhere to the following common rules:
 
-1. **Инкапсуляция:** структура, локальные состояния и доступность управляются внутри Shadow DOM.
-2. **Темизация:** основной механизм — CSS custom properties `--faf-*`, которые используются как публичный API дизайн-системы.
-3. **Контекст:** `:host-context([data-theme="dark"])` допускается только для точечного context-aware override, а не для дублирования state logic.
-4. **Нет `::slotted` для интерактива:** сложные hover/focus-сценарии для projected content реализуются через собственный Shadow DOM дочерних компонентов, как в `FafDropdownItem`.
+1. **Encapsulation:** Structure, local states, and accessibility are managed entirely within the Shadow DOM.
+2. **Theming:** The primary mechanism relies on `--faf-*` CSS custom properties, which serve as the public API of the design system.
+3. **Context:** `:host-context([data-theme="dark"])` is permitted _only_ for targeted, context-aware variable overrides, never for duplicating state logic.
+4. **No `::slotted` for interactivity:** Complex hover/focus scenarios for projected content are handled by the child component's own Shadow DOM (e.g., `FafDropdownItem`).
 
-## Использование
+## Usage
 
-Вы можете импортировать эти компоненты напрямую или использовать их код как референс при создании собственных компонентов в вашем проекте. [developer.mozilla](https://developer.mozilla.org/en-US/docs/Web/API/Web_components)
+You can import these components directly or use their source code as a reference when building your own components in your project. [Learn more about Web Components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components).
 
-## Примечание по теме
+## Note on Theming
 
-- Если тема уже выражена через tokens на уровне `html` или `:root`, компонент должен читать их напрямую и не дублировать логику по теме.
-- `:host-context()` нужен только там, где компоненту действительно важно знать контекст своего окружения, а не как основной механизм оформления состояний.
+- If the theme is already defined via tokens at the `html` or `:root` level, the component should read them directly without duplicating theming logic.
+- `:host-context()` should only be used when a component genuinely needs to be aware of its surrounding context, not as the primary mechanism for styling states.

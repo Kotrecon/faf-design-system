@@ -13,12 +13,13 @@ export default defineConfig({
   // 🔥 Автоматический запуск viewer перед тестами
   webServer: {
     command: "pnpm run dev:viewer",
-    url: "http://localhost:3001",
+    url: "http://localhost:4000",
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
   },
 
   use: {
+    baseURL: "http://localhost:4000",
     trace: "on-first-retry",
   },
 
