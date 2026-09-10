@@ -33,6 +33,7 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
+    "@faf/contrast": "workspace:*",
     "@faf/foundations": "workspace:*"
   },
   "devDependencies": {

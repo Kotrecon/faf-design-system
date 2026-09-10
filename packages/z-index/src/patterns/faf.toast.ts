@@ -1,6 +1,6 @@
 // packages/z-index/src/patterns/faf.toast.ts
 
-import { isAccessible, getContrastColor } from "../utils/contrast";
+import { FafContrast } from "../utils/contrast.js";
 
 export type ToastType = "success" | "error" | "warning" | "info";
 
@@ -10,8 +10,10 @@ export interface ToastOptions {
   duration?: number;
 }
 
+// Цвета для JS-проверки контраста (используем hex для точности парсинга в упрощённой версии)
+// Colors for JS contrast check (using hex for parsing accuracy in simplified version)
 const TOAST_COLORS: Record<ToastType, { bg: string; text: string }> = {
-  success: { bg: "#16a34a", text: "#000000" }, // Исправленный контраст
+  success: { bg: "#16a34a", text: "#ffffff" },
   error: { bg: "#dc2626", text: "#ffffff" },
   warning: { bg: "#eab308", text: "#111827" },
   info: { bg: "#2563eb", text: "#ffffff" },
@@ -19,6 +21,7 @@ const TOAST_COLORS: Record<ToastType, { bg: string; text: string }> = {
 
 /**
  * FafToastContainer — глобальный контейнер для тостов.
+ * FafToastContainer — global container for toasts.
  */
 export class FafToastContainer extends HTMLElement {
   private static instance: FafToastContainer | null = null;
@@ -34,12 +37,12 @@ export class FafToastContainer extends HTMLElement {
       <style>
         :host {
           position: fixed;
-          top: var(--faf-spacing-4, 1rem);
-          right: var(--faf-spacing-4, 1rem);
-          z-index: var(--faf-z-toast, 1080);
+          top: var(--faf-spacing-4);
+          right: var(--faf-spacing-4);
+          z-index: var(--faf-z-toast);
           display: flex;
           flex-direction: column;
-          gap: var(--faf-spacing-2, 0.5rem);
+          gap: var(--faf-spacing-2);
           max-width: 400px;
           pointer-events: none;
         }
@@ -52,7 +55,7 @@ export class FafToastContainer extends HTMLElement {
   public static show(options: ToastOptions): void {
     if (!FafToastContainer.instance) {
       console.error(
-        "❌ FafToastContainer не найден. Добавьте <faf-toast-container> в body.",
+        "❌ FafToastContainer not found. Add <faf-toast-container> to body. / FafToastContainer не найден. Добавьте <faf-toast-container> в body.",
       );
       return;
     }
@@ -69,6 +72,8 @@ export class FafToastContainer extends HTMLElement {
 /**
  * FafToast — отдельный элемент уведомления.
  * Строго следует FAF Styling Contract: маппинг цветов через локальные переменные.
+ * FafToast — individual notification element.
+ * Strictly follows FAF Styling Contract: color mapping via local variables.
  */
 export class FafToast extends HTMLElement {
   private _hideTimeout: number | null = null;
@@ -96,48 +101,59 @@ export class FafToast extends HTMLElement {
     const message = this.getAttribute("message") || "";
     const type = (this.getAttribute("type") || "info") as ToastType;
 
-    // Устанавливаем атрибут ДО рендера, чтобы CSS-селекторы :host([type="..."]) сработали
     this.setAttribute("type", type);
     this.setAttribute("role", "alert");
     this.setAttribute("aria-live", "polite");
 
     this._shadow.innerHTML = `
       <style>
-        /* 1. Базовые стили и маппинг переменных по умолчанию (info) */
+        /* 1. Базовый маппинг токенов (Светлая тема) */
+        /* 1. Base token mapping (Light theme) */
         :host {
           display: flex;
           align-items: center;
-          gap: var(--faf-spacing-3, 0.75rem);
-          padding: var(--faf-spacing-3, 0.75rem) var(--faf-spacing-4, 1rem);
-          border-radius: var(--faf-radius-md, 6px);
-          box-shadow: var(--faf-shadow-lg, 0 10px 15px rgba(0,0,0,0.1));
-          font-size: var(--faf-font-size-fluid-sm, 0.875rem);
-          font-weight: var(--faf-font-weight-medium, 500);
-          line-height: var(--faf-line-height-normal, 1.5);
+          gap: var(--faf-spacing-3);
+          padding: var(--faf-spacing-3) var(--faf-spacing-4);
+          border-radius: var(--faf-radius-md);
+          box-shadow: var(--faf-shadow-lg);
+          font-size: var(--faf-font-size-sm);
+          font-weight: var(--faf-font-weight-medium);
+          line-height: var(--faf-line-height-normal);
           pointer-events: auto;
           animation: faf-toast-slide-in 0.3s ease-out;
           opacity: 1;
           transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 
-          --toast-bg: var(--faf-color-blue-600, #2563eb);
-          --toast-text: var(--faf-color-gray-50, #ffffff);
+          /* Маппинг локальных переменных на глобальные токены */
+          /* Mapping local variables to global tokens */
+          --toast-bg: var(--faf-color-info, #2563eb);
+          --toast-text: var(--faf-color-surface, #ffffff);
         }
 
-        /* 2. Context-aware overrides для разных типов тостов */
-        :host([type="success"]) {
-          --toast-bg: var(--faf-color-green-600, #16a34a);
-          --toast-text: #000000; /* Гарантированный контраст */
-        }
-        :host([type="error"]) {
-          --toast-bg: var(--faf-color-red-600, #dc2626);
-          --toast-text: var(--faf-color-gray-50, #ffffff);
-        }
-        :host([type="warning"]) {
-          --toast-bg: var(--faf-color-yellow-500, #eab308);
+        /* 2. Контекстное переопределение ТОЛЬКО для значений переменных (Тёмная тема) */
+        /* 2. Context-aware override ONLY for token values (Dark theme) */
+        :host-context([data-theme="dark"]) {
+          --toast-bg: var(--faf-color-info-dark, var(--faf-color-blue-400));
           --toast-text: var(--faf-color-gray-900, #111827);
         }
 
-        /* 3. State logic просто читает замапленные переменные */
+        /* Специфичные типы тостов (переопределяют маппинг) */
+        /* Specific toast types (override the mapping) */
+        :host([type="success"]) {
+          --toast-bg: var(--faf-color-success, #16a34a);
+          --toast-text: var(--faf-color-surface, #ffffff);
+        }
+        :host([type="error"]) {
+          --toast-bg: var(--faf-color-danger, #dc2626);
+          --toast-text: var(--faf-color-surface, #ffffff);
+        }
+        :host([type="warning"]) {
+          --toast-bg: var(--faf-color-warning, #eab308);
+          --toast-text: var(--faf-color-gray-900, #111827);
+        }
+
+        /* 3. State logic просто читает готовые переменные, не зная о теме */
+        /* 3. State logic simply reads ready variables, unaware of the theme */
         :host {
           background-color: var(--toast-bg);
           color: var(--toast-text);
@@ -156,6 +172,7 @@ export class FafToast extends HTMLElement {
           display: flex;
           align-items: center;
           justify-content: center;
+          color: var(--toast-text);
         }
 
         .faf-toast-message {
@@ -166,11 +183,11 @@ export class FafToast extends HTMLElement {
           flex-shrink: 0;
           background: transparent;
           border: none;
-          color: inherit;
+          color: var(--toast-text);
           opacity: 0.7;
           cursor: pointer;
-          padding: var(--faf-spacing-1, 0.25rem);
-          border-radius: var(--faf-radius-sm, 4px);
+          padding: var(--faf-spacing-1);
+          border-radius: var(--faf-radius-sm);
           font-size: 1.25rem;
           line-height: 1;
           transition: opacity 0.2s;
@@ -224,12 +241,26 @@ export class FafToast extends HTMLElement {
   private _checkContrast(): void {
     const type = (this.getAttribute("type") || "info") as ToastType;
     const colors = TOAST_COLORS[type];
-    const accessible = isAccessible(colors.text, colors.bg);
 
-    if (!accessible) {
+    // Проверка контраста через единый API FafContrast
+    // Contrast check via unified FafContrast API
+    const isAccessible = FafContrast.isAccessible(
+      colors.text,
+      colors.bg,
+      "AA",
+      "normal",
+    );
+
+    if (!isAccessible) {
+      // Определяем рекомендуемый цвет текста (чёрный или белый)
+      // Determine recommended text color (black or white)
+      const whiteContrast = FafContrast.calculateContrast("#ffffff", colors.bg);
+      const blackContrast = FafContrast.calculateContrast("#000000", colors.bg);
+      const recommendedText =
+        whiteContrast > blackContrast ? "#ffffff" : "#000000";
+
       console.warn(
-        `⚠️ Тост типа "${type}" имеет недостаточный контраст. ` +
-          `Рекомендуемый цвет текста: ${getContrastColor(colors.bg)}`,
+        `⚠️ Toast of type "${type}" has insufficient contrast. Recommended text color: ${recommendedText}`,
       );
     }
   }

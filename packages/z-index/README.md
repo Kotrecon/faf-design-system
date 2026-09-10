@@ -16,18 +16,18 @@ packages/z-index/
 │   │   └── zindex.ts                 # 🔥 SSOT: Named z-index values
 │   ├── patterns/
 │   │   ├── faf.modal.ts              # 🔥 Modal (1040/1050 + Focus Trap)
-│   │   ├── faf.toast.ts              # 🔥 Toast (1080 + Contrast Check)
+│   │   ├── faf.toast.ts              # 🔥 Toast (1080 + Active Contrast Check)
 │   │   ├── faf.dropdown.ts           # 🔥 Dropdown (1000 + Keyboard Nav)
 │   │   └── faf.tooltip.ts            # 🔥 Tooltip (1070 + Hover/Focus)
 │   ├── utils/
 │   │   ├── focus.ts                  # Helper for Focus Trap
-│   │   └── contrast.ts               # Helper for contrast validation
+│   │   └── contrast.ts               # Re-export of @faf/contrast utility
 │   ├── styles/
 │   │   └── tokens.generated.css      # ⚠️ Auto-generated CSS from zindex.ts
 │   └── index.ts                      # Main package entry point
 ├── tests/                            # 🔥 Tests
 │   ├── zindex-tokens.test.ts         # Unit tests for token contract (Vitest)
-│   ├── contrast.test.ts              # Unit tests for contrast utility (Vitest)
+│   ├── contrast.test.ts              # Integration tests for @faf/contrast (Vitest)
 │   └── patterns.spec.ts              # E2E tests for stacking context (Playwright)
 ├── viewer/                           # 🔥 Interactive documentation
 │   ├── index.html                    # Viewer entry point
@@ -263,7 +263,7 @@ Patterns are included here to serve three engineering purposes:
 ## 🧩 Pattern Features
 
 1. **FafModal (1040/1050):** Implements Focus Trap, closes on `Escape` / backdrop click, restores focus to trigger.
-2. **FafToast (1080):** Appears above all elements. Validates text contrast via `@faf/contrast` utility.
+2. **FafToast (1080):** Appears above all elements. Actively validates text contrast via the `@faf/contrast` utility. _(Note: The "success" toast intentionally triggers a console warning about insufficient contrast to demonstrate the real-time accessibility checking capabilities of the system)._
 3. **FafDropdown (1000):** Supports arrow key navigation, closes on outside click / `Escape`. Child `FafDropdownItem` has its own Shadow DOM for correct `:hover` styling.
 4. **FafTooltip (1070):** Works on `:hover` and `:focus` (WCAG requirement), uses `aria-describedby`, prevents sticking after mouse click.
 
@@ -302,10 +302,11 @@ They are the **specification of the layer system**. Their primary goal is to val
 **3. How do patterns handle Light/Dark themes?**  
 Patterns **do not define** their own colors. They read semantic tokens (`--faf-color-surface`, `--faf-color-text`) directly from `@faf/foundations`. Toggling `<html data-theme="dark">` automatically updates their appearance via CSS variable inheritance.
 
+**4. Why does the "success" toast show a contrast warning in the console?**  
+This is an intentional feature, not a bug. It demonstrates that the `@faf/contrast` integration is actively working. White text on a standard green background (`#16a34a`) fails WCAG AA (ratio ~3.1:1). In a real project, you would either darken the green or use black text, as recommended by the warning.
+
 ---
 
 ## 📝 License
 
 MIT © Faf Design System
-
----
