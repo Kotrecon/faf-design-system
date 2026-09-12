@@ -1,15 +1,21 @@
-// src/tokens/typography/line-heights.ts
+/**
+ * @module Line Heights
+ * @description Line heights used to control text readability.
+ *              Межстрочные интервалы, используемые для управления читаемостью текста.
+ */
 
 /**
+ * Line heights
+ * Used to control text readability
  * Межстрочные интервалы
  * Используются для управления читаемостью текста
  */
 export const lineHeights = {
-  /** Для заголовков — плотно */
+  /** For headings — tight / Для заголовков — плотно */
   tight: 1.25,
-  /** Для основного текста — комфортно */
+  /** For main body text — comfortable / Для основного текста — комфортно */
   normal: 1.5,
-  /** Для длинных абзацев — свободно */
+  /** For long paragraphs — relaxed / Для длинных абзацев — свободно */
   relaxed: 1.75,
 } as const;
 

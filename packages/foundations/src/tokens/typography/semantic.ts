@@ -1,3 +1,9 @@
+/**
+ * @module Semantic Typography
+ * @description Semantic typography roles (headings, body, UI) mapping to primitive tokens.
+ *              Семантические роли типографики (заголовки, текст, UI), маппящиеся на примитивные токены.
+ */
+
 import { fluidSizes } from "./fluid";
 import { typographyScale } from "./scales";
 import { fontFamilies } from "./font-families";
@@ -56,6 +62,12 @@ export const semanticTypography = {
       lineHeight: lineHeights.normal,
       family: fontFamilies.sans,
     },
+    muted: {
+      size: typographyScale[-1],
+      weight: fontWeights.normal,
+      lineHeight: lineHeights.normal,
+      family: fontFamilies.sans,
+    },
   },
   ui: {
     button: {
@@ -74,6 +86,12 @@ export const semanticTypography = {
       size: typographyScale[-1],
       weight: fontWeights.light,
       lineHeight: lineHeights.normal,
+      family: fontFamilies.mono,
+    },
+    dataValue: {
+      size: fluidSizes["2xl"],
+      weight: fontWeights.bold,
+      lineHeight: lineHeights.tight,
       family: fontFamilies.mono,
     },
   },

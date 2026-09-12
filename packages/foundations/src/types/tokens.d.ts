@@ -1,22 +1,28 @@
-// src/types/tokens.d.ts
+/**
+ * @module Token Type Declarations
+ * @description TypeScript declarations for CSS modules and custom FAF properties.
+ *              Объявления типов TypeScript для CSS-модулей и кастомных свойств FAF.
+ */
 
-// 1. Разрешаем импортировать CSS-файлы как модули (если используешь CSS Modules)
+// 1. Allow importing CSS files as modules
+// 1. Разрешаем импортировать CSS-файлы как модули
 declare module "*.css" {
   const content: Record<string, string>;
   export default content;
 }
 
-// 2. Расширяем стандартные CSS-свойства, чтобы TS не ругался на кастомные переменные
+// 2. Extend standard CSS properties for custom variables
+// 2. Расширяем стандартные CSS-свойства для кастомных переменных
 declare global {
   namespace CSS {
     interface Properties {
-      // Добавляем только самые базовые, остальные TS пропустит через index signature
-      "--faf-color-primary"?: string;
-      "--faf-color-text"?: string;
-      "--faf-color-background"?: string;
-      "--faf-spacing-button-x"?: string;
-      "--faf-shadow-card"?: string;
-      [key: `--faf-${string}`]: string | undefined; // 🔥 Магия: разрешает ЛЮБОЕ свойство, начинающееся на --faf-
+      [key: `--faf-${string}`]: string | undefined;
     }
+  }
+
+  // 3. Extend CSSStyleDeclaration for Web Components
+  // 3. Расширяем CSSStyleDeclaration для веб-компонентов
+  interface CSSStyleDeclaration {
+    [key: `--faf-${string}`]: string | undefined;
   }
 }

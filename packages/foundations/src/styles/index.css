@@ -1,9 +1,15 @@
-/* src/styles/index.css */
+/**
+ * @module Global Styles
+ * @description Global CSS entry point, resets, and base application styles.
+ *              Глобальная точка входа CSS, сбросы и базовые стили приложения.
+ */
 
 /* 1. ЕДИНСТВЕННОЕ место, где мы подключаем сгенерированные токены */
+/* 1. The ONLY place where we import generated tokens */
 @import "./tokens.generated.css";
 
 /* 2. Глобальные сбросы (Reset / Normalize) */
+/* 2. Global resets */
 *,
 *::before,
 *::after {
@@ -13,22 +19,31 @@
 }
 
 /* 3. Базовые стили приложения, использующие наши семантические токены */
+/* 3. Base application styles using our semantic tokens */
 html {
   /* Плавное переключение темы, если пользователь меняет её в ОС */
+  /* Smooth theme transition if the user changes it in the OS */
   color-scheme: light dark;
 }
 
 body {
   /* Мы используем семантические токены, а не конкретные значения! */
-  font-family: var(--faf-font-sans, system-ui, sans-serif);
+  /* We use semantic tokens, not specific values! */
+  font-family: var(
+    --faf-font-family-sans,
+    system-ui,
+    sans-serif
+  ); /* ← ИСПРАВЛЕНО */
   font-size: var(--faf-font-size-base, 1rem);
   line-height: var(--faf-line-height-normal, 1.5);
 
   /* Цвета берутся из сгенерированного файла */
+  /* Colors are taken from the generated file */
   color: var(--faf-color-text);
   background-color: var(--faf-color-background);
 
   /* Сглаживание шрифтов */
+  /* Font smoothing */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

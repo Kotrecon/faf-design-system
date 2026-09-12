@@ -3,30 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Faf Typography — Fluid Examples</title>
-
-    <!-- Подключаем сгенерированные токены -->
+    <title>
+      Faf Typography — Fluid Examples / Типография Faf — Fluid примеры
+    </title>
     <link rel="stylesheet" href="../styles/tokens.generated.css" />
-
-    <!-- Подключаем примеры типографики -->
     <link rel="stylesheet" href="typography-components.css" />
 
     <style>
       body {
         max-width: 900px;
         margin: 0 auto;
-        padding: 2rem;
+        padding: var(--faf-spacing-8);
         background-color: var(--faf-color-background);
         color: var(--faf-color-text);
-        font-family: var(--faf-font-sans, system-ui, sans-serif);
+        font-family: var(--faf-font-family-sans, system-ui, sans-serif);
       }
 
       .demo-section {
-        margin-bottom: 3rem;
-        padding: 1.5rem;
+        margin-bottom: var(--faf-spacing-12);
+        padding: var(--faf-spacing-6);
         background: var(--faf-color-surface);
         border: 1px solid var(--faf-color-border);
-        border-radius: 8px;
+        border-radius: var(--faf-radius-md);
       }
 
       .demo-label {
@@ -34,8 +32,8 @@
         text-transform: uppercase;
         letter-spacing: 0.1em;
         color: var(--faf-color-text-muted);
-        margin-bottom: 1rem;
-        font-family: var(--faf-font-mono, monospace);
+        margin-bottom: var(--faf-spacing-4);
+        font-family: var(--faf-font-family-mono, monospace);
       }
 
       .resize-hint {
@@ -44,50 +42,68 @@
         right: 1rem;
         background: var(--faf-color-primary);
         color: white;
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
+        padding: var(--faf-spacing-2) var(--faf-spacing-4);
+        border-radius: var(--faf-radius-sm);
         font-size: 0.875rem;
         box-shadow: var(--faf-shadow-md);
       }
     </style>
   </head>
   <body>
-    <h1 style="margin-bottom: 2rem">Fluid Typography Demo</h1>
+    <h1 style="margin-bottom: var(--faf-spacing-8)">
+      Fluid Typography Demo / Демонстрация Fluid-типографики
+    </h1>
 
-    <p class="faf-text-small" style="margin-bottom: 2rem">
+    <p class="faf-text-small" style="margin-bottom: var(--faf-spacing-8)">
       💡 Измени размер окна браузера — шрифты плавно адаптируются благодаря
+      <code>clamp()</code>
+      <br />
+      💡 Resize the browser window — fonts adapt smoothly thanks to
       <code>clamp()</code>
     </p>
 
     <section class="demo-section">
-      <div class="demo-label">.faf-heading-1 (fluid-3xl)</div>
-      <h1 class="faf-heading-1">Заголовок первого уровня</h1>
+      <div class="demo-label">.faf-heading-1 (3xl)</div>
+      <h1 class="faf-heading-1">
+        Заголовок первого уровня / First-level heading
+      </h1>
     </section>
 
     <section class="demo-section">
-      <div class="demo-label">.faf-heading-2 (fluid-2xl)</div>
-      <h2 class="faf-heading-2">Заголовок второго уровня</h2>
+      <div class="demo-label">.faf-heading-2 (2xl)</div>
+      <h2 class="faf-heading-2">
+        Заголовок второго уровня / Second-level heading
+      </h2>
     </section>
 
     <section class="demo-section">
-      <div class="demo-label">.faf-paragraph (fluid-base)</div>
+      <div class="demo-label">.faf-paragraph (base)</div>
       <p class="faf-paragraph">
         Это базовый параграф с fluid-типографикой. Размер шрифта плавно меняется
         от 1rem до 1.125rem в зависимости от ширины viewport. Текст легко
         читается на любом устройстве — от мобильного телефона до большого
         монитора. Fluid typography заменяет необходимость писать медиа-запросы
         для каждого размера шрифта отдельно.
+        <br /><br />
+        This is a base paragraph with fluid typography. The font size changes
+        smoothly from 1rem to 1.125rem depending on the viewport width. The text
+        is easy to read on any device — from a mobile phone to a large monitor.
+        Fluid typography eliminates the need to write media queries for each
+        font size separately.
       </p>
     </section>
 
     <section class="demo-section">
-      <div class="demo-label">.faf-text-small (fluid-sm)</div>
+      <div class="demo-label">.faf-text-small (sm)</div>
       <p class="faf-text-small">
         Это мелкий текст, который используется для подписей, метаданных и
         второстепенной информации. Диапазон: от 0.875rem до 1rem.
+        <br /><br />
+        This is small text used for captions, metadata, and secondary
+        information. Range: from 0.875rem to 1rem.
       </p>
     </section>
 
-    <div class="resize-hint">← → Измени размер окна</div>
+    <div class="resize-hint">← → Измени размер окна / Resize window</div>
   </body>
 </html>

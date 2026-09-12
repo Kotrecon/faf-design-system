@@ -1,9 +1,9 @@
-// packages/foundations/src/tokens/colors/primitives.ts
-
 /**
- * Базовые цвета (Primitives)
- * Эти цвета не меняются от продукта к продукту.
- * Используются как основа для семантических токенов.
+ * @module Primitive Colors
+ * @description Base colors (Primitives). These colors do not change from product to product.
+ *              Used as the foundation for semantic tokens.
+ *              Базовые цвета (Primitives). Эти цвета не меняются от продукта к продукту.
+ *              Используются как основа для семантических токенов.
  */
 
 export const primitives = {
@@ -20,6 +20,7 @@ export const primitives = {
     900: "oklch(0.32 0.13 250)",
   },
   gray: {
+    0: "oklch(1.00 0.00 0)",
     50: "oklch(0.98 0.005 250)",
     100: "oklch(0.96 0.01 250)",
     200: "oklch(0.92 0.015 250)",
@@ -32,16 +33,16 @@ export const primitives = {
     900: "oklch(0.20 0.03 250)",
   },
   green: {
-    50: "oklch(0.97 0.02 155)",
-    100: "oklch(0.93 0.05 155)",
-    200: "oklch(0.87 0.10 155)",
-    300: "oklch(0.78 0.15 155)",
-    400: "oklch(0.68 0.18 155)",
-    500: "oklch(0.60 0.20 155)",
-    600: "oklch(0.52 0.18 155)",
-    700: "oklch(0.44 0.15 155)",
-    800: "oklch(0.37 0.12 155)",
-    900: "oklch(0.30 0.09 155)",
+    50: "oklch(0.98 0.02 166)",
+    100: "oklch(0.95 0.05 163)",
+    200: "oklch(0.90 0.09 164)",
+    300: "oklch(0.85 0.13 165)",
+    400: "oklch(0.77 0.15 163)",
+    500: "oklch(0.69 0.17 154)",
+    600: "oklch(0.60 0.13 163)",
+    700: "oklch(0.51 0.10 166)",
+    800: "oklch(0.43 0.09 167)",
+    900: "oklch(0.38 0.07 169)",
   },
   red: {
     50: "oklch(0.97 0.02 25)",
@@ -56,16 +57,28 @@ export const primitives = {
     900: "oklch(0.30 0.12 25)",
   },
   yellow: {
-    50: "oklch(0.97 0.03 85)",
-    100: "oklch(0.93 0.07 85)",
-    200: "oklch(0.87 0.13 85)",
-    300: "oklch(0.80 0.17 85)",
-    400: "oklch(0.73 0.19 85)",
-    500: "oklch(0.66 0.20 85)",
-    600: "oklch(0.58 0.18 85)",
-    700: "oklch(0.50 0.15 85)",
-    800: "oklch(0.42 0.12 85)",
-    900: "oklch(0.34 0.09 85)",
+    50: "oklch(0.99 0.03 102)",
+    100: "oklch(0.97 0.07 103)",
+    200: "oklch(0.95 0.12 102)",
+    300: "oklch(0.91 0.17 98)",
+    400: "oklch(0.86 0.17 92)",
+    500: "oklch(0.80 0.16 86)",
+    600: "oklch(0.68 0.14 76)",
+    700: "oklch(0.55 0.12 66)",
+    800: "oklch(0.48 0.10 62)",
+    900: "oklch(0.42 0.09 58)",
+  },
+  orange: {
+    50: "oklch(0.98 0.02 74)",
+    100: "oklch(0.95 0.04 75)",
+    200: "oklch(0.90 0.07 71)",
+    300: "oklch(0.84 0.12 66)",
+    400: "oklch(0.76 0.16 56)",
+    500: "oklch(0.70 0.19 48)",
+    600: "oklch(0.65 0.19 41)",
+    700: "oklch(0.55 0.17 38)",
+    800: "oklch(0.47 0.14 37)",
+    900: "oklch(0.41 0.12 38)",
   },
   purple: {
     50: "oklch(0.97 0.02 300)",
@@ -80,10 +93,11 @@ export const primitives = {
     900: "oklch(0.30 0.14 300)",
   },
 } as const;
+/*
 
-/**
- * Fallback (HEX) для старых браузеров
- */
+ Fallback (HEX) values for older browsers
+ Fallback (HEX) значения для старых браузеров
+*/
 export const fallbackPrimitives = {
   blue: {
     50: "#eff6ff",
@@ -98,6 +112,7 @@ export const fallbackPrimitives = {
     900: "#1e3a8a",
   },
   gray: {
+    0: "#ffffff",
     50: "#f9fafb",
     100: "#f3f4f6",
     200: "#e5e7eb",
@@ -110,16 +125,16 @@ export const fallbackPrimitives = {
     900: "#111827",
   },
   green: {
-    50: "#f0fdf4",
-    100: "#dcfce7",
-    200: "#bbf7d0",
-    300: "#86efac",
-    400: "#4ade80",
-    500: "#22c55e",
-    600: "#16a34a",
-    700: "#15803d",
-    800: "#166534",
-    900: "#14532d",
+    50: "#ecfdf5",
+    100: "#d1fae5",
+    200: "#a7f3d0",
+    300: "#6ee7b7",
+    400: "#34d399",
+    500: "#10b967",
+    600: "#059669",
+    700: "#047857",
+    800: "#065f46",
+    900: "#064e3b",
   },
   red: {
     50: "#fef2f2",
@@ -134,16 +149,28 @@ export const fallbackPrimitives = {
     900: "#7f1d1d",
   },
   yellow: {
-    50: "#fffbeb",
-    100: "#fef3c7",
-    200: "#fde68a",
-    300: "#fcd34d",
-    400: "#fbbf24",
-    500: "#f59e0b",
-    600: "#d97706",
-    700: "#b45309",
-    800: "#92400e",
-    900: "#78350f",
+    50: "#fefce8",
+    100: "#fef9c3",
+    200: "#fef08a",
+    300: "#fde047",
+    400: "#facc15",
+    500: "#eab308",
+    600: "#ca8a04",
+    700: "#a16207",
+    800: "#854d0e",
+    900: "#713f12",
+  },
+  orange: {
+    50: "#fff7ed",
+    100: "#ffedd5",
+    200: "#fed7aa",
+    300: "#fdba74",
+    400: "#fb923c",
+    500: "#f97316",
+    600: "#ea580c",
+    700: "#c2410c",
+    800: "#9a3412",
+    900: "#7c2d12",
   },
   purple: {
     50: "#faf5ff",
@@ -159,9 +186,10 @@ export const fallbackPrimitives = {
   },
 } as const;
 
-// Типы
+// Types / Типы
 export type PrimitiveColor = keyof typeof primitives;
 export type PrimitiveScale =
+  | 0
   | 50
   | 100
   | 200

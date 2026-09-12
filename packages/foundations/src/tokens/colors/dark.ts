@@ -1,8 +1,7 @@
-// packages/foundations/src/tokens/colors/dark.ts
-
 /**
- * Тёмная тема (семантические цвета)
- * Ссылается на primitives и brand.
+ * @module Dark Theme
+ * @description Dark theme (semantic colors). References primitives and brand tokens.
+ *              Тёмная тема (семантические цвета). Ссылается на primitives и brand.
  */
 
 import { brand, accent } from "./brand.ts";
@@ -23,6 +22,13 @@ export const dark = {
   background: primitives.gray[900],
   surface: primitives.gray[800],
   border: primitives.gray[700],
+
+  statusOk: primitives.green[400],
+  statusHigh: primitives.orange[400],
+  statusMedium: primitives.yellow[400],
+  statusDrift: primitives.purple[400],
+  statusOffline: primitives.gray[500],
+
   brandFirefly: brand.firefly,
   brandAi: brand.ai,
   brandFlow: brand.flow,

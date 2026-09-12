@@ -1,8 +1,16 @@
-// src/semantic/themes.ts
+/**
+ * @module Semantic Themes
+ * @description Defines the contract and aggregation of light and dark semantic themes.
+ *              Определяет контракт и агрегацию светлой и тёмной семантических тем.
+ */
 
 import { light } from "../tokens/colors/light";
 import { dark } from "../tokens/colors/dark";
 
+/**
+ * Semantic Theme Contract
+ * Контракт семантической темы
+ */
 export interface SemanticTheme {
   primary: string;
   primaryHover: string;
@@ -29,10 +37,10 @@ export interface SemanticTheme {
   accentLime: string;
 }
 
-// Экспортируем темы напрямую
+// Export themes directly / Экспортируем темы напрямую
 export { light, dark };
 
-// Агрегированный объект для итерации
+// Aggregated object for iteration / Агрегированный объект для итерации
 export const themes = {
   light: light satisfies SemanticTheme,
   dark: dark satisfies SemanticTheme,

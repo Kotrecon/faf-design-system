@@ -1,8 +1,7 @@
-// packages/foundations/src/tokens/colors/light.ts
-
 /**
- * Светлая тема (семантические цвета)
- * Ссылается на primitives и brand.
+ * @module Light Theme
+ * @description Light theme (semantic colors). References primitives and brand tokens.
+ *              Светлая тема (семантические цвета). Ссылается на primitives и brand.
  */
 
 import { brand, accent } from "./brand.ts";
@@ -21,8 +20,16 @@ export const light = {
   text: primitives.gray[900],
   textMuted: primitives.gray[600],
   background: primitives.gray[50],
-  surface: "oklch(1.00 0 0)",
+  surface: primitives.gray[0],
   border: primitives.gray[200],
+
+  statusOk: primitives.green[500],
+  statusHigh: primitives.orange[500],
+  statusMedium: primitives.yellow[500],
+  statusDrift: primitives.purple[500],
+  statusOffline: primitives.gray[400],
+
+  // Brand colors in semantics (can be overridden in a specific product)
   // Брендовые цвета в семантике (можно переопределить в продукте)
   brandFirefly: brand.firefly,
   brandAi: brand.ai,

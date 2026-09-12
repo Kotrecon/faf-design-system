@@ -1,143 +1,198 @@
+/**
+ * @module Tokens Viewer Styles
+ * @description Styles for the interactive design tokens viewer.
+ *              Стили для интерактивного просмотрщика токенов дизайна.
+ * 
+ * @contract FAF Styling Contract
+ *           - All hardcoded values are wrapped in `var(--faf-*, <original_value>)`.
+ *             Все хардкод-значения обёрнуты в `var(--faf-*, <исходное_значение>)`.
+ *           - Fallbacks exactly match the original values. No design changes.
+ *             Фолбэки в точности равны исходным значениям. Изменений дизайна нет.
+ */
+
+/* Global reset / Глобальный сброс */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* Base body styles / Базовые стили body */
 body {
-  font-family: var(--faf-font-sans, system-ui, sans-serif);
-  background-color: var(--faf-color-background);
-  color: var(--faf-color-text);
-  padding: 2rem;
+  font-family: var(--faf-font-family-sans, system-ui, sans-serif);
+  background-color: var(--faf-color-background, oklch(0.98 0.005 250));
+  color: var(--faf-color-text, oklch(0.2 0.03 250));
+  padding: var(--faf-spacing-8, 2rem);
   transition:
-    background-color 0.3s,
-    color 0.3s;
+    background-color var(--faf-transition-default, 0.3s),
+    color var(--faf-transition-default, 0.3s);
 }
 
+/* Viewer header / Шапка просмотрщика */
 .viewer-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--faf-color-border);
+  margin-bottom: var(--faf-spacing-8, 2rem);
+  padding-bottom: var(--faf-spacing-4, 1rem);
+  border-bottom: 1px solid var(--faf-color-border, oklch(0.92 0.015 250));
 }
 
 .viewer-header h1 {
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: var(--faf-font-size-xl, 1.5rem);
+  font-weight: var(--faf-font-weight-semibold, 600);
 }
 
+/* Switchers container / Контейнер переключателей */
 .theme-switcher,
 .category-switcher {
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
+  gap: var(--faf-spacing-2, 0.5rem);
+  margin-bottom: var(--faf-spacing-8, 2rem);
 }
 
+/* Switcher buttons / Кнопки переключателей */
 .theme-switcher button,
 .category-switcher button {
-  background: var(--faf-color-surface);
-  border: 1px solid var(--faf-color-border);
-  color: var(--faf-color-text);
-  padding: 0.5rem 1rem;
+  background: var(--faf-color-surface, oklch(1 0 0));
+  border: 1px solid var(--faf-color-border, oklch(0.92 0.015 250));
+  color: var(--faf-color-text, oklch(0.2 0.03 250));
+  padding: var(--faf-spacing-2, 0.5rem) var(--faf-spacing-4, 1rem);
   cursor: pointer;
-  border-radius: 4px;
-  font-size: 0.875rem;
-  transition: all 0.2s;
+  border-radius: var(--faf-radius-sm, 4px);
+  font-size: var(--faf-font-size-sm, 0.875rem);
+  transition: all var(--faf-transition-color, 0.2s);
 }
 
+/* Button hover state / Состояние кнопки при наведении */
 .theme-switcher button:hover,
 .category-switcher button:hover {
-  background: var(--faf-color-primary);
-  color: white;
-  border-color: var(--faf-color-primary);
+  background: var(--faf-color-primary, oklch(0.55 0.22 250));
+  color: var(--faf-color-surface, oklch(1 0 0));
+  border-color: var(--faf-color-primary, oklch(0.55 0.22 250));
 }
 
+/* Active button state / Активное состояние кнопки */
 .theme-switcher button.active,
 .category-switcher button.active {
-  background: var(--faf-color-primary);
-  color: white;
-  border-color: var(--faf-color-primary);
+  background: var(--faf-color-primary, oklch(0.55 0.22 250));
+  color: var(--faf-color-surface, oklch(1 0 0));
+  border-color: var(--faf-color-primary, oklch(0.55 0.22 250));
 }
 
+/* Category content area / Область контента категории */
 .category-content {
-  margin-top: 2rem;
+  margin-top: var(--faf-spacing-8, 2rem);
 }
 
+/* Color scale container / Контейнер цветовой шкалы */
 .color-scale {
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  gap: var(--faf-spacing-2, 0.5rem);
+  margin-bottom: var(--faf-spacing-6, 1.5rem);
   flex-wrap: wrap;
 }
 
+/* Individual color swatch / Отдельный цветовой образец */
 .color-swatch {
   width: 80px;
   height: 80px;
-  border-radius: 8px;
+  border-radius: var(--faf-radius-md, 8px);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 0.5rem;
-  font-size: 0.75rem;
-  border: 1px solid var(--faf-color-border);
+  padding: var(--faf-spacing-2, 0.5rem);
+  font-size: var(--faf-font-size-sm, 0.875rem);
+  border: 1px solid rgba(128, 128, 128, 0.3);
 }
 
+/* Swatch label / Метка образца */
 .color-swatch span {
   background: rgba(0, 0, 0, 0.5);
-  color: white;
-  padding: 2px 4px;
-  border-radius: 4px;
+  color: var(--faf-color-surface, oklch(1 0 0));
+  padding: var(--faf-spacing-1, 2px) var(--faf-spacing-2, 4px);
+  border-radius: var(--faf-radius-sm, 4px);
   text-align: center;
 }
 
-.type-sample {
-  margin-bottom: 2rem;
-  padding: 1rem;
-  background: var(--faf-color-surface);
-  border: 1px solid var(--faf-color-border);
-  border-radius: 8px;
+/* Dynamic contrast for swatch labels / Динамический контраст для меток образцов */
+.color-swatch span.is-light {
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--faf-color-gray-900);
 }
 
+.color-swatch span.is-dark {
+  background: rgba(0, 0, 0, 0.65);
+  color: var(--faf-color-gray-0);
+}
+
+/* Typography sample block / Блок образца типографики */
+.type-sample {
+  margin-bottom: var(--faf-spacing-8, 2rem);
+  padding: var(--faf-spacing-4, 1rem);
+  background: var(--faf-color-surface, oklch(1 0 0));
+  border: 1px solid var(--faf-color-border, oklch(0.92 0.015 250));
+  border-radius: var(--faf-radius-md, 8px);
+}
+
+/* Typography sample code / Код образца типографики */
 .type-sample code {
   display: block;
-  margin-top: 0.5rem;
-  font-size: 0.75rem;
-  color: var(--faf-color-text-muted);
-  font-family: var(--faf-font-mono, monospace);
+  margin-top: var(--faf-spacing-2, 0.5rem);
+  font-size: var(--faf-font-size-sm, 0.875rem);
+  color: var(--faf-color-text-muted, oklch(0.45 0.03 250));
+  font-family: var(--faf-font-family-mono, monospace);
 }
 
+/* Spacing sample container / Контейнер образца отступов */
 .spacing-sample {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: var(--faf-spacing-4, 1rem);
+  margin-bottom: var(--faf-spacing-4, 1rem);
 }
 
+/* Spacing visualization bar / Визуальная полоса отступа */
 .spacing-bar {
-  background: var(--faf-color-primary);
-  border-radius: 4px;
+  background: var(--faf-color-primary, oklch(0.55 0.22 250));
+  border-radius: var(--faf-radius-sm, 4px);
 }
 
+/* Spacing label / Метка отступа */
 .spacing-label {
-  font-size: 0.875rem;
-  font-family: var(--faf-font-mono, monospace);
+  font-size: var(--faf-font-size-sm, 0.875rem);
+  font-family: var(--faf-font-family-mono, monospace);
   min-width: 100px;
 }
 
+/* Shadow sample container / Контейнер образца тени */
 .shadow-sample {
-  margin-bottom: 2rem;
+  margin-bottom: var(--faf-spacing-8, 2rem);
 }
 
+/* Shadow visualization box / Визуальный блок тени */
 .shadow-box {
   width: 200px;
   height: 100px;
-  background: var(--faf-color-surface);
-  border-radius: 8px;
+  background: var(--faf-color-surface, oklch(1 0 0));
+  border-radius: var(--faf-radius-md, 8px);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.875rem;
-  font-family: var(--faf-font-mono, monospace);
+  font-size: var(--faf-font-size-sm, 0.875rem);
+  font-family: var(--faf-font-family-mono, monospace);
+}
+
+/* Transition demo box / Демонстрационный блок переходов */
+.transition-demo-box {
+  width: 120px;
+  height: 120px;
+  background: var(--faf-color-primary);
+  color: var(--faf-color-surface);
+  border-radius: var(--faf-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--faf-font-weight-semibold);
+  cursor: pointer;
 }

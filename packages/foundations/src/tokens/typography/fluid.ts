@@ -1,17 +1,24 @@
-// src/tokens/typography/fluid.ts
+/**
+ * @module Fluid Typography
+ * @description Generator and presets for CSS clamp() fluid typography values.
+ *              Генератор и пресеты fluid-значений типографики для CSS clamp().
+ */
 
 /**
- * Генератор fluid-значения для CSS clamp()
- * @param min - минимальный размер в rem (число)
- * @param preferred - строка с предпочтительным значением, например "0.9rem + 0.33vw"
- * @param max - максимальный размер в rem (число)
- * @returns Строку для CSS функции clamp()
+ * Generates a fluid value for CSS clamp()
+ * Генерирует fluid-значение для CSS clamp()
+ * @param min - Minimum size in rem (number) / Минимальный размер в rem (число)
+ * @param preferred - Preferred value string, e.g., "0.9rem + 0.33vw" / Строка с предпочтительным значением, например "0.9rem + 0.33vw"
+ * @param max - Maximum size in rem (number) / Максимальный размер в rem (число)
+ * @returns String for CSS clamp() function / Строку для CSS функции clamp()
  */
 export function fluid(min: number, preferred: string, max: number): string {
   return `clamp(${min}rem, ${preferred}, ${max}rem)`;
 }
 
 /**
+ * Ready-made fluid sizes based on modular scale (ratio 1.25)
+ * Values taken from the course example, adapted for our system
  * Готовые fluid-размеры на основе modular scale (ratio 1.25)
  * Значения взяты из примера курса, адаптированы под нашу систему
  */
