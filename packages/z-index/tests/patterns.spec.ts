@@ -1,92 +1,120 @@
-/**
- * @module Faf Patterns E2E Tests
- * @description End-to-end tests for stacking context and accessibility (Focus Trap) using Playwright.
- *              E2E-тесты контекста наложения и доступности (Focus Trap) с использованием Playwright.
- */
+// packages/z-index/tests/patterns.spec.ts
+// E2E tests for Z-Index patterns / E2E-тесты паттернов Z-Index
 
 import { test, expect } from "@playwright/test";
-import { zIndexTokens } from "../src/tokens/zindex";
 
 test.describe("Faf Z-Index: Stacking Context E2E", () => {
-  test.beforeEach(async ({ page }) => {
-    // Run tests against the real Viewer / Запускаем тесты против реального Viewer
-    await page.goto("/");
-  });
-
   test("should apply correct z-index from CSS variables / должен применять правильные z-index из CSS-переменных", async ({
     page,
   }) => {
-    // Navigate to the "Live Demo" tab / Переходим на вкладку "Live Demo"
-    await page.click('[data-category="demo"]');
+    await page.goto("/");
 
-    // Open the modal / Открываем модалку
+    // Переходим на вкладку Demo, где физически существует модалка
+    // Navigate to Demo tab where the modal physically exists
+    await page.click('button[data-category="demo"]');
+    await page.waitForSelector(".demo-section");
+
+    // Открываем модалку для проверки / Open the modal to check it
     await page.click('button:has-text("Открыть модалку")');
-
-    // Verify that the modal is open / Проверяем, что модалка открылась
     const modal = page.locator("faf-modal");
-    await expect(modal).toHaveAttribute("open");
+    await expect(modal).toBeVisible();
 
-    // Check modal z-index (via computed styles) / Проверяем z-index модалки (через вычисленные стили)
+    // Modal uses --faf-zindex-modal (1050) / Модалка использует --faf-zindex-modal (1050)
     const modalZIndex = await modal.evaluate((el) => {
       return window.getComputedStyle(el).zIndex;
     });
 
-    expect(modalZIndex).toBe(String(zIndexTokens.modal));
+    // Modal should have z-index 1050 / Модалка должна иметь z-index 1050
+    expect(modalZIndex).toBe("1050");
+
+    // 🔥 FIX: Принудительно закрываем модалку через JS, чтобы не сломать параллельные тесты
+    // 🔥 FIX: Force close modal via JS to avoid breaking parallel tests
+    await page.evaluate(() => {
+      const m = document.getElementById("demo-modal") as any;
+      if (m) {
+        m.removeAttribute("open");
+        if (typeof m.close === "function") m.close();
+      }
+    });
   });
 
   test("toast should be above modal in stacking order / тост должен находиться выше модалки в stacking order", async ({
     page,
   }) => {
-    await page.click('[data-category="demo"]');
+    // 1. Переходим на вкладку Live Demo / Navigate to Live Demo tab
+    await page.goto("/");
+    await page.click('button[data-category="demo"]');
+    await page.waitForSelector(".demo-section");
 
-    // 1. First, show the toast / 1. Сначала показываем тост
-    await page.click('button:has-text("Показать тост")');
-
-    // 🔥 FIX: Check z-index on the CONTAINER, as it holds the z-index: 1080
-    // 🔥 ИСПРАВЛЕНИЕ: Проверяем z-index у КОНТЕЙНЕРА, так как именно он имеет z-index: 1080
-    const toastContainer = page.locator("faf-toast-container");
-
-    // Ensure the toast is rendered / Убеждаемся, что тост отрендерился
-    await expect(toastContainer.locator("faf-toast")).toBeVisible();
-
-    const toastZIndex = await toastContainer.evaluate((el) => {
-      const zIndex = window.getComputedStyle(el).zIndex;
-      // Guard against "auto", though container should have a number
-      // Защита от "auto", хотя у контейнера он должен быть числом
-      return parseInt(zIndex === "auto" ? "0" : zIndex, 10);
+    // 🔥 FIX: Принудительно закрываем модалку через JS, чтобы она гарантированно не перекрывала кнопку
+    // 🔥 FIX: Force close modal via JS to guarantee it doesn't block the button
+    await page.evaluate(() => {
+      const m = document.getElementById("demo-modal") as any;
+      if (m) {
+        m.removeAttribute("open");
+        if (typeof m.close === "function") m.close();
+      }
     });
 
-    // 2. Open the modal on top / 2. Открываем модалку поверх
-    await page.click('button:has-text("Открыть модалку")');
-    await expect(page.locator("faf-modal")).toHaveAttribute("open");
+    // Ждем, пока модалка действительно исчезнет / Wait for modal to truly disappear
+    await expect(page.locator("faf-modal")).not.toBeVisible({ timeout: 2000 });
 
-    // 3. Verify contract: toast (1080) is strictly above modal (1050)
-    // 3. Проверяем контракт: тост (1080) строго выше модалки (1050)
-    expect(toastZIndex).toBeGreaterThan(zIndexTokens.modal);
+    // 2. Показываем тост (--faf-zindex-toast: 1080) / Show the toast
+    await page.click('button:has-text("Показать тост")');
+
+    // Убеждаемся, что тост отрендерился / Ensure the toast is rendered
+    const toastContainer = page.locator("faf-toast-container");
+    await expect(toastContainer.locator("faf-toast")).toBeVisible();
+
+    // 3. Проверяем z-index тоста / Check toast z-index
+    const toastZIndex = await toastContainer.evaluate((el) => {
+      return window.getComputedStyle(el).zIndex;
+    });
+
+    // 4. Открываем модалку и проверяем её z-index для сравнения / Open modal and check its z-index for comparison
+    await page.click('button:has-text("Открыть модалку")');
+    const modal = page.locator("faf-modal");
+    await expect(modal).toBeVisible();
+
+    const modalZIndex = await modal.evaluate((el) => {
+      return window.getComputedStyle(el).zIndex;
+    });
+
+    // Тост (1080) должен быть выше модалки (1050) / Toast (1080) must be above modal (1050)
+    expect(toastZIndex).toBe("1080");
+    expect(modalZIndex).toBe("1050");
+    expect(Number(toastZIndex)).toBeGreaterThan(Number(modalZIndex));
   });
 });
 
 test.describe("Faf Patterns: Accessibility & Focus E2E", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto("/");
-    await page.click('[data-category="demo"]');
-  });
-
   test("should trap focus inside modal (Focus Trap) / должен блокировать фокус внутри модалки (Focus Trap)", async ({
     page,
   }) => {
+    // 1. Переходим на вкладку Live Demo / Navigate to Live Demo tab
+    await page.goto("/");
+    await page.click('button[data-category="demo"]');
+    await page.waitForSelector(".demo-section");
+
     // Open the modal via the Live Demo button / Открываем модалку через кнопку в Live Demo
-    await page.click('button:has-text("Открыть модалку")');
+    const openModalBtn = page.getByRole("button", {
+      name: /Открыть модалку|Open Modal/i,
+    });
+    await openModalBtn.click();
 
     // Wait for the modal to open / Ждём, когда модалка откроется
     const modal = page.locator("faf-modal");
+
+    // 🔥 FIX: Сначала ждём видимости, чтобы избежать race condition с Web Components
+    // 🔥 FIX: First wait for visibility to avoid race conditions with Web Components
+    await expect(modal).toBeVisible({ timeout: 5000 });
     await expect(modal).toHaveAttribute("open");
 
     // Focus should be on the first focusable element (close button or first slot)
     // Фокус должен быть на первом фокусируемом элементе (кнопка закрытия или первый слот)
     // In our implementation, focus is trapped by trapFocus
     // В нашей реализации фокус перехватывается trapFocus
-    await page.waitForTimeout(100);
+    await page.waitForTimeout(150);
 
     // Press Tab multiple times and verify focus doesn't leave the modal
     // Нажимаем Tab несколько раз и проверяем, что фокус не уходит за пределы модалки
@@ -111,18 +139,31 @@ test.describe("Faf Patterns: Accessibility & Focus E2E", () => {
   test("should return focus to trigger after closing via Escape / должен возвращать фокус на триггер после закрытия по Escape", async ({
     page,
   }) => {
-    const triggerButton = page.locator('button:has-text("Открыть модалку")');
+    // 1. Переходим на вкладку Live Demo / Navigate to Live Demo tab
+    await page.goto("/");
+    await page.click('button[data-category="demo"]');
+    await page.waitForSelector(".demo-section");
+
+    // 2. Находим кнопку-триггер и фокусируемся на ней / Find trigger button and focus on it
+    const triggerButton = page.getByRole("button", {
+      name: /Открыть модалку|Open Modal/i,
+    });
+    await triggerButton.focus();
     await triggerButton.click();
 
-    await expect(page.locator("faf-modal")).toHaveAttribute("open");
+    // 3. Ждём открытия модалки / Wait for modal to open
+    const modal = page.locator("faf-modal");
+    await expect(modal).toBeVisible({ timeout: 5000 });
+    await expect(modal).toHaveAttribute("open");
 
-    // Close via Escape / Закрываем по Escape
+    // 4. Закрываем по Escape / Close via Escape
     await page.keyboard.press("Escape");
 
-    // Modal should close / Модалка должна закрыться
-    await expect(page.locator("faf-modal")).not.toHaveAttribute("open");
+    // 5. Ждём, пока модалка закроется / Wait for modal to close
+    await expect(modal).not.toBeVisible();
+    await expect(modal).not.toHaveAttribute("open");
 
-    // Focus should return to the trigger button / Фокус должен вернуться на кнопку-триггер
+    // 6. Проверяем, что фокус вернулся на кнопку-триггер / Verify focus returned to trigger button
     await expect(triggerButton).toBeFocused();
   });
 });

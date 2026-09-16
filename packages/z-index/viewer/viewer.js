@@ -233,7 +233,7 @@ class ZIndexViewer {
               <div class="box box-1" style="display: flex; align-items: flex-end; padding-bottom: 8px;">
                 <span style="font-size: 0.75rem;">Box 1<br/>z-index: 1</span>
                 <div class="box box-3" style="display: flex; align-items: center; justify-content: center;">
-                  <span style="font-size: 0.65rem;">Box 3<br/>z-index: 3</span>
+                  <span style="font-size: 0.75rem;">Box 3<br/>z-index: 3</span>
                 </div>
               </div>
               <div class="box box-2" style="display: flex; align-items: center; justify-content: center;">
@@ -246,10 +246,10 @@ class ZIndexViewer {
           <div class="example">
             <h3>Пример 3: opacity создаёт stacking context<br/>Example 3: opacity creates stacking context</h3>
             <div class="demo-container">
-              <div class="box box-1" style="opacity: 0.99; display: flex; align-items: flex-end; padding-bottom: 8px;">
-                <span style="font-size: 0.75rem;">Box 1<br/>opacity: 0.99<br/>z-index: 1</span>
+              <div class="box box-1" style="display: flex; align-items: flex-end; padding-bottom: 8px;">
+                <span style="font-size: 0.75rem;">Box 1<br/>z-index: 1</span>
                 <div class="box box-3" style="display: flex; align-items: center; justify-content: center;">
-                  <span style="font-size: 0.65rem;">Box 3<br/>z-index: 3</span>
+                  <span style="font-size: 0.75rem;">Box 3<br/>z-index: 3</span>
                 </div>
               </div>
               <div class="box box-2" style="display: flex; align-items: center; justify-content: center;">
