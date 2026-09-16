@@ -151,6 +151,7 @@ export class FafColorsValidator {
           iconColor,
           surfaceColor,
           "normal",
+          3,
         );
       }
     }
@@ -191,7 +192,7 @@ export class FafColorsValidator {
         );
       }
     }
-
+    report.issues.sort((a, b) => a.contrast - b.contrast);
     return report;
   }
 
@@ -207,12 +208,12 @@ export class FafColorsValidator {
     fgColor: string,
     bgColor: string,
     textSize: "normal" | "large",
+    requiredRatio: number = 4.5,
   ): void {
     const info = FafContrast.getAccessibilityInfo(fgColor, bgColor);
     report.total++;
 
-    const isPass = textSize === "large" ? info.aa.large : info.aa.normal;
-    const requiredRatio = textSize === "large" ? 3 : 4.5;
+    const isPass = info.ratio >= requiredRatio;
 
     if (isPass) {
       report.passed++;

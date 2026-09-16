@@ -2,90 +2,17 @@
 // Viewer logic: category switching, theme toggle, contrast checker
 // Логика viewer: переключение категорий, смена темы, проверка контраста
 
-// FafContrast utility (browser version)
-// Утилита FafContrast (браузерная версия)
-const FafContrast = {
-  parseHex(hex) {
-    const result =
-      /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex) ||
-      /^#?([a-f\d])([a-f\d])([a-f\d])$/i.exec(hex);
-    if (!result) return [0, 0, 0];
-    const isShort = result[1].length === 1;
-    return [
-      parseInt(isShort ? result[1] + result[1] : result[1], 16),
-      parseInt(isShort ? result[2] + result[2] : result[2], 16),
-      parseInt(isShort ? result[3] + result[3] : result[3], 16),
-    ];
-  },
-  parseRgb(rgb) {
-    const match = rgb.match(
-      /rgb\(\s*([\d.]+)\s*[,]?\s*([\d.]+)\s*[,]?\s*([\d.]+)\s*\)/,
-    );
-    if (!match) return [0, 0, 0];
-    return [parseFloat(match[1]), parseFloat(match[2]), parseFloat(match[3])];
-  },
-  parseOklch(oklch) {
-    const match = oklch.match(/oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*\)/);
-    if (!match) return [0, 0, 0];
-    const [_, l, c, h] = match.map(parseFloat);
-    const hRad = (h * Math.PI) / 180;
+// Import the real utility from the package.
+// Импортируем реальную утилиту из пакета.
+import { FafContrast } from "../dist/index.js";
 
-    // Refactored for clarity and to avoid parenthesis errors
-    // Рефакторинг для читаемости и избежания ошибок со скобками
-    const r = Math.round(l * 255 * (1 + c * Math.cos(hRad)));
-    const g = Math.round(
-      l * 255 * (1 + c * Math.cos(hRad - (2 * Math.PI) / 3)),
-    );
-    const b = Math.round(
-      l * 255 * (1 + c * Math.cos(hRad - (4 * Math.PI) / 3)),
-    );
+// Import real tokens from Foundations.
+// Импортируем реальные токены Foundations.
+import "@faf/foundations/styles";
 
-    return [
-      Math.max(0, Math.min(255, r)),
-      Math.max(0, Math.min(255, g)),
-      Math.max(0, Math.min(255, b)),
-    ];
-  },
-  parseColor(color) {
-    const trimmed = color.trim().toLowerCase();
-    if (trimmed.startsWith("#")) return this.parseHex(trimmed);
-    if (trimmed.startsWith("rgb(")) return this.parseRgb(trimmed);
-    if (trimmed.startsWith("oklch(")) return this.parseOklch(trimmed);
-    return [0, 0, 0];
-  },
-  getLuminance(color) {
-    const [r, g, b] = this.parseColor(color).map((c) => {
-      const cSrgb = c / 255;
-      return cSrgb <= 0.03928
-        ? cSrgb / 12.92
-        : Math.pow((cSrgb + 0.055) / 1.055, 2.4);
-    });
-    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-  },
-  calculateContrast(color1, color2) {
-    const lum1 = this.getLuminance(color1);
-    const lum2 = this.getLuminance(color2);
-    const lighter = Math.max(lum1, lum2);
-    const darker = Math.min(lum1, lum2);
-    return (lighter + 0.05) / (darker + 0.05);
-  },
-  isAccessible(color1, color2, level = "AA", textSize = "normal") {
-    const contrast = this.calculateContrast(color1, color2);
-    if (level === "AA")
-      return textSize === "large" ? contrast >= 3 : contrast >= 4.5;
-    if (level === "AAA")
-      return textSize === "large" ? contrast >= 4.5 : contrast >= 7;
-    return false;
-  },
-  getAccessibilityInfo(color1, color2) {
-    const ratio = this.calculateContrast(color1, color2);
-    return {
-      ratio: parseFloat(ratio.toFixed(2)),
-      aa: { normal: ratio >= 4.5, large: ratio >= 3 },
-      aaa: { normal: ratio >= 7, large: ratio >= 4.5 },
-    };
-  },
-};
+// Import viewer styles through Vite.
+// Импортируем стили viewer через Vite.
+import "./styles.css";
 
 // Category switching / Переключение категорий
 document.addEventListener("DOMContentLoaded", () => {
@@ -112,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentTheme = html.getAttribute("data-theme");
     const newTheme = currentTheme === "light" ? "dark" : "light";
     html.setAttribute("data-theme", newTheme);
+    // Оставляем строго на английском, как ты и указал
     themeToggle.textContent =
       newTheme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode";
   });
@@ -170,5 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Auto-check on load / Автопроверка при загрузке
   checkBtn.click();
 });

@@ -1,3 +1,13 @@
+/**
+ * @module @faf/contrast
+ * @description Main entry point for the contrast package.
+ *              Exports utilities for contrast calculation, CSS token parsing,
+ *              and validators for colors and focus states.
+ *              Главная точка входа пакета контрастности.
+ *              Экспортирует утилиты для расчёта контрастности, парсинга CSS-токенов,
+ *              а также валидаторы цветов и состояний фокуса.
+ */
+
 // packages/contrast/src/index.ts
 
 export { FafContrast } from "./utils/faf-contrast.js";

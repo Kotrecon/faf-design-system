@@ -5,20 +5,34 @@ import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 test.describe("Faf-Contrast Accessibility Tests", () => {
-  // ⚠️ TODO: These tests require the Viewer to be running
-  // ⚠️ TODO: Эти тесты требуют запущенного Viewer
-  // Will be fully implemented in Step 4 after Viewer creation
-  // Будут полностью реализованы в Шаге 4 после создания Viewer
-
   test("should have a title", async ({ page }) => {
-    // Basic test to check structure / Базовый тест для проверки структуры
     await page.goto("http://localhost:3002");
-    await expect(page).toHaveTitle(/Faf Contrast/);
+    await expect(page).toHaveTitle(/Faf-Contrast/);
   });
 
   test("should pass WCAG AA contrast requirements", async ({ page }) => {
-    // Should pass WCAG AA contrast requirements / Должен проходить требования WCAG AA по контрастности
-    await page.goto("http://localhost:3002");
+    await page.goto("http://localhost:3002", {
+      waitUntil: "networkidle",
+    });
+
+    await page.waitForFunction(() => {
+      const button = document.querySelector("#check-btn");
+
+      if (!button) {
+        return false;
+      }
+
+      const style = getComputedStyle(button);
+
+      return (
+        style.backgroundColor !== "rgba(0, 0, 0, 0)" &&
+        style.color !== "rgb(0, 0, 0)"
+      );
+    });
+
+    await page.evaluate(async () => {
+      await document.fonts.ready;
+    });
 
     const results = await new AxeBuilder({ page })
       .withTags(["wcag2aa", "wcag21aa"])
@@ -32,7 +46,6 @@ test.describe("Faf-Contrast Accessibility Tests", () => {
   });
 
   test("should have visible focus indicators", async ({ page }) => {
-    // Should have visible focus indicators / Должен иметь видимые индикаторы фокуса
     await page.goto("http://localhost:3002");
 
     const results = await new AxeBuilder({ page })
@@ -47,7 +60,6 @@ test.describe("Faf-Contrast Accessibility Tests", () => {
   });
 
   test("should have valid ARIA attributes", async ({ page }) => {
-    // Should have valid ARIA attributes / Должен иметь валидные ARIA атрибуты
     await page.goto("http://localhost:3002");
 
     const results = await new AxeBuilder({ page })

@@ -51,8 +51,14 @@ export class CssTokenParser {
     filePath: string,
     prefix: string = "--faf-",
   ): Promise<Record<string, string>> {
-    const fs = await import("fs/promises");
-    const cssContent = await fs.readFile(filePath, "utf-8");
-    return this.parse(cssContent, prefix);
+    try {
+      const fs = await import("fs/promises");
+      const cssContent = await fs.readFile(filePath, "utf-8");
+      return this.parse(cssContent, prefix);
+    } catch (error) {
+      throw new Error(
+        `Failed to read or parse CSS file at "${filePath}". Details: ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
   }
 }

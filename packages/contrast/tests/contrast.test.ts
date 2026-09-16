@@ -127,4 +127,36 @@ describe("FafContrast", () => {
       expect(info.aaa.normal).toBe(false);
     });
   });
+
+  describe("Robust RGB & Hex Parsing", () => {
+    it("should handle rgb with percentages", () => {
+      // rgb(100%, 50%, 0%) должен корректно конвертироваться в [255, 127.5, 0]
+      const lum = FafContrast.getLuminance("rgb(100%, 50%, 0%)");
+      expect(lum).toBeGreaterThan(0);
+      expect(lum).toBeLessThan(1);
+    });
+
+    it("should handle rgb with spaces instead of commas", () => {
+      // rgb(255 255 255) должен работать как rgb(255, 255, 255)
+      const lumWhite = FafContrast.getLuminance("rgb(255 255 255)");
+      expect(lumWhite).toBeCloseTo(1, 1);
+    });
+
+    it("should handle short hex codes", () => {
+      // #fff должен быть равен #ffffff
+      const lumShort = FafContrast.getLuminance("#fff");
+      const lumLong = FafContrast.getLuminance("#ffffff");
+      expect(lumShort).toBe(lumLong);
+    });
+  });
+
+  describe("getAccessibilityInfo precision", () => {
+    it("should round ratio to 2 decimal places", () => {
+      // Проверка, что коэффициент округляется, как в реализации
+      const info = FafContrast.getAccessibilityInfo("#767676", "#ffffff");
+      expect(info.ratio.toString().split(".")[1]?.length).toBeLessThanOrEqual(
+        2,
+      );
+    });
+  });
 });

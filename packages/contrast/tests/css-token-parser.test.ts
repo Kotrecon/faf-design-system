@@ -74,4 +74,23 @@ describe("CssTokenParser", () => {
       expect(tokens).toEqual({});
     });
   });
+  it("should handle multiline token values", () => {
+    // Токены могут быть разбиты на несколько строк
+    const css = `
+        :root {
+          --faf-color-complex: oklch(
+            0.55 0.22 250
+          );
+        }
+      `;
+    const tokens = parser.parse(css);
+    expect(tokens["--faf-color-complex"]).toContain("oklch");
+    expect(tokens["--faf-color-complex"]).toContain("0.55");
+  });
+
+  it("should handle tokens without spaces around colon", () => {
+    const css = `:root {--faf-color-tight:#000;}`;
+    const tokens = parser.parse(css);
+    expect(tokens["--faf-color-tight"]).toBe("#000");
+  });
 });

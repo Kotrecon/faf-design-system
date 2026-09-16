@@ -1,25 +1,31 @@
 /* packages/contrast/viewer/styles.css */
-/* Viewer styles using Faf Foundations tokens */
 /* Стили viewer с использованием токенов Faf Foundations */
+/* Viewer styles using Faf Foundations tokens */
 
+/* ============================================
+   1. Маппинг токенов светлой темы
+   Light theme token mapping
+   ============================================ */
 :root {
-  /* 1. Маппинг токенов светлой темы / Light theme token mapping */
   --viewer-bg: var(--faf-color-background, #f9fafb);
   --viewer-surface: var(--faf-color-surface, #ffffff);
   --viewer-text: var(--faf-color-text, #111827);
   --viewer-text-muted: var(--faf-color-text-muted, #6b7280);
   --viewer-border: var(--faf-color-border, #e5e7eb);
+  --viewer-border-strong: var(--faf-color-gray-300, #d1d5db);
+  --viewer-border-dark: var(--faf-color-gray-700, #374151);
   --viewer-primary: var(--faf-color-primary, #3b82f6);
-  --viewer-primary-hover: var(--faf-color-primary-700, #2563eb);
+  --viewer-primary-hover: var(--faf-color-primary-hover, #2563eb);
   --viewer-code-bg: var(--faf-color-gray-900, #1f2937);
   --viewer-code-text: var(--faf-color-gray-50, #f9fafb);
   --viewer-success: var(--faf-color-success, #10b981);
-  --viewer-error: var(--faf-color-danger, #ef4444);
+  --viewer-error: var(--faf-color-error, #ef4444);
   --viewer-warning: var(--faf-color-warning, #f59e0b);
+  --viewer-transition: var(--faf-transition-color, 0.2s);
 
   /* Типографика / Typography */
   --viewer-font-family: var(
-    --faf-font-family-base,
+    --faf-font-family-sans,
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
@@ -32,6 +38,7 @@
   --viewer-font-size-lg: var(--faf-font-size-lg, 1.125rem);
   --viewer-font-size-xl: var(--faf-font-size-xl, 1.25rem);
   --viewer-font-size-2xl: var(--faf-font-size-2xl, 1.5rem);
+  --viewer-font-weight-medium: var(--faf-font-weight-medium, 500);
   --viewer-line-height: var(--faf-line-height-normal, 1.5);
 
   /* Отступы / Spacing */
@@ -50,26 +57,31 @@
   --viewer-shadow-sm: var(--faf-shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.05));
 }
 
-/* 2. Контекстное переопределение ТОЛЬКО для значений переменных (Тёмная тема) */
-/* Context-aware override ONLY for token values (Dark theme) */
+/* ============================================
+   2. Контекстное переопределение для тёмной темы
+   Context-aware override for dark theme
+   ============================================ */
 [data-theme="dark"] {
   --viewer-bg: var(--faf-color-background, #111827);
   --viewer-surface: var(--faf-color-surface, #1f2937);
   --viewer-text: var(--faf-color-text, #f9fafb);
   --viewer-text-muted: var(--faf-color-text-muted, #9ca3af);
   --viewer-border: var(--faf-color-border, #374151);
+  --viewer-border-strong: var(--faf-color-gray-600, #4b5563);
+  --viewer-border-dark: var(--faf-color-gray-500, #6b7280);
   --viewer-primary: var(--faf-color-primary, #60a5fa);
-  --viewer-primary-hover: var(--faf-color-primary-500, #3b82f6);
-  --viewer-code-bg: var(--faf-color-gray-950, #0f172a);
+  --viewer-primary-hover: var(--faf-color-primary-hover, #3b82f6);
+  --viewer-code-bg: var(--faf-color-gray-900, #0f172a);
   --viewer-code-text: var(--faf-color-gray-200, #e2e8f0);
   --viewer-success: var(--faf-color-success, #34d399);
-  --viewer-error: var(--faf-color-danger, #f87171);
+  --viewer-error: var(--faf-color-error, #f87171);
   --viewer-warning: var(--faf-color-warning, #fbbf24);
 }
 
-/* 3. State logic просто читает готовые переменные, не зная о теме */
-/* State logic simply reads ready variables, unaware of the theme */
-
+/* ============================================
+   3. Базовые стили
+   Base styles
+   ============================================ */
 * {
   margin: 0;
   padding: 0;
@@ -93,6 +105,10 @@ body {
   padding: var(--viewer-spacing-8);
 }
 
+/* ============================================
+   4. Шапка и переключатель темы
+   Header and theme toggle
+   ============================================ */
 .viewer-header {
   text-align: center;
   margin-bottom: var(--viewer-spacing-8);
@@ -119,13 +135,17 @@ body {
   border-radius: var(--viewer-radius-md);
   cursor: pointer;
   font-size: var(--viewer-font-size-sm);
-  transition: background-color 0.2s;
+  transition: background-color var(--viewer-transition);
 }
 
 .theme-toggle:hover {
   background: var(--viewer-border);
 }
 
+/* ============================================
+   5. Навигация (синие кнопки)
+   Navigation (blue buttons)
+   ============================================ */
 .viewer-nav {
   display: flex;
   gap: var(--viewer-spacing-2);
@@ -137,25 +157,34 @@ body {
 
 .nav-btn {
   padding: var(--viewer-spacing-3) var(--viewer-spacing-6);
-  background: var(--viewer-surface);
-  border: 1px solid var(--viewer-border);
+  border: 1px solid var(--viewer-primary);
+  background: var(--viewer-primary);
+  color: var(--viewer-surface);
   border-radius: var(--viewer-radius-md);
   cursor: pointer;
-  font-size: var(--viewer-font-size-base);
-  font-weight: 500;
-  transition: all 0.2s;
+  font-size: var(--viewer-font-size-sm);
+  font-weight: var(--viewer-font-weight-medium);
+  transition: all var(--viewer-transition);
+  white-space: nowrap;
 }
 
 .nav-btn:hover {
-  background: var(--viewer-border);
+  background: var(--viewer-primary-hover);
+  border-color: var(--viewer-primary-hover);
+  color: var(--viewer-surface);
 }
 
 .nav-btn.active {
   background: var(--viewer-primary);
-  color: white;
+  color: var(--viewer-surface);
   border-color: var(--viewer-primary);
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
 }
 
+/* ============================================
+   6. Секции контента
+   Content sections
+   ============================================ */
 .category-section {
   display: none;
   animation: fadeIn 0.3s ease;
@@ -186,11 +215,20 @@ body {
   margin-bottom: var(--viewer-spacing-6);
 }
 
+/* ============================================
+   7. Contrast Checker - первая вкладка
+   Contrast Checker - first tab
+   ============================================ */
 .checker-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--viewer-spacing-6);
   margin-bottom: var(--viewer-spacing-6);
+  background: var(--viewer-surface);
+  border: 1px solid var(--viewer-border-strong);
+  border-radius: var(--viewer-radius-lg);
+  padding: var(--viewer-spacing-6);
+  box-shadow: var(--viewer-shadow-sm);
 }
 
 .color-input-group {
@@ -206,48 +244,58 @@ body {
 
 .color-input-group input {
   padding: var(--viewer-spacing-3);
-  border: 1px solid var(--viewer-border);
+  border: 1px solid var(--viewer-border-strong);
   border-radius: var(--viewer-radius-md);
   font-size: var(--viewer-font-size-base);
   background: var(--viewer-surface);
   color: var(--viewer-text);
   font-family: var(--viewer-font-mono);
+  transition:
+    border-color var(--viewer-transition),
+    box-shadow var(--viewer-transition);
 }
 
 .color-input-group input:focus {
   outline: none;
   border-color: var(--viewer-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 .color-preview {
   width: 100%;
   height: 60px;
   border-radius: var(--viewer-radius-md);
-  border: 1px solid var(--viewer-border);
+  border: 1px solid var(--viewer-border-strong);
   margin-top: var(--viewer-spacing-2);
 }
 
 .primary-btn {
   padding: var(--viewer-spacing-3) var(--viewer-spacing-6);
   background: var(--viewer-primary);
-  color: white;
-  border: none;
+  color: var(--viewer-surface);
+  border: 1px solid var(--viewer-primary);
   border-radius: var(--viewer-radius-md);
   cursor: pointer;
   font-size: var(--viewer-font-size-base);
   font-weight: 600;
-  transition: background-color 0.2s;
+  transition: all var(--viewer-transition);
 }
 
 .primary-btn:hover {
   background: var(--viewer-primary-hover);
+  border-color: var(--viewer-primary-hover);
+}
+
+.primary-btn:focus-visible {
+  outline: 2px solid var(--viewer-primary);
+  outline-offset: 2px;
 }
 
 .result-container {
   margin-top: var(--viewer-spacing-8);
   padding: var(--viewer-spacing-6);
   background: var(--viewer-surface);
-  border: 1px solid var(--viewer-border);
+  border: 1px solid var(--viewer-border-strong);
   border-radius: var(--viewer-radius-lg);
   box-shadow: var(--viewer-shadow-sm);
 }
@@ -283,9 +331,13 @@ body {
   text-align: center;
 }
 
+/* ============================================
+   8. Examples - вторая вкладка
+   Examples - second tab
+   ============================================ */
 .example-card {
   background: var(--viewer-surface);
-  border: 1px solid var(--viewer-border);
+  border: 1px solid var(--viewer-border-strong);
   border-radius: var(--viewer-radius-lg);
   padding: var(--viewer-spacing-6);
   margin-bottom: var(--viewer-spacing-6);
@@ -301,7 +353,7 @@ body {
   padding: var(--viewer-spacing-8);
   border-radius: var(--viewer-radius-md);
   margin-bottom: var(--viewer-spacing-4);
-  border: 1px solid var(--viewer-border);
+  border: 1px solid var(--viewer-border-strong);
 }
 
 .example-text {
@@ -325,8 +377,9 @@ body {
 
 .badge-pass {
   background: var(--viewer-success);
-  color: white;
+  color: #123b24;
 }
+
 .badge-fail {
   background: var(--viewer-error);
   color: white;
@@ -340,7 +393,7 @@ body {
 
 .code-example {
   background: var(--viewer-surface);
-  border: 1px solid var(--viewer-border);
+  border: 1px solid var(--viewer-border-strong);
   border-radius: var(--viewer-radius-lg);
   padding: var(--viewer-spacing-6);
   margin-top: var(--viewer-spacing-8);
@@ -374,9 +427,13 @@ pre code {
   padding: 0;
 }
 
+/* ============================================
+   9. Report - третья вкладка
+   Report - third tab
+   ============================================ */
 .report-preview {
   background: var(--viewer-surface);
-  border: 1px solid var(--viewer-border);
+  border: 1px solid var(--viewer-border-strong);
   border-radius: var(--viewer-radius-lg);
   padding: var(--viewer-spacing-8);
   font-family: var(--viewer-font-family);
@@ -387,39 +444,49 @@ pre code {
   font-size: var(--viewer-font-size-xl);
   margin-bottom: var(--viewer-spacing-4);
 }
+
 .report-preview h4 {
   font-size: var(--viewer-font-size-lg);
   margin-top: var(--viewer-spacing-6);
   margin-bottom: var(--viewer-spacing-3);
 }
+
 .report-preview h5 {
   font-size: var(--viewer-font-size-base);
   margin-top: var(--viewer-spacing-4);
   margin-bottom: var(--viewer-spacing-2);
 }
+
 .report-preview ul {
   margin-left: var(--viewer-spacing-8);
   margin-bottom: var(--viewer-spacing-4);
 }
+
 .report-preview table {
   width: 100%;
   border-collapse: collapse;
   margin: var(--viewer-spacing-4) 0;
 }
+
 .report-preview th,
 .report-preview td {
   border: 1px solid var(--viewer-border);
   padding: var(--viewer-spacing-3);
   text-align: left;
 }
+
 .report-preview th {
   background: var(--viewer-border);
   font-weight: 600;
 }
 
+/* ============================================
+   10. Guide - четвёртая вкладка
+   Guide - fourth tab
+   ============================================ */
 .guide-content {
   background: var(--viewer-surface);
-  border: 1px solid var(--viewer-border);
+  border: 1px solid var(--viewer-border-strong);
   border-radius: var(--viewer-radius-lg);
   padding: var(--viewer-spacing-8);
   box-shadow: var(--viewer-shadow-sm);
@@ -430,12 +497,15 @@ pre code {
   margin-top: var(--viewer-spacing-6);
   margin-bottom: var(--viewer-spacing-4);
 }
+
 .guide-content h3:first-child {
   margin-top: 0;
 }
+
 .guide-content p {
   margin-bottom: var(--viewer-spacing-4);
 }
+
 .guide-content ul,
 .guide-content ol {
   margin-left: var(--viewer-spacing-8);
@@ -447,12 +517,14 @@ pre code {
   border-collapse: collapse;
   margin: var(--viewer-spacing-4) 0;
 }
+
 .wcag-table th,
 .wcag-table td {
   border: 1px solid var(--viewer-border);
   padding: var(--viewer-spacing-3);
   text-align: center;
 }
+
 .wcag-table th {
   background: var(--viewer-border);
   font-weight: 600;
@@ -470,10 +542,15 @@ pre code {
   margin-bottom: var(--viewer-spacing-3);
   color: var(--viewer-warning);
 }
+
 .limitation-box ul {
   margin-left: var(--viewer-spacing-6);
 }
 
+/* ============================================
+   11. Подвал
+   Footer
+   ============================================ */
 .viewer-footer {
   text-align: center;
   margin-top: var(--viewer-spacing-12);
@@ -483,16 +560,48 @@ pre code {
   font-size: var(--viewer-font-size-sm);
 }
 
+/* ============================================
+   12. Переопределения для тёмной темы
+   Dark theme overrides
+   ============================================ */
+[data-theme="dark"] .nav-btn {
+  background: var(--viewer-primary);
+  border-color: var(--viewer-primary);
+}
+
+[data-theme="dark"] .nav-btn:hover {
+  background: var(--viewer-primary-hover);
+  border-color: var(--viewer-primary-hover);
+}
+
+[data-theme="dark"] .example-card,
+[data-theme="dark"] .report-preview,
+[data-theme="dark"] .guide-content,
+[data-theme="dark"] .code-example {
+  border-color: var(--viewer-border-dark);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Viewer-only accessibility overrides. */
+/* Переопределения доступности только для viewer. */
+
+/* ============================================
+   13. Адаптивность
+   Responsive
+   ============================================ */
 @media (max-width: 768px) {
   .checker-grid {
     grid-template-columns: 1fr;
   }
+
   .viewer-nav {
     flex-direction: column;
   }
+
   .nav-btn {
     width: 100%;
   }
+
   #app {
     padding: var(--viewer-spacing-4);
   }

@@ -3,39 +3,46 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Faf-Contrast Viewer</title>
-    <link rel="stylesheet" href="./styles.css" />
+    <title>Faf-Contrast Viewer / Просмотрщик контрастности</title>
   </head>
   <body>
     <div id="app">
       <header class="viewer-header">
-        <h1>🎨 Faf-Contrast Viewer</h1>
+        <h1>🎨 Faf-Contrast Viewer / Просмотрщик контрастности</h1>
         <p class="viewer-subtitle">
-          Interactive WCAG contrast checking documentation
+          Interactive WCAG contrast checking documentation / Интерактивная
+          документация по проверке контрастности WCAG
         </p>
         <button id="theme-toggle" class="theme-toggle">🌙 Dark Mode</button>
       </header>
 
       <nav class="viewer-nav">
         <button class="nav-btn active" data-category="checker">
-          Contrast Checker
+          Contrast Checker / Проверка контраста
         </button>
-        <button class="nav-btn" data-category="examples">Examples</button>
+        <button class="nav-btn" data-category="examples">
+          Examples / Примеры
+        </button>
         <button class="nav-btn" data-category="report">
-          📊 Validation Report
+          Validation Report / Отчёт валидации
         </button>
-        <button class="nav-btn" data-category="guide">📖 Guide</button>
+        <button class="nav-btn" data-category="guide">
+          📖 Guide / Руководство
+        </button>
       </nav>
 
       <main class="viewer-content">
         <!-- Contrast Checker Section -->
         <section id="checker" class="category-section active">
-          <h2>Contrast Checker</h2>
-          <p>Enter two colors to check their WCAG compliance:</p>
+          <h2>Contrast Checker / Проверка контраста</h2>
+          <p>
+            Enter two colors to check their WCAG compliance: / Введите два цвета
+            для проверки их соответствия WCAG:
+          </p>
 
           <div class="checker-grid">
             <div class="color-input-group">
-              <label for="fg-color">Foreground Color:</label>
+              <label for="fg-color">Foreground Color: / Цвет текста:</label>
               <input
                 type="text"
                 id="fg-color"
@@ -46,7 +53,7 @@
             </div>
 
             <div class="color-input-group">
-              <label for="bg-color">Background Color:</label>
+              <label for="bg-color">Background Color: / Цвет фона:</label>
               <input
                 type="text"
                 id="bg-color"
@@ -57,26 +64,37 @@
             </div>
           </div>
 
-          <button id="check-btn" class="primary-btn">Check Contrast</button>
+          <button id="check-btn" class="primary-btn">
+            Check Contrast / Проверить контраст
+          </button>
 
           <div id="checker-result" class="result-container">
             <p class="placeholder-text">
-              Click "Check Contrast" to see results...
+              Click "Check Contrast" to see results... / Нажмите "Проверить
+              контраст", чтобы увидеть результаты...
             </p>
           </div>
         </section>
 
         <!-- Examples Section -->
         <section id="examples" class="category-section">
-          <h2>Usage Examples</h2>
+          <h2>Usage Examples / Примеры использования</h2>
 
           <div class="example-card">
-            <h3>✅ Example 1: Passing WCAG AA</h3>
+            <h3>
+              ✅ Example 1: Passing WCAG AA / Пример 1: Прохождение WCAG AA
+            </h3>
             <div
               class="example-preview"
-              style="background: #ffffff; color: #111827"
+              style="
+                background: var(--faf-color-surface, #ffffff);
+                color: var(--faf-color-text, #111827);
+              "
             >
-              <span class="example-text">Black text on white background</span>
+              <span class="example-text"
+                >Black text on white background / Чёрный текст на белом
+                фоне</span
+              >
             </div>
             <div class="example-info">
               <span class="badge badge-pass">AA ✓</span>
@@ -86,27 +104,42 @@
           </div>
 
           <div class="example-card">
-            <h3>❌ Example 2: Failing WCAG AA</h3>
+            <h3>
+              ❌ Example 2: Failing WCAG AA / Пример 2: Непрохождение WCAG AA
+            </h3>
             <div
               class="example-preview"
-              style="background: #ffffff; color: #9ca3af"
+              style="
+                background: var(--faf-color-surface, #ffffff);
+                color: var(--faf-color-text-muted, #9ca3af);
+              "
             >
-              <span class="example-text">Light gray on white (too light)</span>
+              <span class="example-text"
+                >Light gray on white (too light) / Светло-серый на белом
+                (слишком светлый)</span
+              >
             </div>
             <div class="example-info">
-              <span class="badge badge-fail">AA </span>
+              <span class="badge badge-fail">AA ✗</span>
               <span class="badge badge-fail">AAA ✗</span>
               <span class="contrast-value">2.85:1</span>
             </div>
           </div>
 
           <div class="example-card">
-            <h3>📏 Example 3: Large Text Only</h3>
+            <h3>
+              📏 Example 3: Large Text Only / Пример 3: Только крупный текст
+            </h3>
             <div
               class="example-preview"
-              style="background: #ffffff; color: #6b7280"
+              style="
+                background: var(--faf-color-surface, #ffffff);
+                color: var(--faf-color-gray-500, #6b7280);
+              "
             >
-              <span class="example-text">Medium gray on white</span>
+              <span class="example-text"
+                >Medium gray on white / Средне-серый на белом</span
+              >
             </div>
             <div class="example-info">
               <span class="badge badge-pass">AA Large ✓</span>
@@ -116,7 +149,7 @@
           </div>
 
           <div class="code-example">
-            <h3>💻 Code Example</h3>
+            <h3>💻 Code Example / Пример кода</h3>
             <pre><code>import { FafContrast } from '@faf/contrast';
 
 const isAccessible = FafContrast.isAccessible(
@@ -132,9 +165,12 @@ console.log(isAccessible); // true</code></pre>
 
         <!-- Report Section -->
         <section id="report" class="category-section">
-          <h2>Sample Validation Report</h2>
+          <h2>Sample Validation Report / Пример отчёта валидации</h2>
           <p>
             This is an example of a Markdown report generated by
+            <code>FafColorsValidator</code>:
+            <br />
+            Это пример отчёта в формате Markdown, сгенерированного
             <code>FafColorsValidator</code>:
           </p>
 
@@ -219,7 +255,7 @@ console.log(isAccessible); // true</code></pre>
                   <td><code>--faf-color-warning</code></td>
                   <td><code>--faf-color-surface</code></td>
                   <td>2.1:1</td>
-                  <td>4.5:1</td>
+                  <td>3:1</td>
                 </tr>
               </tbody>
             </table>
@@ -237,24 +273,29 @@ console.log(isAccessible); // true</code></pre>
 
         <!-- Guide Section -->
         <section id="guide" class="category-section">
-          <h2>WCAG Contrast Guide</h2>
+          <h2>WCAG Contrast Guide / Руководство по контрастности WCAG</h2>
 
           <div class="guide-content">
-            <h3>What is WCAG?</h3>
+            <h3>What is WCAG? / Что такое WCAG?</h3>
             <p>
               <strong>WCAG (Web Content Accessibility Guidelines)</strong> is
               the international standard for web accessibility. It defines
               requirements to make web content more accessible to people with
               disabilities.
+              <br />
+              <strong>WCAG (Руководство по доступности веб-контента)</strong> —
+              международный стандарт веб-доступности. Он определяет требования
+              для того, чтобы веб-контент был более доступным для людей с
+              ограниченными возможностями.
             </p>
 
-            <h3>Contrast Requirements</h3>
+            <h3>Contrast Requirements / Требования к контрастности</h3>
             <table class="wcag-table">
               <thead>
                 <tr>
-                  <th>Level</th>
-                  <th>Normal Text</th>
-                  <th>Large Text</th>
+                  <th>Level / Уровень</th>
+                  <th>Normal Text / Обычный текст</th>
+                  <th>Large Text / Крупный текст</th>
                 </tr>
               </thead>
               <tbody>
@@ -271,47 +312,71 @@ console.log(isAccessible); // true</code></pre>
               </tbody>
             </table>
 
-            <h3>What is Large Text?</h3>
-            <p>Large text is defined as:</p>
+            <h3>What is Large Text? / Что такое крупный текст?</h3>
+            <p>Large text is defined as: / Крупный текст определяется как:</p>
             <ul>
-              <li>Font size ≥ <strong>18pt (24px)</strong>, OR</li>
+              <li>
+                Font size ≥ <strong>18pt (24px)</strong>, OR / Размер шрифта ≥
+                <strong>18pt (24px)</strong>, ИЛИ
+              </li>
               <li>
                 Font size ≥ <strong>14pt (18.5px)</strong> with
-                <strong>bold</strong> weight
+                <strong>bold</strong> weight / Размер шрифта ≥
+                <strong>14pt (18.5px)</strong> с
+                <strong>жирным</strong> начертанием
               </li>
             </ul>
 
-            <h3>How Contrast is Calculated</h3>
+            <h3>
+              How Contrast is Calculated / Как рассчитывается контрастность
+            </h3>
             <p>
               Contrast ratio is calculated using the
               <strong>Relative Luminance</strong> formula:
+              <br />
+              Коэффициент контрастности рассчитывается по формуле
+              <strong>Относительной яркости (Relative Luminance)</strong>:
             </p>
             <ol>
-              <li>Convert color to linear sRGB (gamma correction)</li>
+              <li>
+                Convert color to linear sRGB (gamma correction) / Конвертация
+                цвета в линейный sRGB (гамма-коррекция)
+              </li>
               <li>
                 Calculate luminance:
+                <code>L = 0.2126 × R + 0.7152 × G + 0.0722 × B</code> / Расчёт
+                яркости:
                 <code>L = 0.2126 × R + 0.7152 × G + 0.0722 × B</code>
               </li>
               <li>
                 Calculate contrast:
-                <code>CR = (L_lighter + 0.05) / (L_darker + 0.05)</code>
+                <code>CR = (L_lighter + 0.05) / (L_darker + 0.05)</code> /
+                Расчёт контраста:
+                <code>CR = (L_светлее + 0.05) / (L_темнее + 0.05)</code>
               </li>
             </ol>
 
             <div class="limitation-box">
-              <h4>⚠️ Limitations</h4>
+              <h4>⚠️ Limitations / Ограничения</h4>
               <ul>
                 <li>
                   This implementation uses a simplified oklch→RGB conversion
-                  (error ~2-5%).
+                  (error ~2-5%). / Данная реализация использует упрощённую
+                  конвертацию oklch→RGB (погрешность ~2-5%).
                 </li>
                 <li>
                   For production, use <code>culori</code> or
-                  <code>colorjs.io</code> libraries.
+                  <code>colorjs.io</code> libraries. / Для production
+                  используйте библиотеки <code>culori</code> или
+                  <code>colorjs.io</code>.
                 </li>
-                <li>Supports WCAG 2.1 only (without 2.2 criteria).</li>
+                <li>
+                  Supports WCAG 2.1 only (without 2.2 criteria). / Поддерживает
+                  только WCAG 2.1 (без критериев 2.2).
+                </li>
                 <li>
                   Does not implement APCA (Advanced Perceptual Contrast
+                  Algorithm). / Не реализует APCA (Advanced Perceptual Contrast
                   Algorithm).
                 </li>
               </ul>
@@ -325,6 +390,6 @@ console.log(isAccessible); // true</code></pre>
       </footer>
     </div>
 
-    <script src="./viewer.js"></script>
+    <script type="module" src="./viewer.js"></script>
   </body>
 </html>

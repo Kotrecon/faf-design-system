@@ -110,19 +110,30 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    subgraph "🌍 Global Page (z: 0)"
-        Content[Main page content]
+    subgraph "🛡️ Faf-Contrast Utility"
+        Checker[Contrast Validator<br/>WCAG AA/AAA]
     end
-    subgraph "🚪 Blocking Layer (z: 1040-1050)"
-        Modal[FafModal<br/>Checked for contrast]
+
+    subgraph "Application Layers (Z-Index)"
+        direction TB
+        subgraph "🔔 Global Notification (z: 1080)"
+            Toast[FafToast]
+        end
+        subgraph "💬 Contextual (z: 1070)"
+            Tooltip[FafTooltip]
+        end
+        subgraph "🚪 Blocking (z: 1040-1050)"
+            Modal[FafModal]
+        end
+        subgraph "🌍 Global Page (z: 0)"
+            Content[Main Content]
+        end
     end
-    subgraph "💬 Contextual Layer (z: 1070)"
-        Tooltip[FafTooltip<br/>Checked for contrast]
-    end
-    subgraph "🔔 Global Notification Layer (z: 1080)"
-        Toast[FafToast<br/>Checked for contrast]
-    end
-    Content --> Modal --> Tooltip --> Toast
+
+    Toast -.->|validates against| Checker
+    Tooltip -.->|validates against| Checker
+    Modal -.->|validates against| Checker
+    Content -.->|validates against| Checker
 
 ```
 

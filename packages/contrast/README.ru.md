@@ -14,14 +14,14 @@ packages/contrast/
 │   ├── types/
 │   │   └── contrast.ts                 # 🔥 Строгие TypeScript-интерфейсы
 │   ├── utils/
-│   │   ├── faf-contrast.ts             # 🔥 Ядро расчёта контрастности
-│   │   └── css-token-parser.ts         # 🔥 Извлекатель CSS-переменных
+│   │   ├── faf-contrast.ts             # 🔥 Ядро расчёта контрастности (порог WCAG 0.03928)
+│   │   └── css-token-parser.ts         # 🔥 Надёжный извлекатель CSS-переменных
 │   ├── validators/
-│   │   ├── faf-colors-validator.ts     # 🔥 Валидатор токенов (4 категории)
-│   │   └── faf-focus-validator.ts      # 🔥 Валидатор состояний фокуса
+│   │   ├── faf-colors-validator.ts     # 🔥 Валидатор токенов (4 категории, логика 3:1 vs 4.5:1)
+│   │   └── faf-focus-validator.ts      # 🔥 Валидатор состояний фокуса (требует 3:1)
 │   └── index.ts                        # Главная точка входа
 ├── tests/                              # 🔥 Vitest + Playwright + axe-core
-├── viewer/                             # 🔥 Интерактивная документация
+├── viewer/                             # 🔥 Интерактивная документация (двуязычный UI, соответствующий WCAG)
 ├── docs/                               # 🔥 Подробные руководства
 ├── examples/                           # 🔥 Автономное HTML-демо
 ├── package.json
@@ -39,17 +39,19 @@ flowchart TD
     subgraph "WCAG AA 🔥"
         AA_N[Обычный текст: 4.5:1]
         AA_L[Крупный текст: 3:1]
+        AA_NT["Не-текст (иконки/фокус): 3:1"]
     end
     subgraph "WCAG AAA 🔥"
         AAA_N[Обычный текст: 7:1]
         AAA_L[Крупный текст: 4.5:1]
     end
-    subgraph "Крупный текст 🔥"
+    subgraph "Определение крупного текста 🔥"
         LT1[≥18pt]
-        LT2[≥14pt bold]
+        LT2[≥14pt жирный]
     end
     AA_N --> AAA_N
     AA_L --> AAA_L
+    AA_NT --> AA_N
     LT1 --> AA_L
     LT2 --> AA_L
 ```
@@ -59,13 +61,13 @@ flowchart TD
 ```mermaid
 flowchart TD
     subgraph "Faf-Foundations 🔥"
-        COLORS[Faf.Colors<br/>oklch токены<br/>faf.colors.css]
+        COLORS[Faf.Colors<br/>oklch/hex токены<br/>faf.colors.css]
     end
     subgraph "Faf-Focus 🔥"
         FOCUS[Faf.Focus<br/>ring + outline/background]
     end
     subgraph "Faf-Contrast 🔥"
-        PARSER[CSS Parser<br/>импорт токенов]
+        PARSER[CSS Parser<br/>извлечение токенов]
         UTILITY[Faf.Contrast<br/>утилита]
         VALIDATOR[Validator<br/>4 категории]
         TESTS[axe-core<br/>contrast + focus-visible + aria-*]
@@ -88,18 +90,18 @@ flowchart LR
         PARSE[Парсинг CSS<br/>извлечение токенов]
     end
     subgraph "Faf.Contrast 🔥"
-        LUM[Относительная<br/>яркость]
-        CONTRAST[Коэффициент<br/>контраста]
-        CHECK[Проверка<br/>WCAG<br/>+ Large Text]
+        LUM["Относительная яркость<br/>(порог 0.03928)"]
+        CONTRAST[Коэффициент контраста]
+        CHECK[Проверка WCAG<br/>+ Large Text]
     end
     subgraph "Валидатор 🔥"
-        CAT1[text-on-surface]
-        CAT2[icon-outline]
-        CAT3[focus-ring]
-        CAT4[focus-outline-background]
+        CAT1[text-on-surface: 4.5:1]
+        CAT2[icon-outline: 3:1]
+        CAT3[focus-ring: 3:1]
+        CAT4[focus-outline-bg: 3:1]
     end
     subgraph "Выходные данные 🔥"
-        REPORT[Отчёт<br/>валидации<br/>с категориями]
+        REPORT["Отчёт валидации<br/>(ошибки отсортированы по критичности)"]
     end
     CSS --> PARSE --> LUM --> CONTRAST --> CHECK
     CHECK --> CAT1 & CAT2 & CAT3 & CAT4
@@ -110,22 +112,30 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    subgraph "🌍 Global Page (z: 0)"
-        Content[Основной контент страницы]
+    subgraph "🛡️ Faf-Contrast Utility"
+        Checker[Валидатор контрастности<br/>WCAG AA/AAA]
     end
-    subgraph "🚪 Blocking Layer (z: 1040-1050)"
-        Modal[FafModal<br/>Проверка контраста]
+
+    subgraph "Слои приложения (Z-Index)"
+        direction TB
+        subgraph "🔔 Global Notification (z: 1080)"
+            Toast[FafToast]
+        end
+        subgraph "💬 Contextual (z: 1070)"
+            Tooltip[FafTooltip]
+        end
+        subgraph "🚪 Blocking (z: 1040-1050)"
+            Modal[FafModal]
+        end
+        subgraph "🌍 Global Page (z: 0)"
+            Content[Основной контент]
+        end
     end
-    subgraph "💬 Contextual Layer (z: 1070)"
-        Tooltip[FafTooltip<br/>Проверка контраста]
-    end
-    subgraph "🔔 Global Notification Layer (z: 1080)"
-        Toast[FafToast<br/>Проверка контраста]
-    end
-    Content --> Modal --> Tooltip --> Toast
-    style Modal fill:#e0e7ff,stroke:#6366f1
-    style Tooltip fill:#fef3c7,stroke:#f59e0b
-    style Toast fill:#dcfce7,stroke:#16a34a
+
+    Toast -.->|проверяет| Checker
+    Tooltip -.->|проверяет| Checker
+    Modal -.->|проверяет| Checker
+    Content -.->|проверяет| Checker
 ```
 
 ---
@@ -169,7 +179,7 @@ const report = await validator.validateAll("./path/to/tokens.css");
 
 console.log(`Прошло: ${report.passed}, Не прошло: ${report.failed}`);
 
-// Генерация Markdown-отчёта
+// Генерация Markdown-отчёта (ошибки автоматически сортируются по наименьшему контрасту)
 const markdown = validator.generateMarkdownReport(report);
 console.log(markdown);
 ```
@@ -221,9 +231,9 @@ _Это разделяет ответственность: тема меняет
 
 Для обеспечения прозрачности, пожалуйста, обратите внимание на следующие ограничения текущей реализации:
 
-1. **Упрощённая конвертация OKLCH**: Конвертация `oklch` в `RGB` использует упрощённую математическую аппроксимацию (погрешность ~2-5%). **Для production** замените внутренний метод `parseOklch` на проверенную библиотеку, такую как [`culori`](https://culorijs.org) или [`colorjs.io`](https://colorjs.io).
+1. **Упрощённая конвертация OKLCH**: Конвертация `oklch` в `RGB` использует упрощённую математическую аппроксимацию (погрешность ~2-5%). **Для production** замените внутренний метод `parseOklch` на проверенную библиотеку, такую как [`culori`](https://culorijs.org) или [`colorjs.io`](https://colorjs.io). _(Примечание: базовый расчёт яркости строго использует корректный порог WCAG `0.03928`, а `parseRgb` надёжно обрабатывает проценты, пробелы и ограничение диапазона 0-255)._
 2. **Regex CSS Парсер**: `CssTokenParser` использует регулярные выражения для извлечения. Этого достаточно для статических файлов и прототипов. Для сложных production-сборок рекомендуется использовать **PostCSS**.
-3. **Только WCAG 2.1**: Утилита реализует критерии WCAG 2.1. Она не покрывает новые критерии WCAG 2.2 (например, Focus Not Obscured).
+3. **Только WCAG 2.1**: Утилита реализует критерии WCAG 2.1 (включая требование 3:1 для не-текстовых UI-компонентов, таких как иконки и фокус). Она не покрывает новые критерии WCAG 2.2 (например, Focus Not Obscured).
 4. **Отсутствие APCA**: Алгоритм Advanced Perceptual Contrast Algorithm (APCA) не реализован. Мы используем стандартную формулу Relative Luminance из WCAG.
 5. **Отсутствие CI/CD**: Тесты предоставлены, но автоматизация CI/CD (например, GitHub Actions) должна быть настроена отдельно в вашем репозитории (запланировано в Курсе 12: Faf-Testing).
 
@@ -256,3 +266,5 @@ pnpm run test:e2e:ui
 ## 📝 Лицензия
 
 MIT © Faf Design System
+
+---
