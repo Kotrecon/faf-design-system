@@ -35,7 +35,7 @@ export class FafTooltip extends HTMLElement {
         /* 3. State logic simply reads ready attribute / State logic просто читает готовый атрибут состояния */
         .faf-tooltip-content {
           position: absolute;
-          ${position === "bottom" ? "top: 100%; margin-top: 0.5rem;" : "bottom: 100%; margin-bottom: 0.5rem;"}
+          ${position === "bottom" ? "top: 100%; margin-top: var(--faf-spacing-2, 0.5rem);" : "bottom: 100%; margin-bottom: var(--faf-spacing-2, 0.5rem);"}
           left: 50%;
           transform: translateX(-50%) translateY(4px);
           
@@ -43,9 +43,13 @@ export class FafTooltip extends HTMLElement {
           color: var(--tooltip-text);
           padding: var(--faf-spacing-1, 0.25rem) var(--faf-spacing-2, 0.5rem);
           border-radius: var(--faf-radius-sm, 4px);
-          font-size: var(--faf-font-size-fluid-xs, 0.75rem);
+          box-shadow: var(--faf-shadow-tooltip, 0 4px 6px rgba(0, 0, 0, 0.1)); /* ДОБАВЛЕНО: синхронизация с CSS */
+          
+          font-size: var(--faf-font-size-xs, 0.75rem); /* ИСПРАВЛЕНО: fluid-xs -> xs */
+          font-weight: var(--faf-font-weight-medium, 500);
+          line-height: var(--faf-line-height-normal, 1.5); /* ДОБАВЛЕНО: синхронизация с CSS */
           white-space: nowrap;
-          z-index: var(--faf-z-tooltip, 1070);
+          z-index: var(--faf-zindex-tooltip, 1070); /* ИСПРАВЛЕНО: z-tooltip -> zindex-tooltip */
           
           opacity: 0;
           visibility: hidden;
@@ -69,21 +73,28 @@ export class FafTooltip extends HTMLElement {
     `;
 
     // 4. Explicit state management / Явное управление состоянием (State Management)
-    this._onMouseEnter = () => this.setAttribute("data-visible", "true");
-    this._onMouseLeave = () => this.removeAttribute("data-visible");
-    this._onFocusIn = () => this.setAttribute("data-visible", "true");
+    this._onMouseEnter = () => {
+      this.setAttribute("data-visible", "true");
+      this._updateAriaHidden(true);
+    };
+    this._onMouseLeave = () => {
+      this.removeAttribute("data-visible");
+      this._updateAriaHidden(false);
+    };
+    this._onFocusIn = () => {
+      this.setAttribute("data-visible", "true");
+      this._updateAriaHidden(true);
+    };
     this._onFocusOut = (e: FocusEvent) => {
-      // Hide only if focus left the component / Скрываем, только если фокус ушел за пределы компонента
       if (!this.contains(e.relatedTarget as Node)) {
         this.removeAttribute("data-visible");
+        this._updateAriaHidden(false);
       }
     };
     this._onClick = (e: MouseEvent) => {
-      // e.detail > 0 means mouse click (not keyboard Enter/Space).
-      // e.detail > 0 означает, что это клик мышью (а не клавиатурный Enter/Space).
-      // Force hide to prevent "sticking" in focus state. / Принудительно снимаем видимость, чтобы предотвратить "залипание" в состоянии focus.
       if (e.detail > 0) {
         this.removeAttribute("data-visible");
+        this._updateAriaHidden(false);
       }
     };
 
@@ -115,6 +126,14 @@ export class FafTooltip extends HTMLElement {
     this.removeEventListener("focusin", this._onFocusIn);
     this.removeEventListener("focusout", this._onFocusOut);
     this.removeEventListener("click", this._onClick);
+  }
+
+  // Helper: Update aria-hidden for screen readers / Хелпер: Обновление aria-hidden для скринридеров
+  private _updateAriaHidden(isVisible: boolean): void {
+    const tooltip = this._shadow.querySelector(".faf-tooltip-content");
+    if (tooltip) {
+      tooltip.setAttribute("aria-hidden", isVisible ? "false" : "true");
+    }
   }
 
   private _onMouseEnter!: () => void;

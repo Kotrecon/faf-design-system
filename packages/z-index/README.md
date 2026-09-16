@@ -15,12 +15,16 @@ packages/z-index/
 │   │   ├── index.ts                  # Token and type exports
 │   │   └── zindex.ts                 # 🔥 SSOT: Named z-index values
 │   ├── patterns/
-│   │   ├── faf.modal.ts              # 🔥 Modal (1040/1050 + Focus Trap)
-│   │   ├── faf.toast.ts              # 🔥 Toast (1080 + Active Contrast Check)
 │   │   ├── faf.dropdown.ts           # 🔥 Dropdown (1000 + Keyboard Nav)
-│   │   └── faf.tooltip.ts            # 🔥 Tooltip (1070 + Hover/Focus)
+│   │   ├── faf.dropdown.css          # Dropdown styles
+│   │   ├── faf.modal.ts              # 🔥 Modal (1040/1050 + Focus Trap)
+│   │   ├── faf.modal.css             # Modal styles
+│   │   ├── faf.toast.ts              # 🔥 Toast (1080 + Active Contrast Check)
+│   │   ├── faf.toast.css             # Toast styles
+│   │   ├── faf.tooltip.ts            # 🔥 Tooltip (1070 + Hover/Focus)
+│   │   └── faf.tooltip.css           # Tooltip styles
 │   ├── utils/
-│   │   ├── focus.ts                  # Helper for Focus Trap
+│   │   ├── focus.ts                  # Helper for Focus Trap (base/stub)
 │   │   └── contrast.ts               # Re-export of @faf/contrast utility
 │   ├── styles/
 │   │   └── tokens.generated.css      # ⚠️ Auto-generated CSS from zindex.ts
@@ -101,7 +105,7 @@ flowchart TD
 
 ## 📖 Pattern Implementation Guide
 
-**Why are patterns in the z-index package?**
+**Why are patterns in the z-index package?**  
 Patterns (`FafModal`, `FafToast`, `FafDropdown`, `FafTooltip`) are here not as a replacement for a UI library, but as **reference implementations**. They prove that the token system works in the real DOM and demonstrate the correct way to apply the Layer Contract.
 
 **Styling Contract:**
@@ -115,7 +119,7 @@ Patterns (`FafModal`, `FafToast`, `FafDropdown`, `FafTooltip`) are here not as a
 
 ## 📚 Stacking Context Guide
 
-**What is it?**
+**What is it?**  
 A stacking context is an independent 3D rendering order on the Z-axis. Elements inside one context are ordered relative to each other but cannot "break out" to overlay elements from another context using only `z-index`.
 
 **What creates a new context?**
@@ -128,12 +132,12 @@ A stacking context is an independent 3D rendering order on the Z-axis. Elements 
 
 **Faf Design System Rules:**
 
-1. Use `z-index` only with intentional positioning and `--faf-z-*` tokens.
+1. Use `z-index` only with intentional positioning and `--faf-zindex-*` tokens.
 2. If an element disappears, check parent stacking contexts first, not just `z-index`.
 3. Never use magic numbers like `9999`.
 4. Avoid accidental stacking contexts via hacks like `opacity: 0.99`.
 
-**Practical Rule:**
+**Practical Rule:**  
 If something doesn't overlay as expected, find the **stacking context boundary** first, then adjust `z-index`.
 
 ---
@@ -147,7 +151,7 @@ If something doesn't overlay as expected, find the **stacking context boundary**
 
 .my-custom-modal {
   position: fixed;
-  z-index: var(--faf-z-modal);
+  z-index: var(--faf-zindex-modal);
   background: var(--faf-color-surface);
 }
 ```
@@ -169,17 +173,17 @@ modal.open(); // Automatically activates Focus Trap
 
 ## 📐 Layer Contract
 
-| Token                    | Value  | Purpose              | Example           |
-| :----------------------- | :----- | :------------------- | :---------------- |
-| `--faf-z-base`           | `0`    | Base layer           | Main page content |
-| `--faf-z-dropdown`       | `1000` | Embedded overlays    | Menus, selects    |
-| `--faf-z-sticky`         | `1020` | Sticky elements      | Table headers     |
-| `--faf-z-fixed`          | `1030` | Fixed elements       | Global navbar     |
-| `--faf-z-modal-backdrop` | `1040` | Modal dimming        | Modal backdrop    |
-| `--faf-z-modal`          | `1050` | Modal windows        | Dialogs           |
-| `--faf-z-popover`        | `1060` | Popovers             | Floating panels   |
-| `--faf-z-tooltip`        | `1070` | Tooltips             | Hover/focus hints |
-| `--faf-z-toast`          | `1080` | Global notifications | Toasts, alerts    |
+| Token                         | Value  | Purpose              | Example           |
+| :---------------------------- | :----- | :------------------- | :---------------- |
+| `--faf-zindex-base`           | `0`    | Base layer           | Main page content |
+| `--faf-zindex-dropdown`       | `1000` | Embedded overlays    | Menus, selects    |
+| `--faf-zindex-sticky`         | `1020` | Sticky elements      | Table headers     |
+| `--faf-zindex-fixed`          | `1030` | Fixed elements       | Global navbar     |
+| `--faf-zindex-modal-backdrop` | `1040` | Modal dimming        | Modal backdrop    |
+| `--faf-zindex-modal`          | `1050` | Modal windows        | Dialogs           |
+| `--faf-zindex-popover`        | `1060` | Popovers             | Floating panels   |
+| `--faf-zindex-tooltip`        | `1070` | Tooltips             | Hover/focus hints |
+| `--faf-zindex-toast`          | `1080` | Global notifications | Toasts, alerts    |
 
 ---
 
@@ -206,13 +210,13 @@ pnpm run dev:viewer
 
 ## ❓ FAQ
 
-**1. Why no `z-index: 9999`?**
+**1. Why no `z-index: 9999`?**  
 Magic numbers break system predictability. A modal with `9999` would overlay a toast (`1080`), hiding system notifications.
 
-**2. Why are patterns here and not in `@faf/components`?**
+**2. Why are patterns here and not in `@faf/components`?**  
 They are the **specification of the layer system**, validating that tokens work correctly in the real DOM regarding stacking context and accessibility.
 
-**3. How do patterns handle Light/Dark themes?**
+**3. How do patterns handle Light/Dark themes?**  
 Patterns **do not define** their own colors. They read semantic tokens (`--faf-color-surface`, `--faf-color-text`) directly from `@faf/foundations`.
 
 ---
@@ -220,3 +224,5 @@ Patterns **do not define** their own colors. They read semantic tokens (`--faf-c
 ## 📝 License
 
 MIT © Faf Design System
+
+---

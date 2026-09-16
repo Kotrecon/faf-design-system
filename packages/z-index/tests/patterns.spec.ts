@@ -60,11 +60,9 @@ test.describe("Faf Z-Index: Stacking Context E2E", () => {
     await page.click('button:has-text("Открыть модалку")');
     await expect(page.locator("faf-modal")).toHaveAttribute("open");
 
-    const modalZIndex = 1050; // zIndexTokens.modal
-
     // 3. Verify contract: toast (1080) is strictly above modal (1050)
     // 3. Проверяем контракт: тост (1080) строго выше модалки (1050)
-    expect(toastZIndex).toBeGreaterThan(modalZIndex);
+    expect(toastZIndex).toBeGreaterThan(zIndexTokens.modal);
   });
 });
 

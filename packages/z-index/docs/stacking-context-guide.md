@@ -21,7 +21,7 @@ A new stacking context is created by, among other things:
 
 ## Faf Design System Rules
 
-1. Use `z-index` only in conjunction with an intentional positioning model and `--faf-z-*` tokens.
+1. Use `z-index` only in conjunction with an intentional positioning model and `--faf-zindex-*` tokens.
 2. If an element "disappears" behind another, check not only its `z-index` but also the stacking contexts of its parent elements.
 3. Never use magic numbers like `9999`; the layer order must be expressed through tokens.
 4. Avoid accidentally creating stacking contexts through hacks like `opacity: 0.99` or `transform: translateZ(0)` without a clear, intentional reason.

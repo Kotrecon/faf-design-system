@@ -4,15 +4,13 @@
  *              Эталонные стили для уведомлений (тостов).
  */
 
-/* packages/z-index/src/patterns/faf.toast.css */
-
 /* Container for all toasts (fixed in top-right corner) / Контейнер для всех тостов (fixed в правом верхнем углу) */
 .faf-toast-container {
   position: fixed;
   top: var(--faf-spacing-4, 1rem);
   right: var(--faf-spacing-4, 1rem);
   z-index: var(
-    --faf-z-toast
+    --faf-zindex-toast
   ); /* 🔥 Highest layer — 1080 / Самый высокий слой — 1080 */
   display: flex;
   flex-direction: column;
@@ -28,8 +26,8 @@
   gap: var(--faf-spacing-3, 0.75rem);
   padding: var(--faf-spacing-3, 0.75rem) var(--faf-spacing-4, 1rem);
   border-radius: var(--faf-radius-md, 6px);
-  box-shadow: var(--faf-shadow-lg, 0 10px 15px rgba(0, 0, 0, 0.1));
-  font-size: var(--faf-font-size-fluid-sm, 0.875rem);
+  box-shadow: var(--faf-shadow-toast, 0 20px 25px rgba(0, 0, 0, 0.1));
+  font-size: var(--faf-font-size-sm, 0.875rem);
   font-weight: var(--faf-font-weight-medium, 500);
   line-height: var(--faf-line-height-normal, 1.5);
   pointer-events: auto; /* Toast itself is clickable / Сам тост кликабельный */
@@ -46,19 +44,19 @@
   transform: translateX(100%);
 }
 
-/* Toast types / Типы тостов */
+/* Toast types / Типы тостов (Семантические токены вместо примитивов) */
 .faf-toast--success {
-  background-color: var(--faf-color-green-600, #16a34a);
-  color: var(--faf-color-white, #ffffff);
+  background-color: var(--faf-color-success, #16a34a);
+  color: var(--faf-color-surface, #ffffff);
 }
 
 .faf-toast--error {
-  background-color: var(--faf-color-red-600, #dc2626);
-  color: var(--faf-color-white, #ffffff);
+  background-color: var(--faf-color-error, #dc2626);
+  color: var(--faf-color-surface, #ffffff);
 }
 
 .faf-toast--warning {
-  background-color: var(--faf-color-yellow-500, #eab308);
+  background-color: var(--faf-color-warning, #eab308);
   color: var(
     --faf-color-gray-900,
     #111827
@@ -66,8 +64,8 @@
 }
 
 .faf-toast--info {
-  background-color: var(--faf-color-blue-600, #2563eb);
-  color: var(--faf-color-white, #ffffff);
+  background-color: var(--faf-color-info, #2563eb);
+  color: var(--faf-color-surface, #ffffff);
 }
 
 /* Toast icon / Иконка тоста */

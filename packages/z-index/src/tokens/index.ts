@@ -16,7 +16,7 @@
  * @example
  * ```css
  * .my-modal {
- *   z-index: var(--faf-z-modal);
+ *   z-index: var(--faf-zindex-modal);
  * }
  * ```
  */

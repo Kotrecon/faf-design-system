@@ -39,7 +39,7 @@ export class FafToastContainer extends HTMLElement {
           position: fixed;
           top: var(--faf-spacing-4);
           right: var(--faf-spacing-4);
-          z-index: var(--faf-z-toast);
+          z-index: var(--faf-zindex-toast);
           display: flex;
           flex-direction: column;
           gap: var(--faf-spacing-2);
@@ -55,7 +55,7 @@ export class FafToastContainer extends HTMLElement {
   public static show(options: ToastOptions): void {
     if (!FafToastContainer.instance) {
       console.error(
-        "❌ FafToastContainer not found. Add <faf-toast-container> to body. / FafToastContainer не найден. Добавьте <faf-toast-container> в body.",
+        "❌ FafToastContainer not found. Add <faf-toast-container> to body.",
       );
       return;
     }
@@ -115,7 +115,7 @@ export class FafToast extends HTMLElement {
           gap: var(--faf-spacing-3);
           padding: var(--faf-spacing-3) var(--faf-spacing-4);
           border-radius: var(--faf-radius-md);
-          box-shadow: var(--faf-shadow-lg);
+          box-shadow: var(--faf-shadow-toast);
           font-size: var(--faf-font-size-sm);
           font-weight: var(--faf-font-weight-medium);
           line-height: var(--faf-line-height-normal);
@@ -124,32 +124,33 @@ export class FafToast extends HTMLElement {
           opacity: 1;
           transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 
-          /* Маппинг локальных переменных на глобальные токены */
-          /* Mapping local variables to global tokens */
-          --toast-bg: var(--faf-color-info, #2563eb);
-          --toast-text: var(--faf-color-surface, #ffffff);
+          /* Маппинг локальных переменных на глобальные семантические токены */
+          /* Mapping local variables to global semantic tokens */
+          --toast-bg: var(--faf-color-info);
+          --toast-text: var(--faf-color-surface);
         }
 
         /* 2. Контекстное переопределение ТОЛЬКО для значений переменных (Тёмная тема) */
         /* 2. Context-aware override ONLY for token values (Dark theme) */
+        /* Семантический токен --faf-color-info уже содержит правильное значение для темной темы */
         :host-context([data-theme="dark"]) {
-          --toast-bg: var(--faf-color-info-dark, var(--faf-color-blue-400));
-          --toast-text: var(--faf-color-gray-900, #111827);
+          --toast-bg: var(--faf-color-info);
+          --toast-text: var(--faf-color-gray-900);
         }
 
         /* Специфичные типы тостов (переопределяют маппинг) */
         /* Specific toast types (override the mapping) */
         :host([type="success"]) {
-          --toast-bg: var(--faf-color-success, #16a34a);
-          --toast-text: var(--faf-color-surface, #ffffff);
+          --toast-bg: var(--faf-color-success);
+          --toast-text: var(--faf-color-surface);
         }
         :host([type="error"]) {
-          --toast-bg: var(--faf-color-danger, #dc2626);
-          --toast-text: var(--faf-color-surface, #ffffff);
+          --toast-bg: var(--faf-color-error);
+          --toast-text: var(--faf-color-surface);
         }
         :host([type="warning"]) {
-          --toast-bg: var(--faf-color-warning, #eab308);
-          --toast-text: var(--faf-color-gray-900, #111827);
+          --toast-bg: var(--faf-color-warning);
+          --toast-text: var(--faf-color-gray-900);
         }
 
         /* 3. State logic просто читает готовые переменные, не зная о теме */

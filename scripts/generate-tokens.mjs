@@ -4,7 +4,7 @@
  *              Скрипт для генерации CSS-переменных из TypeScript-токенов.
  */
 
-import { writeFileSync, existsSync } from "fs";
+import { writeFileSync, existsSync, mkdirSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join, resolve } from "path";
 
@@ -156,7 +156,15 @@ try {
   process.exit(1);
 }
 
-const outputPath = join(srcPath, "styles/tokens.generated.css");
+const outputDir = join(srcPath, "styles");
+const outputPath = join(outputDir, "tokens.generated.css");
+
+// Создаем директорию, если она не существует (защита от падения)
+// Create directory if it does not exist (protection against crashes)
+if (!existsSync(outputDir)) {
+  mkdirSync(outputDir, { recursive: true });
+}
+
 let css =
   "/* ⚠️ THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY! */\n/* ⚠️ ЭТОТ ФАЙЛ ГЕНЕРИРУЕТСЯ АВТОМАТИЧЕСКИ. НЕ РЕДАКТИРУЙТЕ ВРУЧНУЮ! */\n\n";
 

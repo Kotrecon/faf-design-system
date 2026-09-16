@@ -19,7 +19,7 @@
   ); /* OKLCH with transparency / OKLCH с прозрачностью */
 
   /* 🔥 z-index token from Faf-ZIndex / Токен z-index из Faf-ZIndex */
-  z-index: var(--faf-z-modal-backdrop);
+  z-index: var(--faf-zindex-modal-backdrop);
 
   opacity: 0;
   visibility: hidden;
@@ -36,7 +36,7 @@
   transform: translate(-50%, -50%) scale(0.95);
 
   /* 🔥 z-index token from Faf-ZIndex (above backdrop) / Токен z-index из Faf-ZIndex (выше, чем backdrop) */
-  z-index: var(--faf-z-modal);
+  z-index: var(--faf-zindex-modal);
 
   /* 🔥 Tokens from Faf-Foundations / Токены из Faf-Foundations */
   background-color: var(--faf-color-surface, white);
@@ -78,7 +78,7 @@
 }
 
 .faf-modal-title {
-  font-size: var(--faf-font-size-fluid-xl, 1.25rem);
+  font-size: var(--faf-font-size-xl, 1.25rem);
   font-weight: var(--faf-font-weight-semibold, 600);
   margin: 0;
 }
@@ -102,6 +102,6 @@
 }
 
 .faf-modal-body {
-  font-size: var(--faf-font-size-fluid-base, 1rem);
+  font-size: var(--faf-font-size-base, 1rem);
   line-height: var(--faf-line-height-normal, 1.5);
 }

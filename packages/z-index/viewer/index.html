@@ -6,15 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Faf Z-Index Viewer</title>
 
-    <!-- Подключаем сгенерированные токены -->
-
-    <!-- Подключаем стили паттернов -->
+    <!-- 
+      Pattern Reference Styles 
+      Эталонные стили паттернов (используются для демонстрации в Light DOM).
+    -->
     <link rel="stylesheet" href="../src/patterns/faf.modal.css" />
     <link rel="stylesheet" href="../src/patterns/faf.toast.css" />
     <link rel="stylesheet" href="../src/patterns/faf.dropdown.css" />
     <link rel="stylesheet" href="../src/patterns/faf.tooltip.css" />
 
-    <!-- Стили самого viewer -->
+    <!-- 
+      Viewer Application Styles 
+      Стили пользовательского интерфейса самого Viewer.
+    -->
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
@@ -33,11 +37,14 @@
       </nav>
 
       <main class="category-content" id="categoryContent">
-        <!-- Контент загружается динамически -->
+        <!-- Контент загружается динамически / Content is loaded dynamically -->
       </main>
     </div>
 
-    <!-- Контейнер для тостов (глобальный) -->
+    <!-- 
+      Global Toast Container 
+      Глобальный контейнер для уведомлений (должен находиться в корне body).
+    -->
     <faf-toast-container></faf-toast-container>
 
     <script type="module" src="./viewer.js"></script>

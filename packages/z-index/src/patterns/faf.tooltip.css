@@ -4,8 +4,6 @@
  *              Эталонные стили для тултипов.
  */
 
-/* packages/z-index/src/patterns/faf.tooltip.css */
-
 /* Tooltip container (sets positioning context) / Контейнер тултипа (устанавливает контекст позиционирования) */
 .faf-tooltip {
   position: relative;
@@ -17,7 +15,7 @@
   position: absolute;
 
   /* 🔥 z-index token from Faf-ZIndex (above modal, below toast) / Токен z-index из Faf-ZIndex (выше модалки, ниже тоста) */
-  z-index: var(--faf-z-tooltip);
+  z-index: var(--faf-zindex-tooltip);
 
   /* Default positioning (top) / Позиционирование по умолчанию (сверху) */
   bottom: 100%;
@@ -30,9 +28,9 @@
   color: var(--faf-color-gray-50, #f9fafb);
   padding: var(--faf-spacing-1, 0.25rem) var(--faf-spacing-2, 0.5rem);
   border-radius: var(--faf-radius-sm, 4px);
-  box-shadow: var(--faf-shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.05));
+  box-shadow: var(--faf-shadow-tooltip, 0 4px 6px rgba(0, 0, 0, 0.1));
 
-  font-size: var(--faf-font-size-fluid-xs, 0.75rem);
+  font-size: var(--faf-font-size-xs, 0.75rem);
   font-weight: var(--faf-font-weight-medium, 500);
   line-height: var(--faf-line-height-normal, 1.5);
   white-space: nowrap;
@@ -78,6 +76,7 @@
   margin-top: var(--faf-spacing-2, 0.5rem);
   transform: translateX(-50%) translateY(-4px);
 }
+
 .faf-tooltip-content[data-position="bottom"]::after {
   top: auto;
   bottom: 100%;

@@ -4,8 +4,6 @@
  *              Эталонные стили для компонентов выпадающего списка.
  */
 
-/* packages/z-index/src/patterns/faf.dropdown.css */
-
 /* Dropdown container (wrapper for trigger and menu) / Контейнер дропдауна (обёртка для триггера и меню) */
 .faf-dropdown {
   position: relative;
@@ -20,9 +18,9 @@
   padding: var(--faf-spacing-2, 0.5rem) var(--faf-spacing-3, 0.75rem);
   background-color: var(--faf-color-surface, white);
   color: var(--faf-color-text, #111);
-  border: 1px solid var(--faf-color-border, #e5e7eb);
+  border: 1px solid var(--faf-color-gray-300, #d1d5db);
   border-radius: var(--faf-radius-md, 6px);
-  font-size: var(--faf-font-size-fluid-sm, 0.875rem);
+  font-size: var(--faf-font-size-sm, 0.875rem);
   font-weight: var(--faf-font-weight-medium, 500);
   cursor: pointer;
   transition:
@@ -65,7 +63,7 @@
   box-shadow: var(--faf-shadow-dropdown, 0 10px 15px rgba(0, 0, 0, 0.1));
 
   /* 🔥 z-index token from Faf-ZIndex / Токен z-index из Faf-ZIndex */
-  z-index: var(--faf-z-dropdown);
+  z-index: var(--faf-zindex-dropdown, 1000);
 
   opacity: 0;
   visibility: hidden;
@@ -92,7 +90,7 @@
   background: transparent;
   border: none;
   text-align: left;
-  font-size: var(--faf-font-size-fluid-sm, 0.875rem);
+  font-size: var(--faf-font-size-sm, 0.875rem);
   color: var(--faf-color-text, #111);
   cursor: pointer;
   transition: background-color 0.15s;

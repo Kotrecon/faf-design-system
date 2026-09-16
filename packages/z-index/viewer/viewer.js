@@ -13,14 +13,14 @@
 import "@faf/foundations/styles";
 
 // 🔥 Import pattern CSS via Vite (they will be inlined automatically)
-// 🔥 Импортируем CSS паттернов через Vite (они будут инлайнены автоматически)
+//  Импортируем CSS паттернов через Vite (они будут инлайнены автоматически)
 import "../src/patterns/faf.modal.css";
 import "../src/patterns/faf.toast.css";
 import "../src/patterns/faf.dropdown.css";
 import "../src/patterns/faf.tooltip.css";
 import "../src/styles/tokens.generated.css";
 
-// 🔥 Import TypeScript pattern files (they will register Web Components)
+//  Import TypeScript pattern files (they will register Web Components)
 // 🔥 Импортируем TypeScript файлы паттернов (они зарегистрируют Web Components)
 import "../src/patterns/faf.modal.ts";
 import "../src/patterns/faf.toast.ts";
@@ -127,48 +127,61 @@ class ZIndexViewer {
       {
         name: "base",
         value: 0,
-        description: "Базовый слой (контент страницы)",
+        description:
+          "Базовый слой (контент страницы) / Base layer (page content)",
       },
       {
         name: "dropdown",
         value: 1000,
-        description: "Дропдауны, меню, селекторы",
+        description: "Дропдауны, меню, селекторы / Dropdowns, menus, selectors",
       },
       {
         name: "sticky",
         value: 1020,
-        description: "Sticky элементы (header, sidebar)",
+        description: "Sticky элементы (header, sidebar) / Sticky elements",
       },
-      { name: "fixed", value: 1030, description: "Fixed элементы (navbar)" },
+      {
+        name: "fixed",
+        value: 1030,
+        description: "Fixed элементы (navbar) / Fixed elements (navbar)",
+      },
       {
         name: "modal-backdrop",
         value: 1040,
-        description: "Backdrop модалки (затемнение)",
+        description: "Backdrop модалки (затемнение) / Modal backdrop (dimming)",
       },
-      { name: "modal", value: 1050, description: "Модальное окно" },
+      {
+        name: "modal",
+        value: 1050,
+        description: "Модальное окно / Modal window",
+      },
       {
         name: "popover",
         value: 1060,
-        description: "Popover (всплывающие панели)",
+        description: "Popover (всплывающие панели) / Popover (floating panels)",
       },
       {
         name: "tooltip",
         value: 1070,
-        description: "Tooltip (всплывающие подсказки)",
+        description: "Tooltip (всплывающие подсказки) / Tooltip (hover hints)",
       },
       {
         name: "toast",
         value: 1080,
-        description: "Toast (уведомления, поверх всего)",
+        description:
+          "Toast (уведомления, поверх всего) / Toast (notifications, above all)",
       },
     ];
 
     return `
       <section class="tokens-section">
         <h2>Z-Index Tokens</h2>
-        <p style="color: var(--faf-color-text-muted, #6b7280); margin-bottom: 1.5rem;">
+        <p style="color: var(--faf-color-text-muted, #6b7280); margin-bottom: var(--faf-spacing-6, 1.5rem);">
           Именованные значения z-index вместо магических чисел. 
           Используй токены в своих компонентах для соблюдения Layer Contract.
+          <br/>
+          Named z-index values instead of magic numbers. 
+          Use tokens in your components to follow the Layer Contract.
         </p>
         <div class="tokens-list">
           ${tokens
@@ -177,7 +190,7 @@ class ZIndexViewer {
             <div class="token-item">
               <div class="token-value">${token.value}</div>
               <div class="token-info">
-                <code>--faf-z-${token.name}</code>
+                <code>--faf-zindex-${token.name}</code>
                 <span class="token-description">${token.description}</span>
               </div>
             </div>
@@ -192,45 +205,56 @@ class ZIndexViewer {
   // ==========================================
   // Section: Stacking Context / Секция: Контекст наложения
   // ==========================================
-
   _renderStacking() {
     return `
       <section class="stacking-section">
-        <h2>Stacking Context — Интерактивные примеры</h2>
-        <p style="color: var(--faf-color-text-muted, #6b7280); margin-bottom: 1.5rem;">
-          Stacking context — это группа элементов, которые накладываются друг на друга в определённом порядке.
+        <h2>Stacking Context<br/>Контекст наложения</h2>
+        <p style="color: var(--faf-color-text-muted, #6b7280); margin-bottom: var(--faf-spacing-6, 1.5rem);">
+          Stacking context — это группа элементов, которые накладываются друг на друга.<br/>
           z-index работает только внутри своего stacking context.
         </p>
         <div class="stacking-examples">
           <div class="example">
-            <h3>Пример 1: Базовый stacking context</h3>
+            <h3>Пример 1: Базовый stacking context<br/>Example 1: Basic stacking context</h3>
             <div class="demo-container">
-              <div class="box box-1">Box 1 (z-index: 1)</div>
-              <div class="box box-2">Box 2 (z-index: 2)</div>
+              <div class="box box-1" style="display: flex; align-items: flex-end; padding-bottom: 8px;">
+                <span style="font-size: 0.75rem;">Box 1<br/>z-index: 1</span>
+              </div>
+              <div class="box box-2" style="display: flex; align-items: center; justify-content: center;">
+                <span style="font-size: 0.75rem;">Box 2<br/>z-index: 2</span>
+              </div>
             </div>
             <p>Box 2 поверх Box 1, потому что z-index больше.</p>
           </div>
           
           <div class="example">
-            <h3>Пример 2: Вложенный stacking context</h3>
+            <h3>Пример 2: Вложенный stacking context<br/>Example 2: Nested stacking context</h3>
             <div class="demo-container">
-              <div class="box box-1">
-                Box 1 (z-index: 1)
-                <div class="box box-3">Box 3 (z-index: 3, внутри Box 1)</div>
+              <div class="box box-1" style="display: flex; align-items: flex-end; padding-bottom: 8px;">
+                <span style="font-size: 0.75rem;">Box 1<br/>z-index: 1</span>
+                <div class="box box-3" style="display: flex; align-items: center; justify-content: center;">
+                  <span style="font-size: 0.65rem;">Box 3<br/>z-index: 3</span>
+                </div>
               </div>
-              <div class="box box-2">Box 2 (z-index: 2)</div>
+              <div class="box box-2" style="display: flex; align-items: center; justify-content: center;">
+                <span style="font-size: 0.75rem;">Box 2<br/>z-index: 2</span>
+              </div>
             </div>
             <p>Box 3 НЕ поверх Box 2, потому что Box 3 внутри stacking context Box 1.</p>
           </div>
           
           <div class="example">
-            <h3>Пример 3: opacity создаёт stacking context</h3>
+            <h3>Пример 3: opacity создаёт stacking context<br/>Example 3: opacity creates stacking context</h3>
             <div class="demo-container">
-              <div class="box box-1" style="opacity: 0.99;">
-                Box 1 (opacity: 0.99, z-index: 1)
-                <div class="box box-3">Box 3 (z-index: 3)</div>
+              <div class="box box-1" style="opacity: 0.99; display: flex; align-items: flex-end; padding-bottom: 8px;">
+                <span style="font-size: 0.75rem;">Box 1<br/>opacity: 0.99<br/>z-index: 1</span>
+                <div class="box box-3" style="display: flex; align-items: center; justify-content: center;">
+                  <span style="font-size: 0.65rem;">Box 3<br/>z-index: 3</span>
+                </div>
               </div>
-              <div class="box box-2">Box 2 (z-index: 2)</div>
+              <div class="box box-2" style="display: flex; align-items: center; justify-content: center;">
+                <span style="font-size: 0.75rem;">Box 2<br/>z-index: 2</span>
+              </div>
             </div>
             <p>opacity &lt; 1 создаёт stacking context. Box 3 внутри Box 1, даже при z-index: 3.</p>
           </div>
@@ -238,7 +262,6 @@ class ZIndexViewer {
       </section>
     `;
   }
-
   // ==========================================
   // Section: Patterns / Секция: Паттерны
   // ==========================================
@@ -246,49 +269,52 @@ class ZIndexViewer {
   _renderPatterns() {
     return `
       <section class="patterns-section">
-        <h2>Patterns — Эталонные реализации</h2>
-        <p style="color: var(--faf-color-text-muted, #6b7280); margin-bottom: 1.5rem;">
+        <h2>Patterns — Эталонные реализации / Reference Implementations</h2>
+        <p style="color: var(--faf-color-text-muted, #6b7280); margin-bottom: var(--faf-spacing-6, 1.5rem);">
           Эти паттерны демонстрируют правильное использование z-index токенов. 
           Используйте их как готовые компоненты или как референс для своих.
+          <br/>
+          These patterns demonstrate correct z-index token usage.
+          Use them as ready-made components or as a reference for your own.
         </p>
         <div class="patterns-list">
           <div class="pattern">
-            <h3>🪟 Модалка (FafModal)</h3>
+            <h3>🪟 Модалка / Modal (FafModal)</h3>
             <ul>
-              <li>Backdrop: <code>--faf-z-modal-backdrop</code> (1040)</li>
-              <li>Модалка: <code>--faf-z-modal</code> (1050)</li>
+              <li>Backdrop: <code>--faf-zindex-modal-backdrop</code> (1040)</li>
+              <li>Модалка / Modal: <code>--faf-zindex-modal</code> (1050)</li>
               <li>Focus Trap из Faf-Focus</li>
-              <li>Закрытие по Escape, клику на backdrop</li>
-              <li>Восстановление фокуса</li>
+              <li>Закрытие по Escape, клику на backdrop / Close on Escape, backdrop click</li>
+              <li>Восстановление фокуса / Focus restoration</li>
             </ul>
           </div>
           
           <div class="pattern">
-            <h3>🔔 Тост (FafToast)</h3>
+            <h3>🔔 Тост / Toast (FafToast)</h3>
             <ul>
-              <li>Контейнер: <code>--faf-z-toast</code> (1080)</li>
-              <li>Проверка контрастности через Faf-Contrast</li>
-              <li>Автоматическое исчезновение через 5 сек</li>
-              <li>Типы: success, error, warning, info</li>
+              <li>Контейнер / Container: <code>--faf-zindex-toast</code> (1080)</li>
+              <li>Проверка контрастности через Faf-Contrast / Contrast check via Faf-Contrast</li>
+              <li>Автоматическое исчезновение через 5 сек / Auto-dismiss after 5 sec</li>
+              <li>Типы / Types: success, error, warning, info</li>
             </ul>
           </div>
           
           <div class="pattern">
-            <h3>📋 Дропдаун (FafDropdown)</h3>
+            <h3>📋 Дропдаун / Dropdown (FafDropdown)</h3>
             <ul>
-              <li>Меню: <code>--faf-z-dropdown</code> (1000)</li>
-              <li>Закрытие по клику вне</li>
-              <li>Keyboard navigation (стрелки ↑↓)</li>
-              <li>Закрытие по Escape</li>
+              <li>Меню / Menu: <code>--faf-zindex-dropdown</code> (1000)</li>
+              <li>Закрытие по клику вне / Close on outside click</li>
+              <li>Keyboard navigation (стрелки ↑↓ / arrows ↑↓)</li>
+              <li>Закрытие по Escape / Close on Escape</li>
             </ul>
           </div>
           
           <div class="pattern">
-            <h3>💬 Тултип (FafTooltip)</h3>
+            <h3> Тултип / Tooltip (FafTooltip)</h3>
             <ul>
-              <li>Tooltip: <code>--faf-z-tooltip</code> (1070)</li>
-              <li>Показ при hover И focus</li>
-              <li>Позиционирование: top/bottom</li>
+              <li>Tooltip: <code>--faf-zindex-tooltip</code> (1070)</li>
+              <li>Показ при hover И focus / Show on hover AND focus</li>
+              <li>Позиционирование: top/bottom / Positioning: top/bottom</li>
               <li>ARIA: aria-describedby</li>
             </ul>
           </div>
@@ -304,48 +330,50 @@ class ZIndexViewer {
   _renderDemo() {
     return `
       <section class="demo-section">
-        <h2>🔥 Live Demo — Попробуй паттерны в действии</h2>
-        <p style="color: var(--faf-color-text-muted, #6b7280); margin-bottom: 1.5rem;">
+        <h2> Live Demo — Попробуй паттерны в действии / Try patterns in action</h2>
+        <p style="color: var(--faf-color-text-muted, #6b7280); margin-bottom: var(--faf-spacing-6, 1.5rem);">
           Нажимай кнопки, чтобы увидеть, как работают паттерны и как они накладываются друг на друга.
+          <br/>
+          Click buttons to see how patterns work and how they stack.
         </p>
         <div class="demo-buttons">
-          <button class="demo-button" data-action="open-modal">🪟 Открыть модалку</button>
-          <button class="demo-button" data-action="show-toast">🔔 Показать тост</button>
-          <button class="demo-button" data-action="open-dropdown">📋 Открыть дропдаун</button>
+          <button class="demo-button" data-action="open-modal"> Открыть модалку / Open Modal</button>
+          <button class="demo-button" data-action="show-toast">🔔 Показать тост / Show Toast</button>
+          <button class="demo-button" data-action="open-dropdown"> Открыть дропдаун / Open Dropdown</button>
         </div>
         
         <div class="demo-area">
-          <p>Область для демонстрации паттернов:</p>
+          <p>Область для демонстрации паттернов: / Pattern demonstration area:</p>
           
           <!-- Demo dropdown / Демо дропдауна -->
-          <div style="margin-top: 2rem;">
+          <div style="margin-top: var(--faf-spacing-8, 2rem);">
             <faf-dropdown>
-              <span slot="trigger">Выберите действие</span>
-              <faf-dropdown-item>Редактировать</faf-dropdown-item>
-              <faf-dropdown-item>Удалить</faf-dropdown-item>
+              <span slot="trigger">Выберите действие / Select action</span>
+              <faf-dropdown-item>Edit / Редактировать</faf-dropdown-item>
+              <faf-dropdown-item>Delete / Удалить</faf-dropdown-item>
               <faf-dropdown-divider></faf-dropdown-divider>
-              <faf-dropdown-item>Экспорт</faf-dropdown-item>
+              <faf-dropdown-item>Export / Экспорт</faf-dropdown-item>
             </faf-dropdown>
           </div>
           
           <!-- Demo tooltip / Демо тултипа -->
-          <div style="margin-top: 2rem; display: inline-block;">
-            <faf-tooltip content="Это всплывающая подсказка!" position="top">
-              <button slot="trigger" class="demo-button">💬 Наведи на меня</button>
+          <div style="margin-top: var(--faf-spacing-8, 2rem); display: inline-block;">
+            <faf-tooltip content="Это всплывающая подсказка! / This is a tooltip!" position="top">
+              <button slot="trigger" class="demo-button">💬 Наведи на меня / Hover me</button>
             </faf-tooltip>
           </div>
         </div>
         
         <!-- Modal (hidden by default) / Модалка (скрыта по умолчанию) -->
         <faf-modal id="demo-modal">
-          <span slot="title">Демо модалка</span>
-          <p>Это содержимое модалки. Она использует токены:</p>
-          <ul style="margin: 1rem 0; padding-left: 1.5rem;">
-            <li><code>--faf-z-modal</code> (1050)</li>
-            <li><code>--faf-z-modal-backdrop</code> (1040)</li>
+          <span slot="title">Демо модалка / Demo Modal</span>
+          <p>Это содержимое модалки. Она использует токены: / This is modal content. It uses tokens:</p>
+          <ul style="margin: var(--faf-spacing-4, 1rem) 0; padding-left: var(--faf-spacing-6, 1.5rem);">
+            <li><code>--faf-zindex-modal</code> (1050)</li>
+            <li><code>--faf-zindex-modal-backdrop</code> (1040)</li>
           </ul>
-          <p>Попробуйте нажать <kbd>Tab</kbd> — фокус останется внутри модалки (Focus Trap).</p>
-          <p>Нажмите <kbd>Escape</kbd> или кликните на затемнение, чтобы закрыть.</p>
+          <p>Попробуйте нажать <kbd>Tab</kbd> — фокус останется внутри модалки (Focus Trap). / Try pressing <kbd>Tab</kbd> — focus will stay inside modal (Focus Trap).</p>
+          <p>Нажмите <kbd>Escape</kbd> или кликните на затемнение, чтобы закрыть. / Press <kbd>Escape</kbd> or click backdrop to close.</p>
         </faf-modal>
       </section>
     `;
@@ -374,10 +402,10 @@ class ZIndexViewer {
             if (container) {
               const types = ["success", "error", "warning", "info"];
               const messages = [
-                "Успешно сохранено!",
-                "Произошла ошибка",
-                "Внимание: проверьте данные",
-                "Новое обновление доступно",
+                "Successfully saved!",
+                "An error occurred",
+                "Warning: please check data",
+                "New update available",
               ];
               const randomIndex = Math.floor(Math.random() * types.length);
 

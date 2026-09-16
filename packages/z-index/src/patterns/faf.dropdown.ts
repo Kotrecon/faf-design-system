@@ -6,8 +6,8 @@
 
 export class FafDropdown extends HTMLElement {
   private _trigger: HTMLElement | null = null;
+  private _menu: HTMLElement | null = null;
   private _shadow: ShadowRoot;
-  private _currentIndex = -1;
 
   constructor() {
     super();
@@ -33,21 +33,21 @@ export class FafDropdown extends HTMLElement {
         display: inline-block;
       }
 
-      /* Trigger button / Кнопка-триггер */
-      .faf-dropdown-trigger {
-        display: inline-flex;
-        align-items: center;
-        gap: var(--faf-spacing-2, 0.5rem);
-        padding: var(--faf-spacing-2, 0.5rem) var(--faf-spacing-3, 0.75rem);
-        background-color: var(--faf-color-surface, #ffffff);
-        color: var(--faf-color-text, #111827);
-        border: 1px solid var(--faf-color-border, #e5e7eb);
-        border-radius: var(--faf-radius-md, 6px);
-        font-size: var(--faf-font-size-fluid-sm, 0.875rem);
-        font-weight: var(--faf-font-weight-medium, 500);
-        cursor: pointer;
-        transition: background-color 0.15s, border-color 0.15s;
-      }
+/* Trigger button / Кнопка-триггер */
+.faf-dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--faf-spacing-2, 0.5rem);
+  padding: var(--faf-spacing-2, 0.5rem) var(--faf-spacing-3, 0.75rem);
+  background-color: var(--faf-color-surface, #ffffff);
+  color: var(--faf-color-text, #111827);
+  border: 1px solid var(--faf-color-gray-300, #d1d5db); /* ИСПРАВЛЕНО: более видимый border */
+  border-radius: var(--faf-radius-md, 6px);
+  font-size: var(--faf-font-size-sm, 0.875rem);
+  font-weight: var(--faf-font-weight-medium, 500);
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
 
       /* Light theme hover (default) / Hover для светлой темы (по умолчанию) */
       .faf-dropdown-trigger:hover {
@@ -79,10 +79,10 @@ export class FafDropdown extends HTMLElement {
         margin-top: var(--faf-spacing-1, 0.25rem);
         min-width: 200px;
         background-color: var(--faf-color-surface, #ffffff);
-        border: 1px solid var(--faf-color-border, #e5e7eb);
+        border: 1px solid var(--faf-color-gray-300, #d1d5db);
         border-radius: var(--faf-radius-md, 6px);
         box-shadow: var(--faf-shadow-dropdown, 0 10px 15px rgba(0,0,0,0.1));
-        z-index: var(--faf-z-dropdown, 1000);
+        z-index: var(--faf-zindex-dropdown, 1000);
         opacity: 0;
         visibility: hidden;
         transform: translateY(-8px);
@@ -110,7 +110,7 @@ export class FafDropdown extends HTMLElement {
       <slot name="trigger">Menu</slot>
       <span class="faf-dropdown-arrow" aria-hidden="true">▼</span>
     </button>
-    <div class="faf-dropdown-menu" role="menu">
+    <div class="faf-dropdown-menu" role="menu" tabindex="-1">
       <slot></slot>
     </div>
   `;
@@ -118,6 +118,7 @@ export class FafDropdown extends HTMLElement {
 
   private _cacheElements(): void {
     this._trigger = this._shadow.querySelector(".faf-dropdown-trigger");
+    this._menu = this._shadow.querySelector(".faf-dropdown-menu");
   }
 
   private _bindEvents(): void {
@@ -128,16 +129,16 @@ export class FafDropdown extends HTMLElement {
       );
     }
 
+    if (this._menu) {
+      this._menu.addEventListener("keydown", (e) => this._handleMenuKeyDown(e));
+    }
+
     this._handleOutsideClick = this._handleOutsideClick.bind(this);
     document.addEventListener("click", this._handleOutsideClick);
-
-    this._handleEscape = this._handleEscape.bind(this);
-    document.addEventListener("keydown", this._handleEscape);
   }
 
   private _unbindEvents(): void {
     document.removeEventListener("click", this._handleOutsideClick);
-    document.removeEventListener("keydown", this._handleEscape);
   }
 
   // Handle clicks outside dropdown / Обработка кликов вне дропдауна
@@ -147,22 +148,74 @@ export class FafDropdown extends HTMLElement {
     }
   };
 
-  // Handle Escape key / Обработка клавиши Escape
-  private _handleEscape = (e: KeyboardEvent): void => {
-    if (e.key === "Escape" && this.hasAttribute("open")) {
-      e.preventDefault();
-      this.close();
-      this._trigger?.focus();
-    }
-  };
-
-  // Handle keyboard navigation / Обработка навигации с клавиатуры
+  // Handle keyboard navigation on trigger / Обработка навигации на триггере
   private _handleTriggerKeyDown(e: KeyboardEvent): void {
     if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       if (!this.hasAttribute("open")) {
         this.open();
+        // Небольшая задержка необходима, чтобы браузер успел отрендерить слоты и сделать элементы фокусируемыми
+        // A small delay is necessary for the browser to render slots and make elements focusable
+        setTimeout(() => this._focusItem(0), 50);
       }
+    }
+  }
+
+  // Handle keyboard navigation inside menu / Обработка навигации внутри меню
+  private _handleMenuKeyDown(e: KeyboardEvent): void {
+    const items = this._getMenuItems();
+    if (items.length === 0) return;
+
+    // Надежный поиск текущего элемента: проверяем, является ли activeElement самим пунктом
+    // или находится внутри его Shadow DOM (метод .contains решает проблему ретаргетинга событий)
+    // Reliable search for current element: check if activeElement is the item itself
+    // or is inside its Shadow DOM (.contains solves the event retargeting problem)
+    const activeEl = document.activeElement;
+    let currentIndex = items.findIndex(
+      (item) => item === activeEl || item.contains(activeEl as Node),
+    );
+
+    // Если фокус потерян или находится вне пунктов меню, сбрасываем индекс
+    // If focus is lost or outside menu items, reset index
+    if (currentIndex === -1) {
+      currentIndex = -1;
+    }
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      const nextIndex = (currentIndex + 1) % items.length;
+      items[nextIndex].focus();
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      const prevIndex = (currentIndex - 1 + items.length) % items.length;
+      items[prevIndex].focus();
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      items[0].focus();
+    } else if (e.key === "End") {
+      e.preventDefault();
+      items[items.length - 1].focus();
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      this.close();
+      this._trigger?.focus();
+    }
+  }
+
+  // Helper: Get all focusable menu items from Light DOM / Хелпер: Получить все фокусируемые пункты меню из Light DOM
+  private _getMenuItems(): HTMLElement[] {
+    // Используем this.children вместо querySelectorAll для гарантированного получения слотированных кастомных элементов
+    // Use this.children instead of querySelectorAll to guarantee retrieval of slotted custom elements
+    return Array.from(this.children).filter(
+      (el) => el.getAttribute("role") === "menuitem",
+    ) as HTMLElement[];
+  }
+
+  // Helper: Focus specific item / Хелпер: Сфокусировать конкретный пункт
+  private _focusItem(index: number): void {
+    const items = this._getMenuItems();
+    if (items[index]) {
+      items[index].focus();
     }
   }
 
@@ -177,7 +230,6 @@ export class FafDropdown extends HTMLElement {
     if (!this.hasAttribute("open")) return;
     this.removeAttribute("open");
     this._trigger?.setAttribute("aria-expanded", "false");
-    this._currentIndex = -1;
     this.dispatchEvent(
       new CustomEvent("faf-dropdown-close", { bubbles: true }),
     );
@@ -215,25 +267,24 @@ export class FafDropdownItem extends HTMLElement {
           background-color: transparent;
           border: none;
           text-align: left;
-          font-size: var(--faf-font-size-fluid-sm, 0.875rem);
+          font-size: var(--faf-font-size-sm, 0.875rem);
           border-radius: var(--faf-radius-sm, 4px);
           cursor: pointer;
           transition: background-color 0.15s, color 0.15s;
           color: var(--faf-color-text, #111827);
 
-          /* FIX 2: Using gray-200 for light theme to make hover VISIBLE / ИСПРАВЛЕНИЕ 2: Используем gray-200 для светлой темы, чтобы ховер был ЗАМЕТЕН */
+          /* Локальные переменные для состояний hover/focus / Local variables for hover/focus states */
           --item-hover-bg: var(--faf-color-gray-200, #e5e7eb);
           --item-hover-text: var(--faf-color-gray-900, #111827);
         }
 
-        /* Dark theme override / Переопределение для тёмной темы */
+        /* Переопределение для тёмной темы / Dark theme override */
         :host-context([data-theme="dark"]) {
-          /* In dark theme gray-700 works well, as we already checked / В темной теме gray-700 отлично работает, как мы уже проверили */
           --item-hover-bg: var(--faf-color-gray-700, #374151);
           --item-hover-text: var(--faf-color-gray-100, #f3f4f6);
         }
 
-        /* FIX 3: Duplicating fallback here in case variable resolves to transparent / ИСПРАВЛЕНИЕ 3: Дублируем fallback прямо здесь, на случай если переменная резолвится в transparent */
+        /* Состояния hover и focus / Hover and focus states */
         :host(:hover), :host(:focus) {
           background-color: var(--item-hover-bg, #e5e7eb);
           color: var(--item-hover-text, #111827);
@@ -252,7 +303,7 @@ export class FafDropdownDivider extends HTMLElement {
     this.style.display = "block";
     this.style.height = "1px";
     this.style.margin = "0.25rem 0";
-    this.style.backgroundColor = "var(--faf-color-border, #e5e7eb)";
+    this.style.backgroundColor = "var(--faf-color-gray-300, #d1d5db)";
   }
 }
 

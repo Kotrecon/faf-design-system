@@ -36,23 +36,26 @@ export class FafModal extends HTMLElement {
   private render(): void {
     this._shadow.innerHTML = `
       <style>
+        /* Host base state / Базовое состояние хоста */
         :host {
           display: none;
           --modal-bg: var(--faf-color-surface, #ffffff);
           --modal-text: var(--faf-color-text, #111827);
-          --modal-border: var(--faf-color-border, #e5e7eb);
+          --modal-border: var(--faf-color-gray-300, #d1d5db);
           --close-hover-bg: var(--faf-color-gray-100, #f3f4f6);
           --close-hover-text: var(--faf-color-text, #111827);
         }
 
+        /* Dark theme override / Переопределение для тёмной темы */
         :host-context([data-theme="dark"]) {
           --modal-bg: var(--faf-color-surface, #1f2937);
           --modal-text: var(--faf-color-text, #f9fafb);
-          --modal-border: var(--faf-color-border, #374151);
+          --modal-border: var(--faf-color-gray-600, #4b5563);
           --close-hover-bg: var(--faf-color-gray-700, #374151);
           --close-hover-text: var(--faf-color-text, #f9fafb);
         }
 
+        /* Host open state / Состояние хоста: открыто */
         :host([open]) {
           display: block;
           position: fixed;
@@ -60,37 +63,40 @@ export class FafModal extends HTMLElement {
           left: 0;
           width: 100%;
           height: 100%;
-          z-index: var(--faf-z-modal, 1050);
+          z-index: var(--faf-zindex-modal, 1050);
         }
 
+        /* Backdrop (dimming) / Backdrop (затемнение) */
         .faf-modal-backdrop {
           position: fixed;
           top: 0;
           left: 0;
           width: 100vw;
           height: 100vh;
-          background-color: var(--faf-color-overlay, rgba(0, 0, 0, 0.5));
-          z-index: var(--faf-z-modal-backdrop, 1040);
+          background-color: rgba(0, 0, 0, 0.5);
+          z-index: var(--faf-zindex-modal-backdrop, 1040);
           opacity: 0;
           transition: opacity 0.2s ease;
         }
 
+        /* Backdrop visible state / Состояние видимости backdrop */
         :host([open]) .faf-modal-backdrop {
           opacity: 1;
         }
 
+        /* Modal window itself / Само модальное окно */
         .faf-modal {
           position: fixed;
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%) scale(0.95);
-          z-index: var(--faf-z-modal, 1050);
+          z-index: var(--faf-zindex-modal, 1050);
           background-color: var(--modal-bg);
           color: var(--modal-text);
           border: 1px solid var(--modal-border);
           border-radius: var(--faf-radius-lg, 8px);
-          box-shadow: var(--faf-shadow-xl, 0 20px 25px rgba(0, 0, 0, 0.1));
-          padding: var(--faf-spacing-6, 1.5rem);
+          box-shadow: var(--faf-shadow-modal, 0 20px 25px rgba(0, 0, 0, 0.1));
+          padding: var(--faf-spacing-modal-padding, 2rem);
           max-width: 500px;
           width: 90vw;
           max-height: 90vh;
@@ -99,11 +105,13 @@ export class FafModal extends HTMLElement {
           transition: opacity 0.2s ease, transform 0.2s ease;
         }
 
+        /* Modal open state / Состояние модалки: открыто */
         :host([open]) .faf-modal {
           opacity: 1;
           transform: translate(-50%, -50%) scale(1);
         }
 
+        /* Modal header / Шапка модалки */
         .faf-modal-header {
           display: flex;
           justify-content: space-between;
@@ -111,12 +119,14 @@ export class FafModal extends HTMLElement {
           margin-bottom: var(--faf-spacing-4, 1rem);
         }
 
+        /* Modal title / Заголовок модалки */
         .faf-modal-title {
           font-size: var(--faf-font-size-xl, 1.25rem);
           font-weight: var(--faf-font-weight-semibold, 600);
           margin: 0;
         }
 
+        /* Close button / Кнопка закрытия */
         .faf-modal-close {
           background: transparent;
           border: none;
@@ -129,11 +139,13 @@ export class FafModal extends HTMLElement {
           transition: background-color 0.2s, color 0.2s;
         }
 
+        /* Close button hover state / Состояние hover для кнопки закрытия */
         .faf-modal-close:hover {
           background-color: var(--close-hover-bg);
           color: var(--close-hover-text);
         }
 
+        /* Modal body / Тело модалки */
         .faf-modal-body {
           font-size: var(--faf-font-size-base, 1rem);
           line-height: var(--faf-line-height-normal, 1.5);
