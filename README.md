@@ -21,7 +21,7 @@
 | :-------------------------------------------- | :------------------------------------------------ | :--------: |
 | [`@faf/foundations`](./packages/foundations/) | Foundations: colors, typography, spacing, shadows |  ✅ Ready  |
 | [`@faf/z-index`](./packages/z-index/)         | Layering and elevation system                     |  ✅ Ready  |
-| `@faf/contrast`                               | WCAG AA/AAA utilities                             | 🚧 Planned |
+| [`@faf/contrast`](./packages/contrast/)       | WCAG AA/AAA utilities                             |  ✅ Ready  |
 | `@faf/components`                             | UI components                                     | 🚧 Planned |
 
 ---
@@ -62,6 +62,10 @@ pnpm run test
 - [Tokens Guide](./packages/foundations/docs/tokens-guide.md)
 - [Patterns Guide](./packages/z-index/docs/patterns-guide.md)
 - [Stacking Context Guide](./packages/z-index/docs/stacking-context-guide.md)
+- [WCAG Guide](./packages/contrast/docs/wcag-guide.md)
+- [Contrast Best Practices](./packages/contrast/docs/contrast-guide.md)
+- [Manual Testing Guide](./packages/contrast/docs/manual-testing-guide.md)
+- [Sample Validation Report](./packages/contrast/docs/validation-report.md)
 
 ---
 

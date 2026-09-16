@@ -21,7 +21,7 @@
 | :-------------------------------------------- | :---------------------------------------- | :-------------: |
 | [`@faf/foundations`](./packages/foundations/) | Основы: цвета, типографика, отступы, тени |    ✅ Готов     |
 | [`@faf/z-index`](./packages/z-index/)         | Система слоёв и глубины                   |    ✅ Готов     |
-| `@faf/contrast`                               | Утилиты WCAG AA/AAA                       | 🚧 Запланирован |
+| [`@faf/contrast`](./packages/contrast/)       | Утилиты WCAG AA/AAA                       |    ✅ Готов     |
 | `@faf/components`                             | UI-компоненты                             | 🚧 Запланирован |
 
 ---
@@ -62,6 +62,10 @@ pnpm run test
 - [Руководство по токенам](./packages/foundations/docs/tokens-guide.md)
 - [Руководство по паттернам](./packages/z-index/docs/patterns-guide.ru.md)
 - [Руководство по Stacking Context](./packages/z-index/docs/stacking-context-guide.md)
+- [Руководство по контрастности WCAG](./packages/contrast/docs/wcag-guide.ru.md)
+- [Лучшие практики контрастности](./packages/contrast/docs/contrast-guide.ru.md)
+- [Руководство по ручному тестированию](./packages/contrast/docs/manual-testing-guide.ru.md)
+- [Пример отчёта валидации](./packages/contrast/docs/validation-report.ru.md)
 
 ---
 
